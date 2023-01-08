@@ -1,0 +1,6 @@
+[submodule "src/main/java/frc/motors"]
+	path = src/main/java/frc/motors
+	url = https://github.com/FRCTeam5199/FRC-AbstractMotorInterfaces.git
+[submodule "src/main/java/frc/controllers/basecontrollers"]
+	path = src/main/java/frc/controllers/basecontrollers
+	url = https://github.com/FRCTeam5199/FRC-AbstractContollerInterfaces.git
