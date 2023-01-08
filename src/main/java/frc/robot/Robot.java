@@ -181,7 +181,7 @@ public class Robot extends TimedRobot {
 
         for (AbstractMotorController motor : AbstractMotorController.motorList) {
             if (motor.getMotorTemperature() > 5) {
-                UserInterface.motorTemperatureMonitors.get(motor).getEntry().setNumber(motor.getMotorTemperature());
+                UserInterface.motorTemperatureMonitors.get(motor).getEntry().setDouble(motor.getMotorTemperature());
             }
         }
 

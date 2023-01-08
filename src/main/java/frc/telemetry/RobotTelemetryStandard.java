@@ -3,6 +3,7 @@ package frc.telemetry;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.drive.AbstractDriveManager;
 import frc.drive.DriveManagerStandard;
@@ -13,7 +14,7 @@ import static frc.robot.Robot.robotSettings;
 
 public class RobotTelemetryStandard extends AbstractRobotTelemetry implements ISubsystem {
     private final boolean DEBUG = false;
-    private final NetworkTableEntry robotLocation = UserInterface.ROBOT_LOCATION.getEntry();
+    private final GenericEntry robotLocation = UserInterface.ROBOT_LOCATION.getEntry();
     public DifferentialDriveOdometry odometer;
 
     public RobotTelemetryStandard(AbstractDriveManager driver) {
@@ -29,7 +30,7 @@ public class RobotTelemetryStandard extends AbstractRobotTelemetry implements IS
     public void init() {
         super.init();
         if (imu != null) {
-            odometer = new DifferentialDriveOdometry(Rotation2d.fromDegrees(imu.absoluteYaw())); //getRotations should be in distance traveled since start (inches)
+            odometer = new DifferentialDriveOdometry(Rotation2d.fromDegrees(imu.absoluteYaw()), 0, 0); //getRotations should be in distance traveled since start (inches)
             robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), Units.inchesToMeters(((DriveManagerStandard) driver).leaderL.getRotations()), Units.inchesToMeters(((DriveManagerStandard) driver).leaderR.getRotations()));
         }
     }
@@ -55,7 +56,7 @@ public class RobotTelemetryStandard extends AbstractRobotTelemetry implements IS
      */
     public void resetOdometry() {
         if (robotSettings.ENABLE_IMU) {
-            odometer = new DifferentialDriveOdometry(Rotation2d.fromDegrees(imu.absoluteYaw()));
+            odometer = new DifferentialDriveOdometry(Rotation2d.fromDegrees(imu.absoluteYaw()), 0 , 0);
             imu.resetOdometry();
         }
         driver.resetDriveEncoders();

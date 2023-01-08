@@ -1,6 +1,7 @@
 package frc.drive;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.misc.ISubsystem;
@@ -17,8 +18,8 @@ import static frc.robot.Robot.robotSettings;
  * Chill out there is only vibing going on here, officer
  */
 public abstract class AbstractDriveManager implements ISubsystem {
-    protected final NetworkTableEntry driveRotMult = UserInterface.DRIVE_ROT_MULT.getEntry(),
-            driveScaleMult = UserInterface.DRIVE_SCALE_MULT.getEntry();
+    protected final GenericEntry driveRotMult = UserInterface.DRIVE_ROT_MULT.getEntry();
+    protected final GenericEntry driveScaleMult = UserInterface.DRIVE_SCALE_MULT.getEntry();
     /**
      * I dont know where I am going, but i do know that whatever drive manager i end up in will love me
      */

@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.controllers.basecontrollers.BaseController;
@@ -35,6 +36,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private final double trackWidth = 21;
     private final double trackLength = 24.5;
     public SwerveModuleState[] moduleStates;
+    public SwerveModulePosition[] modulePositions;
     public SwerveMotorController driverFR, driverBR, driverBL, driverFL;
     public IVision visionCamera;
     boolean useLocalOrientation = false;
@@ -50,7 +52,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private Translation2d frontRightLocation = new Translation2d(-trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
     private Translation2d backLeftLocation = new Translation2d(trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701);
     private Translation2d backRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
-    private SwerveDriveKinematics kinematics;
+    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
     private PIDController FRpid, BRpid, BLpid, FLpid;
     private BaseController xbox;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
@@ -202,6 +204,13 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         driverFR.steering.moveAtPercent(-FRpid.calculate(FRcoder.getAbsolutePosition()));
         driverBL.steering.moveAtPercent(-BLpid.calculate(BLcoder.getAbsolutePosition()));
         driverBR.steering.moveAtPercent(BRpid.calculate(BRcoder.getAbsolutePosition()));
+
+        // driverFL.getState(), driverFR.getState(), driverBL.getState(), driverBR.getState()
+
+        modulePositions[0] = new SwerveModulePosition(frontLeftLocation.getNorm(), driverFL.getState().angle);
+        modulePositions[1] = new SwerveModulePosition(frontRightLocation.getNorm(), driverFR.getState().angle);
+        modulePositions[2] = new SwerveModulePosition(backLeftLocation.getNorm(), driverBL.getState().angle);
+        modulePositions[3] = new SwerveModulePosition(backRightLocation.getNorm(), driverBR.getState().angle);
     }
 
     /**
@@ -318,6 +327,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         SwerveModuleState frontLeft = moduleStates[0], frontRight = moduleStates[1], backLeft = moduleStates[2], backRight = moduleStates[3];
 
         //try continuous here
+
         setSteeringContinuous(frontLeft.angle.getDegrees(), frontRight.angle.getDegrees(), backLeft.angle.getDegrees(), backRight.angle.getDegrees()); // <-- maybe here
         if (DEBUG) {
             //System.out.printf("%4f %4f %4f %4f \n", frontLeft.speedMetersPerSecond, frontRight.speedMetersPerSecond, backLeft.speedMetersPerSecond, backRight.speedMetersPerSecond);
@@ -374,12 +384,13 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         };
     }
 
+    public SwerveModulePosition[] getModulePositions() {
+        return modulePositions;
+
+    }
+
     public SwerveDriveKinematics getKinematics() {
-        Translation2d FLPos = Objects.requireNonNullElseGet(frontLeftLocation, () -> frontLeftLocation = new Translation2d(-trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701));
-        Translation2d FRPos = Objects.requireNonNullElseGet(frontRightLocation, () -> frontRightLocation = new Translation2d(-trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701));
-        Translation2d BLPos = Objects.requireNonNullElseGet(backLeftLocation, () -> backLeftLocation = new Translation2d(trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701));
-        Translation2d BRPos = Objects.requireNonNullElseGet(backRightLocation, () -> backRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701));
-        return Objects.requireNonNullElseGet(kinematics, () -> kinematics = new SwerveDriveKinematics(FLPos, FRPos, BLPos, BRPos));
+        return kinematics;
     }
 
     private void createDriveMotors() throws InitializationFailureException {

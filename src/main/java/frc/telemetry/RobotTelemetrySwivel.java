@@ -30,8 +30,8 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
         super.init();
         if (imu != null) {
             if(driver instanceof DriveManagerSwerve) {
-                odometer = new SwerveDriveOdometry(((DriveManagerSwerve) driver).getKinematics(), Rotation2d.fromDegrees(imu.absoluteYaw()));
-                robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getStates());
+                odometer = new SwerveDriveOdometry(((DriveManagerSwerve) driver).getKinematics(), Rotation2d.fromDegrees(imu.absoluteYaw()), ((DriveManagerSwerve) driver).modulePositions);
+                robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).modulePositions);
             }
         }
 
@@ -41,7 +41,7 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
     public void updateGeneric() {
         if (robotSettings.ENABLE_IMU) {
             if(driver instanceof  DriveManagerSwerve)
-                robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getStates());
+                robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePositions());
 
             super.updateGeneric();
         }

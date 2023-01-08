@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -33,7 +34,7 @@ import static frc.robot.Robot.robotSettings;
 public class DriveManagerStandard extends AbstractDriveManager {
     private static final boolean DEBUG = false;
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(robotSettings.DRIVEBASE_DISTANCE_BETWEEN_WHEELS);
-    private final NetworkTableEntry
+    private final GenericEntry
             P = UserInterface.DRIVE_P.getEntry(),
             I = UserInterface.DRIVE_I.getEntry(),
             D = UserInterface.DRIVE_D.getEntry(),
@@ -82,7 +83,7 @@ public class DriveManagerStandard extends AbstractDriveManager {
      */
     @Override
     public void updateTest() {
-        driveRPM.setNumber(leaderL.getSpeed() + leaderR.getSpeed() / 2);
+        driveRPM.setDouble(leaderL.getSpeed() + leaderR.getSpeed() / 2);
     }
 
     /**
@@ -95,9 +96,9 @@ public class DriveManagerStandard extends AbstractDriveManager {
     @Override
     public void updateTeleop() throws IllegalArgumentException {
         updateGeneric();
-        driveRPM.setNumber(leaderL.getSpeed() + leaderR.getSpeed() / 2);
+        driveRPM.setDouble(leaderL.getSpeed() + leaderR.getSpeed() / 2);
         double avgSpeedInFPS = Math.abs((leaderL.getSpeed() + leaderR.getSpeed()) / 2);
-        UserInterface.DRIVE_SPEED.getEntry().setNumber(avgSpeedInFPS);
+        UserInterface.DRIVE_SPEED.getEntry().setDouble(avgSpeedInFPS);
         if (Objects.requireNonNull(robotSettings.DRIVE_STYLE) == DriveControlStyles.STANDARD) {
             double invertedDrive = robotSettings.DRIVE_INVERT_LEFT ? -1 : 1;
             double dynamic_gear_R = controller.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN ? 0.25 : 1;
@@ -119,7 +120,7 @@ public class DriveManagerStandard extends AbstractDriveManager {
     @Override
     public void updateAuton() {
         updateGeneric();
-        driveRPM.setNumber(leaderL.getSpeed() + leaderR.getSpeed() / 2);
+        driveRPM.setDouble(leaderL.getSpeed() + leaderR.getSpeed() / 2);
     }
 
     @Override
