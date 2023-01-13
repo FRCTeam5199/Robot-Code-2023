@@ -25,6 +25,7 @@ public class AutonManager extends AbstractAutonManager {
     public AutonManager(AutonRoutines routine, AbstractDriveManager driveManager) {
         super(driveManager);
         addToMetaList();
+        drivingChild = driveManager;
         autonPath = routine;
         ROT_PID = new PIDController(robotSettings.HEADING_PID.P, robotSettings.HEADING_PID.I, robotSettings.HEADING_PID.D);
         init();
