@@ -36,7 +36,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private final double trackWidth = 21;
     private final double trackLength = 24.5;
     public SwerveModuleState[] moduleStates;
-    public SwerveModulePosition[] modulePositions;
     public SwerveMotorController driverFR, driverBR, driverBL, driverFL;
     public IVision visionCamera;
     boolean useLocalOrientation = false;
@@ -52,7 +51,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private Translation2d frontRightLocation = new Translation2d(-trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
     private Translation2d backLeftLocation = new Translation2d(trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701);
     private Translation2d backRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
-    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
+    public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
     private PIDController FRpid, BRpid, BLpid, FLpid;
     private BaseController xbox;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
@@ -69,6 +68,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         setDrivingPIDS(new PID(0.0002, 0, 0.0001, 0.03));
         setCANCoder();
         setupSteeringEncoders();
+
         if (robotSettings.ENABLE_VISION) {
             visionCamera = IVision.manufactureGoalCamera(robotSettings.GOAL_CAMERA_TYPE);
         }
@@ -184,8 +184,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
      * @param BL Back left translation requested. units?
      * @param BR Back right translation requested. units?
      */
-    private void
-    setSteeringContinuous(double FL, double FR, double BL, double BR) {
+    private void setSteeringContinuous(double FL, double FR, double BL, double BR) {
         double FLoffset = -93, FRoffset = 10, BLoffset = -35, BRoffset = 90;
         // try removing off set
         // try forcing Fl,FR,BL,BR 0
@@ -207,10 +206,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         // driverFL.getState(), driverFR.getState(), driverBL.getState(), driverBR.getState()
 
-        modulePositions[0] = new SwerveModulePosition(frontLeftLocation.getNorm(), driverFL.getState().angle);
-        modulePositions[1] = new SwerveModulePosition(frontRightLocation.getNorm(), driverFR.getState().angle);
-        modulePositions[2] = new SwerveModulePosition(backLeftLocation.getNorm(), driverBL.getState().angle);
-        modulePositions[3] = new SwerveModulePosition(backRightLocation.getNorm(), driverBR.getState().angle);
     }
 
     /**
@@ -252,6 +247,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     /**
      * set steering motors to return their encoder position in degrees
      */
+
     private void setupSteeringEncoders() {
         //12.8:1
         driverFR.steering.setRealFactorFromMotorRPM((1 / 12.8) * 360, 1);
@@ -384,10 +380,12 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         };
     }
 
-    public SwerveModulePosition[] getModulePositions() {
-        return modulePositions;
-
+    public SwerveModulePosition[] getModulePosition() {
+        return new SwerveModulePosition[]{
+                driverFL.getPosition(), driverFR.getPosition(), driverBL.getPosition(), driverBR.getPosition()
+        };
     }
+
 
     public SwerveDriveKinematics getKinematics() {
         return kinematics;

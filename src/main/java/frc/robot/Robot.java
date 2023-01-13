@@ -16,6 +16,7 @@ import frc.misc.UserInterface;
 import frc.motors.AbstractMotorController;
 import frc.pdp.PDP;
 import frc.robot.robotconfigs.DefaultConfig;
+import frc.robot.robotconfigs.Swerve2022;
 import frc.selfdiagnostics.ISimpleIssue;
 
 import java.io.File;
@@ -115,14 +116,15 @@ public class Robot extends TimedRobot {
         String hostName = Preferences.getString("hostname", "Default");
         System.out.println("I am " + hostName);
         switch (hostName) {
-/*            case "2021-Swivel":
-                robotSettings = new Swerve2021();
-                break;*/
+         case "2022-Swivel":
+                robotSettings = new Swerve2022();
+                break;
             default:
                 //preferences.putString("hostname", "2021-Comp");
                 //settingsFile = new CompetitionRobot2021();
                 //break;
-                throw new IllegalStateException("You need to ID this robot.");
+                robotSettings = new Swerve2022();
+                //throw new IllegalStateException("You need to ID this robot.");
         }
     }
 

@@ -1,5 +1,6 @@
 package frc.telemetry;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -20,6 +21,7 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
     protected final AbstractDriveManager driver;
     public AbstractIMU imu;
     public Pose2d robotPose;
+    public SwerveDrivePoseEstimator swerveRobotPose;
     public Field2d robotLocationOnField;
     public Translation2d robotTranslation;
     public Rotation2d robotRotation;
@@ -57,8 +59,13 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
 
     @Override
     public void updateGeneric() {
-        robotTranslation = robotPose.getTranslation();
-        robotRotation = robotPose.getRotation();
+        if (driver instanceof DriveManagerSwerve) {
+            robotTranslation = swerveRobotPose.getEstimatedPosition().getTranslation();
+            robotRotation = swerveRobotPose.getEstimatedPosition().getRotation();
+        }else{
+            robotTranslation = robotPose.getTranslation();
+            robotRotation = robotPose.getRotation();
+        }
         UserInterface.smartDashboardPutNumber("RelYaw", imu.relativeYaw());
         UserInterface.smartDashboardPutNumber("AbsYaw", imu.absoluteYaw());
     }
@@ -82,6 +89,8 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
      * opposing alliance station
      */
     public double fieldX() {
+        if (driver instanceof DriveManagerSwerve)
+            swerveRobotPose.getEstimatedPosition().getX();
         return robotPose.getTranslation().getX();
     }
 
@@ -90,6 +99,8 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
      * opposing alliance station
      */
     public double fieldY() {
+        if (driver instanceof DriveManagerSwerve)
+            swerveRobotPose.getEstimatedPosition().getY();
         return robotPose.getTranslation().getY();
     }
 
