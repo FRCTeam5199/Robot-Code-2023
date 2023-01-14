@@ -90,7 +90,7 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
      */
     public double fieldX() {
         if (driver instanceof DriveManagerSwerve)
-            swerveRobotPose.getEstimatedPosition().getX();
+            return swerveRobotPose.getEstimatedPosition().getX();
         return robotPose.getTranslation().getX();
     }
 
@@ -100,7 +100,7 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
      */
     public double fieldY() {
         if (driver instanceof DriveManagerSwerve)
-            swerveRobotPose.getEstimatedPosition().getY();
+            return swerveRobotPose.getEstimatedPosition().getY();
         return robotPose.getTranslation().getY();
     }
 

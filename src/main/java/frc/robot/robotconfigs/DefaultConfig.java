@@ -82,7 +82,7 @@ public abstract class DefaultConfig {
     public double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
 
     public double XBOX_CONTROLLER_DEADZONE = 0.07;
-    public double AUTON_TOLERANCE = 0.1;
+    public double AUTON_TOLERANCE = 0.2;
     public double AUTO_SPEED = 3;
     public double AUTO_ROTATION_SPEED = 1;
     public String GOAL_CAM_NAME = "GoalCamera";

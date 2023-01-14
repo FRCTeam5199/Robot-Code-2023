@@ -17,6 +17,7 @@ import frc.motors.AbstractMotorController;
 import frc.pdp.PDP;
 import frc.robot.robotconfigs.DefaultConfig;
 import frc.robot.robotconfigs.Swerve2022;
+import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
 
 import java.io.File;
@@ -116,14 +117,17 @@ public class Robot extends TimedRobot {
         String hostName = Preferences.getString("hostname", "Default");
         System.out.println("I am " + hostName);
         switch (hostName) {
-         case "2022-Swivel":
+            case "2022-Swivel":
                 robotSettings = new Swerve2022();
+                break;
+            case "2023-Prac":
+                robotSettings = new SwervePrac2023();
                 break;
             default:
                 //preferences.putString("hostname", "2021-Comp");
                 //settingsFile = new CompetitionRobot2021();
                 //break;
-                robotSettings = new Swerve2022();
+                robotSettings = new SwervePrac2023();
                 //throw new IllegalStateException("You need to ID this robot.");
         }
     }
@@ -180,12 +184,12 @@ public class Robot extends TimedRobot {
             deleteFolder(Filesystem.getDeployDirectory());
             throw new RuntimeException("Deleted deploy dir contents");
         }
-
+    /*
         for (AbstractMotorController motor : AbstractMotorController.motorList) {
             if (motor.getMotorTemperature() > 5) {
                 UserInterface.motorTemperatureMonitors.get(motor).getEntry().setDouble(motor.getMotorTemperature());
             }
-        }
+        }*/
 
         ISimpleIssue.robotPeriodic();
     }

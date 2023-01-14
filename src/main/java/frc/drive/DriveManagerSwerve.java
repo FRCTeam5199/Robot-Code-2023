@@ -63,7 +63,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void init() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        createPIDControllers(new PID(0.0035, 0.00000, 0.0));
+        createPIDControllers(new PID(0.0042, 0.00000, 0.00005));
         createDriveMotors();
         setDrivingPIDS(new PID(0.0002, 0, 0.0001, 0.03));
         setCANCoder();
@@ -84,15 +84,15 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void updateTest() {
-        updateGeneric();
-        if (robotSettings.DEBUG && DEBUG) {
-            System.out.println(FRcoder.getAbsolutePosition() + " FR " + driverFR.steering.getRotations());
-            //System.out.println(FLcoder.getAbsolutePosition() + " FL " + driverFL.steering.getRotations());
-            //System.out.println(BRcoder.getAbsolutePosition() + " BR " + driverBR.steering.getRotations());
-            //System.out.println(BLcoder.getAbsolutePosition() + " BL " + driverBL.steering.getRotations());
+        //updateGeneric();
+        //if (robotSettings.DEBUG && DEBUG) {
+            System.out.println(FRcoder.getAbsolutePosition() + " FR " /*+ driverFR.steering.getRotations()*/);
+            System.out.println(FLcoder.getAbsolutePosition() + " FL " /* + driverFL.steering.getRotations()*/);
+            System.out.println(BRcoder.getAbsolutePosition() + " BR " /* + driverBR.steering.getRotations()*/);
+            System.out.println(BLcoder.getAbsolutePosition() + " BL " /* + driverBL.steering.getRotations()*/);
             //System.out.println();
-            System.out.println(guidance.imu.relativeYaw());
-        }
+            //System.out.println(guidance.imu.relativeYaw());
+        //}
     }
 
     @Override
@@ -157,7 +157,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             rotation = -(visionCamera.getAngle() / 15);
             startHeading = guidance.imu.relativeYaw();
         } else {
-            visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+            //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
             if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
                 rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
                 startHeading = guidance.imu.relativeYaw();
@@ -186,12 +186,13 @@ public class DriveManagerSwerve extends AbstractDriveManager {
      * @param BR Back right translation requested. units?
      */
     private void setSteeringContinuous(double FL, double FR, double BL, double BR) {
-        double FLoffset = -93, FRoffset = 10, BLoffset = -35, BRoffset = 90;
+        double FLoffset = 16.5234375 /*196*/, FRoffset = 25.048828125 /*204*/, BLoffset = 169.716796875 /*351*/, BRoffset = 56.337890625/*-131*/;
         // try removing off set
         // try forcing Fl,FR,BL,BR 0
-        FLpid.setSetpoint(FL + FLoffset);
+        BLcoder.setPositionToAbsolute();
+        FLpid.setSetpoint(-FL + FLoffset);
         FRpid.setSetpoint(-FR + FRoffset);
-        BRpid.setSetpoint(BR + BRoffset);
+        BRpid.setSetpoint(-BR + BRoffset);
         BLpid.setSetpoint(-BL + BLoffset);
         //System.out.println(driverFL.steering.getRotations());
         // System.out.println("setpoint no offset: " + FR);
@@ -200,10 +201,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         //System.out.println("Absolute Position/ current positiion BL: " + BLcoder.getAbsolutePosition());
         //System.out.println("Absolute Position/ current positiion BR: " + BRcoder.getAbsolutePosition());
         // System.out.println("turning speed/pid should be: " + FLpid.calculate(FLcoder.getAbsolutePosition()));
-        driverFL.steering.moveAtPercent(FLpid.calculate(FLcoder.getAbsolutePosition()));
+        driverFL.steering.moveAtPercent(-FLpid.calculate(FLcoder.getAbsolutePosition()));
         driverFR.steering.moveAtPercent(-FRpid.calculate(FRcoder.getAbsolutePosition()));
         driverBL.steering.moveAtPercent(-BLpid.calculate(BLcoder.getAbsolutePosition()));
-        driverBR.steering.moveAtPercent(BRpid.calculate(BRcoder.getAbsolutePosition()));
+        driverBR.steering.moveAtPercent(-BRpid.calculate(BRcoder.getAbsolutePosition()));
 
         // driverFL.getState(), driverFR.getState(), driverBL.getState(), driverBR.getState()
 
@@ -238,7 +239,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         double gearRatio = 1;//robotSettings.SWERVE_SDS_DRIVE_BASE.getDriveReduction() * robotSettings.SWERVE_SDS_DRIVE_BASE.getWheelDiameter();
         double voltageMult = 95 / 371.0; // 127.4/371.0 is full speed
-        //System.out.println(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        System.out.println(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverFR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverFL.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverBR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_BR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
@@ -424,10 +425,11 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     public void setCANCoder() {
-        FRcoder = new CANCoder(13);
-        BRcoder = new CANCoder(11);
-        FLcoder = new CANCoder(14);
-        BLcoder = new CANCoder(12);
+        FLcoder = new CANCoder(11);
+        FRcoder = new CANCoder(12);
+        BRcoder = new CANCoder(13);
+        BLcoder = new CANCoder(14);
+
     }
 
     public void createPIDControllers(PID steeringPID) {

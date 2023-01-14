@@ -1,0 +1,10 @@
+[
+  {
+    "name": "/Preferences/lastboot",
+    "type": "string",
+    "value": "01673583878378",
+    "properties": {
+      "persistent": true
+    }
+  }
+]
