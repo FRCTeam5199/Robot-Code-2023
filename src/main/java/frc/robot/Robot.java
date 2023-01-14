@@ -19,6 +19,7 @@ import frc.robot.robotconfigs.DefaultConfig;
 import frc.robot.robotconfigs.Swerve2022;
 import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
+import frc.piecemanipulation.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
     public static Chirp chirp;
     public static PDP pdp;
     public static LEDs leds;
+    public static Elevator elevator;
     public static AbstractAutonManager autonManager;
     public static boolean SECOND_TRY;
     public static String lastFoundSong = "";
@@ -67,6 +69,9 @@ public class Robot extends TimedRobot {
             else if (robotSettings.DRIVE_BASE == AbstractDriveManager.DriveBases.SWIVEL)
                 driver = new DriveManagerSwerve();
         }
+
+        if (robotSettings.ENABLE_ELEVATOR)
+            elevator = new Elevator();
         if (robotSettings.ENABLE_MUSIC) {
             chirp = new Chirp();
         }
