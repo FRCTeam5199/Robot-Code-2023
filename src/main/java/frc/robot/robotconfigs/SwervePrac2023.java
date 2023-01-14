@@ -26,7 +26,15 @@ public class SwervePrac2023 extends DefaultConfig{
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
 
-
+        //Elevator
+        ENABLE_ELEVATOR = true;
+        ELEVATOR_MANUAL = true;
+        ELEVATOR_GEARING = 1/9.0;
+        ELEVATOR_MOTOR_CANBUS = "rio";
+        ELEVATOR_MOTOR_ID = 30;
+        ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
+        ELEVATOR_SPROCKET_DIAMETER = 2;
+        ELEVATORPID =  new PID(0.0004, 0.0, 0.0001);
 
         //UI Styles
         DRIVE_STYLE = AbstractDriveManager.DriveControlStyles.STANDARD;

@@ -2,7 +2,6 @@ package frc.robot.robotconfigs;
 
 import edu.wpi.first.wpilibj.*;
 import frc.drive.auton.AutonType;
-import frc.drive.auton.pointtopoint.AutonRoutines;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController.SupportedMotors;
 import frc.sensors.camera.IVision;
@@ -69,8 +68,9 @@ public abstract class DefaultConfig {
     public double ELEVATOR_GEARING = 1.0/9;
     public double ELEVATOR_SPROCKET_DIAMETER = 2D;
     public String ELEVATOR_MOTOR_CANBUS = "rio";
-    public boolean ELEVATOR_MANUAL = false;
-    public boolean ENABLE_ELEVATOR = false;
+    public boolean ELEVATOR_MANUAL = true;
+    public boolean ENABLE_ELEVATOR = true;
+    public PID ELEVATORPID = EMPTY_PID;
 
     public SupportedIMU IMU_TYPE = SupportedIMU.PIGEON;
     public AutonType AUTON_TYPE = AutonType.POINT_TO_POINT;

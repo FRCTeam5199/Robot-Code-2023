@@ -1,8 +1,10 @@
 package frc.piecemanipulation;
 
+import edu.wpi.first.math.controller.PIDController;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
+import frc.misc.PID;
 import frc.misc.SubsystemStatus;
 import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
@@ -23,6 +25,8 @@ public class Elevator implements ISubsystem {
     public void init() {
         createControllers();
         createMotors();
+        createMotorPid(robotSettings.ELEVATORPID);
+        elevate.setBrake(true);
     }
 
     @Override
@@ -37,7 +41,7 @@ public class Elevator implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-
+        updateGeneric();
     }
 
     @Override
@@ -48,7 +52,7 @@ public class Elevator implements ISubsystem {
     @Override
     public void updateGeneric() {
         if (robotSettings.ELEVATOR_MANUAL)
-        manuelDrive();
+            manuelDrive();
     }
 
     @Override
@@ -93,14 +97,22 @@ public class Elevator implements ISubsystem {
         elevate.setRealFactorFromMotorRPM(robotSettings.ELEVATOR_GEARING * (robotSettings.ELEVATOR_SPROCKET_DIAMETER * Math.PI / 12), 1/60D );
     }
 
+    public void createMotorPid(PID pid){
+
+        elevate.setPid(pid);
+
+    }
+
     public void manuelDrive(){
         if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            elevate.moveAtVelocity(1);
+            //System.out.println("X is being pressed");
+            elevate.moveAtVelocity(2);
         }else if(xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            elevate.moveAtVelocity(-1);
+            //System.out.println("Y is being pressed");
+            elevate.moveAtVelocity(-2);
         }else{
             elevate.moveAtVelocity(0);
         }
-        System.out.println(elevate.getRotations());
+        //System.out.println(elevate.getRotations());
     }
 }
