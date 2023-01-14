@@ -31,6 +31,8 @@ public abstract class DefaultConfig {
     public boolean autonComplete = false;
     //Subsystems
     public boolean ENABLE_DRIVE = false;
+    public boolean ENABLE_INTAKE = false;
+    public boolean ENABLE_PNOOMATICS = false;
     public boolean ENABLE_DRIVE_BALL_TRACKING = false;
     public boolean ENABLE_SHOOTER = false;
     public boolean ENABLE_MUSIC = false;
@@ -45,6 +47,10 @@ public abstract class DefaultConfig {
     public boolean ENABLE_VISION = false;
     public boolean ENABLE_IMU = false;
     public PowerDistribution.ModuleType POWER_DISTRIBUTION_MODULE_TYPE = PowerDistribution.ModuleType.kCTRE;
+    public PneumaticsModuleType PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.CTREPCM;
+    public int PCM_ID = 1;
+    public int INTAKE_IN_ID;
+    public int INTAKE_OUT_ID;
 
     //SHOOTER
     public IVision.SupportedVision GOAL_CAMERA_TYPE = IVision.SupportedVision.PHOTON;
