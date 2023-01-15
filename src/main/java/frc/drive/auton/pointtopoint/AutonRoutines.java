@@ -17,8 +17,8 @@ public enum AutonRoutines {
             new AutonWaypoint(new Point(0, 0))
     ),
     DRIVE_OFF_INIT_LINE(
-            new AutonWaypoint(new Point(0, 0)),
-            new AutonWaypoint(new Point(1.25, 0))
+            new AutonWaypoint(new Point(0, 0), 1, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(3, 0), 1, DRIVE_TO, 1)
     ),
     NEO_DRIVE(
             new AutonWaypoint(new Point(0,0)),

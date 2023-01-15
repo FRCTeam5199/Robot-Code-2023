@@ -99,6 +99,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public void updateTeleop() {
         updateGeneric();
         driveSwerve();
+        System.out.println("FieldX: " + guidance.fieldX());
+        System.out.println("FieldY: " + guidance.fieldY());
         if (xbox.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
             guidance.imu.resetOdometry();
             startHeading = guidance.imu.relativeYaw();
@@ -127,7 +129,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void initAuton() {
-
+        setKin();
     }
 
     @Override
@@ -189,7 +191,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         double FLoffset = 16.5234375 /*196*/, FRoffset = 25.048828125 /*204*/, BLoffset = 169.716796875 /*351*/, BRoffset = 56.337890625/*-131*/;
         // try removing off set
         // try forcing Fl,FR,BL,BR 0
-        BLcoder.setPositionToAbsolute();
         FLpid.setSetpoint(-FL + FLoffset);
         FRpid.setSetpoint(-FR + FRoffset);
         BRpid.setSetpoint(-BR + BRoffset);
@@ -239,7 +240,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         double gearRatio = 1;//robotSettings.SWERVE_SDS_DRIVE_BASE.getDriveReduction() * robotSettings.SWERVE_SDS_DRIVE_BASE.getWheelDiameter();
         double voltageMult = 95 / 371.0; // 127.4/371.0 is full speed
-        System.out.println(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        //System.out.println(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverFR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverFL.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverBR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_BR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
@@ -287,7 +288,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         ChassisSpeeds speeds;
 
         //x+ m/s forwards, y+ m/s left, omega+ rad/sec ccw
-        if (useLocalOrientation() && !dorifto()) {
+        if (useLocalOrientation()) {
             speeds = new ChassisSpeeds(xMeters, yMeters, rotation);
         } else if (dorifto()) {
             speeds = new ChassisSpeeds(xMeters, 0, rotation);

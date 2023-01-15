@@ -89,6 +89,7 @@ public class AutonManager extends AbstractAutonManager {
             DriverStation.reportWarning("IN TOLERANCE", false);
             System.out.println("Special Action: " + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION.toString());
             switch (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION) {
+                case DRIVE_TO:
                 case NONE:
                     //litterally do nothing
                     specialActionComplete = true;
@@ -122,7 +123,7 @@ public class AutonManager extends AbstractAutonManager {
      */
     public boolean attackPoint(Point point, double speed, boolean permitSwiveling) {
         UserInterface.smartDashboardPutString("Location", point.toString());
-        Point here = new Point(drivingChild.guidance.fieldX(), -drivingChild.guidance.fieldY());
+        Point here = new Point(-drivingChild.guidance.fieldX(), -drivingChild.guidance.fieldY());
 
         boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 3, point);
         if (point.X <= -9000 && point.Y <= -9000)
@@ -131,19 +132,25 @@ public class AutonManager extends AbstractAutonManager {
         UserInterface.smartDashboardPutString("Current Position", here.toString());
         if (!inTolerance) {
             if (permitSwiveling) {
-                double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;
-                double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).Y;
-                double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y) : drivingChild.guidance.realHeadingError(x, y);
 
-                drivingChild.drivePure(robotSettings.AUTO_SPEED * speed * Math.cos(Math.toRadians(targetHeading)), robotSettings.AUTO_SPEED * speed * Math.sin(Math.toRadians(targetHeading)), ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()));
+                double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X + drivingChild.guidance.fieldX();
+                double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y + drivingChild.guidance.fieldY();
+                double pythag = Math.sqrt((x*x) + (y*y));
+                double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y) : drivingChild.guidance.realHeadingError(x, y);
+                System.out.println("demanded X " + x + " Demanded Y " + y );
+                System.out.println("FieldX: " + -drivingChild.guidance.fieldX());
+                System.out.println("FieldY: " + -drivingChild.guidance.fieldY());
+                drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * (x/pythag), robotSettings.AUTO_SPEED * speed * (y/pythag), 0/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
             } else {
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;
                 double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).Y;
                 double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y) : drivingChild.guidance.realHeadingError(x, y);
-
-                drivingChild.drivePure(robotSettings.AUTO_SPEED * speed /* (robotSettings.INVERT_DRIVE_DIRECTION ? -1 : 0)*/, ROT_PID.calculate(targetHeading) * -robotSettings.AUTO_ROTATION_SPEED);
+                System.out.println("demanded X " + x + " Demanded Y " + y);
+                //drivingChild.drivePure(robotSettings.AUTO_SPEED * speed /* (robotSettings.INVERT_DRIVE_DIRECTION ? -1 : 0)*/, ROT_PID.calculate(targetHeading) * -robotSettings.AUTO_ROTATION_SPEED);
             }
         } else {
+            if(permitSwiveling)
+                drivingChild.drivePure(0, 0, 0);
             drivingChild.drivePure(0, 0);
             if (robotSettings.DEBUG)
                 System.out.println("In tolerance.");
