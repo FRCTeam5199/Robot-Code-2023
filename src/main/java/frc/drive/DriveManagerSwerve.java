@@ -198,10 +198,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         BLpid.setSetpoint(-BL);
         //System.out.println(driverFL.steering.getRotations());
         //System.out.println("setpoint no offset: " + FR);
-        System.out.println("Absolute Position/F current positiion FL: " + FLcoder.getAbsolutePosition());
-        System.out.println("Absolute Position/ current positiion FR: " + FRcoder.getAbsolutePosition());
-        System.out.println("Absolute Position/ current positiion BL: " + BLcoder.getAbsolutePosition());
-        System.out.println("Absolute Position/ current positiion BR: " + BRcoder.getAbsolutePosition());
+        //System.out.println("Absolute Position/F current positiion FL: " + FLcoder.getAbsolutePosition());
+        //System.out.println("Absolute Position/ current positiion FR: " + FRcoder.getAbsolutePosition());
+        //System.out.println("Absolute Position/ current positiion BL: " + BLcoder.getAbsolutePosition());
+        //System.out.println("Absolute Position/ current positiion BR: " + BRcoder.getAbsolutePosition());
         // System.out.println("turning speed/pid should be: " + FLpid.calculate(FLcoder.getAbsolutePosition()));
         driverFL.steering.moveAtPercent(-FLpid.calculate(FLcoder.getAbsolutePosition()));
         driverFR.steering.moveAtPercent(-FRpid.calculate(FRcoder.getAbsolutePosition()));
@@ -329,8 +329,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         //try continuous here
 
-        System.out.println("FieldX: " + -guidance.fieldX());
-        System.out.println("FieldY: " + -guidance.fieldY());
+        //System.out.println("FieldX: " + -guidance.fieldX());
+        //System.out.println("FieldY: " + -guidance.fieldY());
 
         setSteeringContinuous(frontLeft.angle.getDegrees(), frontRight.angle.getDegrees(), backLeft.angle.getDegrees(), backRight.angle.getDegrees()); // <-- maybe here
         if (DEBUG) {
@@ -341,14 +341,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void updateGeneric() {
-        UserInterface.smartDashboardPutNumber("DriverFL Absoluto positon", driverFL.driver.getRotations());
-        UserInterface.smartDashboardPutNumber("DriverFR Absoluto positon", driverFR.driver.getRotations());
-        UserInterface.smartDashboardPutNumber("DriverBL Absoluto positon", driverBL.driver.getRotations());
-        UserInterface.smartDashboardPutNumber("DriverBR Absoluto positon", driverBR.driver.getRotations());
-        UserInterface.smartDashboardPutNumber("DriverFL position", Math.toRadians(FLcoder.getAbsolutePosition()));
-        UserInterface.smartDashboardPutNumber("DriverFR position", Math.toRadians(FRcoder.getAbsolutePosition()));
-        UserInterface.smartDashboardPutNumber("DriverBL position", Math.toRadians(BLcoder.getAbsolutePosition()));
-        UserInterface.smartDashboardPutNumber("DriverBR position", Math.toRadians(BRcoder.getAbsolutePosition()));
+        //UserInterface.smartDashboardPutNumber("DriverFL Absoluto positon", driverFL.driver.getRotations());
+        //UserInterface.smartDashboardPutNumber("DriverFR Absoluto positon", driverFR.driver.getRotations());
+        //UserInterface.smartDashboardPutNumber("DriverBL Absoluto positon", driverBL.driver.getRotations());
+        //UserInterface.smartDashboardPutNumber("DriverBR Absoluto positon", driverBR.driver.getRotations());
+        //UserInterface.smartDashboardPutNumber("DriverFL position", Math.toRadians(FLcoder.getAbsolutePosition()));
+        //UserInterface.smartDashboardPutNumber("DriverFR position", Math.toRadians(FRcoder.getAbsolutePosition()));
+        //UserInterface.smartDashboardPutNumber("DriverBL position", Math.toRadians(BLcoder.getAbsolutePosition()));
+        //UserInterface.smartDashboardPutNumber("DriverBR position", Math.toRadians(BRcoder.getAbsolutePosition()));
         UserInterface.smartDashboardPutNumber("Field X", -guidance.fieldX());
         UserInterface.smartDashboardPutNumber("Field Y", -guidance.fieldY());
         MotorDisconnectedIssue.handleIssue(this, driverFL.driver);

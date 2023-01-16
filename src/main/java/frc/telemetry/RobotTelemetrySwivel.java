@@ -7,8 +7,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import frc.drive.AbstractDriveManager;
 import frc.drive.DriveManagerSwerve;
+import frc.misc.UserInterface;
 
 import static frc.robot.Robot.robotSettings;
 
@@ -45,9 +47,12 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
             if(apriltagpos.getFirst().getX() == -2 && apriltagpos.getFirst().getY() == -2) {
               //nothing
             }else {
-                Translation2d translation2dft = new Translation2d(apriltagpos.getFirst().getX() * 3.28, apriltagpos.getFirst().getY() * 3.28);
+                Translation2d translation2dft = new Translation2d(apriltagpos.getFirst().getX() * -3.28, 27 - (apriltagpos.getFirst().getY() * 3.28));
                 Pose2d poseinft =  new Pose2d(translation2dft, apriltagpos.getFirst().getRotation());
-                swerveRobotPose.addVisionMeasurement(poseinft, apriltagpos.getSecond());
+                double timernow = Timer.getFPGATimestamp() - apriltagpos.getSecond();
+                swerveRobotPose.addVisionMeasurement(poseinft, timernow/1000);
+                UserInterface.smartDashboardPutNumber("April Field X", translation2dft.getX());
+                UserInterface.smartDashboardPutNumber("April Field Y", translation2dft.getY());
             }
         }
         if (robotSettings.ENABLE_IMU) {
