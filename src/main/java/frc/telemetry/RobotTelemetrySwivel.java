@@ -47,12 +47,18 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
             if(apriltagpos.getFirst().getX() == -2 && apriltagpos.getFirst().getY() == -2) {
               //nothing
             }else {
-                Translation2d translation2dft = new Translation2d(apriltagpos.getFirst().getX() * -3.28, 27 - (apriltagpos.getFirst().getY() * 3.28));
-                Pose2d poseinft =  new Pose2d(translation2dft, apriltagpos.getFirst().getRotation());
-                double timernow = Timer.getFPGATimestamp() - apriltagpos.getSecond();
-                swerveRobotPose.addVisionMeasurement(poseinft, timernow/1000);
-                UserInterface.smartDashboardPutNumber("April Field X", translation2dft.getX());
-                UserInterface.smartDashboardPutNumber("April Field Y", translation2dft.getY());
+                try {
+                    Translation2d translation2dft = new Translation2d(54 + (apriltagpos.getFirst().getX() * -3.28), 27 - (apriltagpos.getFirst().getY() * 3.28));
+                    Pose2d poseinft = new Pose2d(translation2dft, apriltagpos.getFirst().getRotation());
+                    UserInterface.smartDashboardPutNumber("April Field X", translation2dft.getX());
+                    UserInterface.smartDashboardPutNumber("April Field Y", translation2dft.getY());
+                    UserInterface.smartDashboardPutNumber("apriltag get second", apriltagpos.getSecond());
+                    double timernow = Timer.getFPGATimestamp() - apriltagpos.getSecond();
+                    UserInterface.smartDashboardPutNumber("timer now", timernow);
+                    swerveRobotPose.addVisionMeasurement(poseinft, timernow);
+                }catch (Exception e){
+                    System.out.println(e);
+                }
             }
         }
         if (robotSettings.ENABLE_IMU) {
@@ -114,6 +120,13 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
             odometer.resetPosition(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
             swerveRobotPose.resetPosition(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
         }
+    }
+
+    @Override
+    public void setSwerveOdometryCurrent(double currentX, double currentY){
+        odometer = new SwerveDriveOdometry(((DriveManagerSwerve) driver).getKinematics(), Rotation2d.fromDegrees(imu.absoluteYaw()), ((DriveManagerSwerve) driver).getModulePosition());
+        swerveRobotPose = new SwerveDrivePoseEstimator(((DriveManagerSwerve) driver).getKinematics(), new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d(currentX,currentY, new Rotation2d(Units.degreesToRadians(imu.absoluteYaw()))));
+
     }
 
 }

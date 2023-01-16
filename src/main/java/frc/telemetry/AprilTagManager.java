@@ -161,8 +161,6 @@ public class AprilTagManager implements ISubsystem {
         } else {
             //return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
 
-            var rawResult = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget();
-
 
             return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), 0.0);
         }

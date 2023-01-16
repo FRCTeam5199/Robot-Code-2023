@@ -157,4 +157,6 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
     public double realRetrogradeHeadingError(double x, double y) {
         return UtilFunctions.mathematicalMod(headingError(x, y), 360) - 180;
     }
+    public void setSwerveOdometryCurrent(double currentX, double currentY){
+    }
 }

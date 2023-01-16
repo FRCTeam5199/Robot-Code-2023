@@ -162,12 +162,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             startHeading = guidance.imu.relativeYaw();
         } else {
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
-            if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
-                rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
-                startHeading = guidance.imu.relativeYaw();
-            } else {
-                rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
-            }
+            rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
         }
         //System.out.println(forwards);
         driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
@@ -349,8 +344,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         //UserInterface.smartDashboardPutNumber("DriverFR position", Math.toRadians(FRcoder.getAbsolutePosition()));
         //UserInterface.smartDashboardPutNumber("DriverBL position", Math.toRadians(BLcoder.getAbsolutePosition()));
         //UserInterface.smartDashboardPutNumber("DriverBR position", Math.toRadians(BRcoder.getAbsolutePosition()));
-        UserInterface.smartDashboardPutNumber("Field X", -guidance.fieldX());
-        UserInterface.smartDashboardPutNumber("Field Y", -guidance.fieldY());
+        UserInterface.smartDashboardPutNumber("Field X", guidance.fieldX());
+        UserInterface.smartDashboardPutNumber("Field Y", guidance.fieldY());
         MotorDisconnectedIssue.handleIssue(this, driverFL.driver);
         MotorDisconnectedIssue.handleIssue(this, driverFL.steering);
         MotorDisconnectedIssue.handleIssue(this, driverBL.driver);

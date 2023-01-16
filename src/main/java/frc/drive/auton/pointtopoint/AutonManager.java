@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.drive.AbstractDriveManager;
+import frc.drive.DriveManagerSwerve;
 import frc.drive.auton.AbstractAutonManager;
 import frc.drive.auton.Point;
 import frc.misc.SubsystemStatus;
@@ -203,6 +204,7 @@ public class AutonManager extends AbstractAutonManager {
         timer.reset();
         timer.start();
         autonPath.currentWaypoint = 0;
+        drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y);
     }
 
     public void printAutonPositions(){
