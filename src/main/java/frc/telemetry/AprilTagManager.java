@@ -74,14 +74,14 @@ public class AprilTagManager implements ISubsystem {
 
     @Override
     public void init() {
-        final AprilTag tag1 = new AprilTag(1, new Pose3d(610.77, 42.19, 18.22, new Rotation3d(0, 0, 180)));
-        final AprilTag tag2 = new AprilTag(2, new Pose3d(610.77, 108.19, 18.22, new Rotation3d(0, 0, 180)));
-        final AprilTag tag3 = new AprilTag(3, new Pose3d(610.77, 147.19, 18.22, new Rotation3d(0, 0, 180)));
-        final AprilTag tag4 = new AprilTag(4, new Pose3d(610.77, 265.74, 27.38, new Rotation3d(0, 0, 180)));
-        final AprilTag tag5 = new AprilTag(5, new Pose3d(14.25, 265.74, 27.38, new Rotation3d(0, 0, 0)));
-        final AprilTag tag6 = new AprilTag(6, new Pose3d(40.45, 147.19, 18.22, new Rotation3d(0, 0, 0)));
-        final AprilTag tag7 = new AprilTag(7, new Pose3d(40.45, 108.19, 18.22, new Rotation3d(0, 0, 0)));
-        final AprilTag tag8 = new AprilTag(8, new Pose3d(40.45, 42.19, 18.22, new Rotation3d(0, 0, 0)));
+        final AprilTag tag1 = new AprilTag(1, new Pose3d(610.77*(0.0254), 42.19*0.0254, 18.228*(0.0254), new Rotation3d(0, 0, 180)));
+        final AprilTag tag2 = new AprilTag(2, new Pose3d(610.77*(0.0254), 108.19*(0.0254), 18.22*(0.0254), new Rotation3d(0, 0, 180)));
+        final AprilTag tag3 = new AprilTag(3, new Pose3d(610.77*(0.0254), 147.19*(0.0254), 18.22*(0.0254), new Rotation3d(0, 0, 180)));
+        final AprilTag tag4 = new AprilTag(4, new Pose3d(636.96*(0.0254), 265.74*(0.0254), 27.38*(0.0254), new Rotation3d(0, 0, 180)));
+        final AprilTag tag5 = new AprilTag(5, new Pose3d(14.25*(0.0254), 265.74*(0.0254), 27.38*(0.0254), new Rotation3d(0, 0, 0)));
+        final AprilTag tag6 = new AprilTag(6, new Pose3d(40.45*(0.0254), 147.19*(0.0254), 18.22*(0.0254), new Rotation3d(0, 0, 0)));
+        final AprilTag tag7 = new AprilTag(7, new Pose3d(40.45*(0.0254), 108.19*(0.0254), 18.22*(0.0254), new Rotation3d(0, 0, 0)));
+        final AprilTag tag8 = new AprilTag(8, new Pose3d(40.45*(0.0254), 42.19*(0.0254), 18.22*(0.0254), new Rotation3d(0, 0, 0)));
         ApriList = new ArrayList<AprilTag>();
         ApriList.add(tag1);
         ApriList.add(tag2);
@@ -93,8 +93,11 @@ public class AprilTagManager implements ISubsystem {
         ApriList.add(tag8);
 
         photonCamera = new PhotonCamera("Global_Shutter_Camera");
-
-        fieldLayout = new AprilTagFieldLayout(ApriList, fieldlength, fieldwidth);
+        try {
+            fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+        }catch(IOException e) {
+            fieldLayout = new AprilTagFieldLayout(ApriList, fieldlength, fieldwidth);
+        }
         cams = new ArrayList<Pair<PhotonCamera, Transform3d>>();
         cams.add(new Pair<PhotonCamera, Transform3d>(photonCamera, Campos));
 
