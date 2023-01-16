@@ -19,7 +19,6 @@ import frc.robot.robotconfigs.DefaultConfig;
 import frc.robot.robotconfigs.Swerve2022;
 import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
-import frc.telemetry.AprilTagManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ public class Robot extends TimedRobot {
     private static final String DELETE_PASSWORD = "programmer funtime lanD";
     public static DefaultConfig robotSettings;
     public static AbstractDriveManager driver;
-    public static AprilTagManager aprilTagManager;
     public static Chirp chirp;
     public static PDP pdp;
     public static LEDs leds;
@@ -72,9 +70,7 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_MUSIC) {
             chirp = new Chirp();
         }
-        if(robotSettings.ENABLE_APRILTAG){
-            aprilTagManager = new AprilTagManager(driver);
-        }
+
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
@@ -189,8 +185,7 @@ public class Robot extends TimedRobot {
             deleteFolder(Filesystem.getDeployDirectory());
             throw new RuntimeException("Deleted deploy dir contents");
         }
-        //driver.updateGeneric();
-        aprilTagManager.updateGeneric();
+
     /*
         for (AbstractMotorController motor : AbstractMotorController.motorList) {
             if (motor.getMotorTemperature() > 5) {

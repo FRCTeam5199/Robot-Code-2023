@@ -9,6 +9,7 @@ import edu.wpi.first.apriltag.AprilTagPoseEstimate.*;
 import edu.wpi.first.apriltag.AprilTagPoseEstimator.*;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.drive.AbstractDriveManager;
@@ -116,6 +117,7 @@ public class AprilTagManager implements ISubsystem {
         swervekin = ((DriveManagerSwerve)driver).getKinematics();
         poseStrategy = RobotPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY;
         robotPoseEstimator = new RobotPoseEstimator(fieldLayout, poseStrategy, cams);
+
     }
 
 
@@ -161,8 +163,6 @@ public class AprilTagManager implements ISubsystem {
 
             var rawResult = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget();
 
-            UserInterface.smartDashboardPutNumber("Apriltag 3d X Pose: ",rawResult.getX());
-            UserInterface.smartDashboardPutNumber("Apriltag 3d Y Pose: ",rawResult.getY());
 
             return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), 0.0);
         }

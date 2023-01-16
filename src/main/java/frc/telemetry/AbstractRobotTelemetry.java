@@ -14,7 +14,7 @@ import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
 import frc.misc.UtilFunctions;
 import frc.telemetry.imu.AbstractIMU;
-
+import frc.telemetry.AprilTagManager;
 import static frc.robot.Robot.robotSettings;
 
 public abstract class AbstractRobotTelemetry implements ISubsystem {
@@ -25,6 +25,7 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
     public Field2d robotLocationOnField;
     public Translation2d robotTranslation;
     public Rotation2d robotRotation;
+    public AprilTagManager tagManager;
 
     public static AbstractRobotTelemetry createTelem(AbstractDriveManager driver) {
         if (driver instanceof DriveManagerSwerve)
@@ -49,6 +50,9 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
         if (!robotSettings.ENABLE_IMU)
             return;
         imu = AbstractIMU.createIMU(robotSettings.IMU_TYPE);
+        if(robotSettings.ENABLE_APRILTAG){
+            tagManager = new AprilTagManager(driver);
+        }
         resetOdometry();
     }
 
@@ -62,6 +66,7 @@ public abstract class AbstractRobotTelemetry implements ISubsystem {
         if (driver instanceof DriveManagerSwerve) {
             robotTranslation = swerveRobotPose.getEstimatedPosition().getTranslation();
             robotRotation = swerveRobotPose.getEstimatedPosition().getRotation();
+
         }else{
             robotTranslation = robotPose.getTranslation();
             robotRotation = robotPose.getRotation();

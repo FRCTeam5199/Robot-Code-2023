@@ -1,5 +1,6 @@
 package frc.telemetry;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -39,12 +40,24 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
 
     @Override
     public void updateGeneric() {
+        if(robotSettings.ENABLE_APRILTAG){
+            Pair<Pose2d, Double> apriltagpos = tagManager.getEstimatedGlobalPose();
+            if(apriltagpos.getFirst().getX() == -2 && apriltagpos.getFirst().getY() == -2) {
+              //nothing
+            }else {
+                Translation2d translation2dft = new Translation2d(apriltagpos.getFirst().getX() * 3.28, apriltagpos.getFirst().getY() * 3.28);
+                Pose2d poseinft =  new Pose2d(translation2dft, apriltagpos.getFirst().getRotation());
+                swerveRobotPose.addVisionMeasurement(poseinft, apriltagpos.getSecond());
+            }
+        }
         if (robotSettings.ENABLE_IMU) {
-            if(driver instanceof  DriveManagerSwerve)
+            if (driver instanceof DriveManagerSwerve)
                 swerveRobotPose.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition());
-                //robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition());
+
+            //robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition());
 
             super.updateGeneric();
+
         }
     }
 
