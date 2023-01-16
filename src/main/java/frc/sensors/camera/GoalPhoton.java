@@ -5,11 +5,13 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.misc.SubsystemStatus;
+import org.photonvision.PhotonCamera;
 
 import static frc.robot.Robot.robotSettings;
 
 public class GoalPhoton implements IVision {
     public static final GoalPhoton GOAL_PHOTON = new GoalPhoton();
+    public static PhotonCamera photonCamera;
     private NetworkTableEntry yaw;
     private NetworkTableEntry size;
     private NetworkTableEntry hasTarget;
@@ -21,7 +23,7 @@ public class GoalPhoton implements IVision {
     /**
      * inits GoalPhoton
      */
-    private GoalPhoton() {
+    public GoalPhoton() {
         addToMetaList();
         init();
     }

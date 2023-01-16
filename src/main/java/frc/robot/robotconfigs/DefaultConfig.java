@@ -30,6 +30,7 @@ public abstract class DefaultConfig {
     public String AUTON_COMPLETE_NOISE = "";
     public boolean autonComplete = false;
     //Subsystems
+    public boolean ENABLE_APRILTAG = false;
     public boolean ENABLE_DRIVE = false;
     public boolean ENABLE_INTAKE = false;
     public boolean ENABLE_PNOOMATICS = false;

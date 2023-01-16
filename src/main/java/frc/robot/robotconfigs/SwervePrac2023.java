@@ -16,6 +16,7 @@ public class SwervePrac2023 extends DefaultConfig{
         ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
+        ENABLE_APRILTAG = true;
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
