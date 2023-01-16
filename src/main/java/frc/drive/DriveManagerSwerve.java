@@ -1,6 +1,7 @@
 package frc.drive;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.slack.api.model.User;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -9,11 +10,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.InitializationFailureException;
 import frc.misc.PID;
 import frc.misc.SubsystemStatus;
+import frc.misc.UserInterface;
 import frc.motors.SwerveMotorController;
 import frc.selfdiagnostics.MotorDisconnectedIssue;
 import frc.sensors.camera.IVision;
@@ -99,8 +102,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public void updateTeleop() {
         updateGeneric();
         driveSwerve();
-        System.out.println("FieldX: " + guidance.fieldX());
-        System.out.println("FieldY: " + guidance.fieldY());
         if (xbox.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
             guidance.imu.resetOdometry();
             startHeading = guidance.imu.relativeYaw();
@@ -135,6 +136,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void initDisabled() {
     }
+
 
     @Override
     public void initGeneric() {
@@ -188,19 +190,18 @@ public class DriveManagerSwerve extends AbstractDriveManager {
      * @param BR Back right translation requested. units?
      */
     private void setSteeringContinuous(double FL, double FR, double BL, double BR) {
-        double FLoffset = 16.5234375 /*196*/, FRoffset = 25.048828125 /*204*/, BLoffset = 169.716796875 /*351*/, BRoffset = 56.337890625/*-131*/;
         // try removing off set
         // try forcing Fl,FR,BL,BR 0
-        FLpid.setSetpoint(-FL + FLoffset);
-        FRpid.setSetpoint(-FR + FRoffset);
-        BRpid.setSetpoint(-BR + BRoffset);
-        BLpid.setSetpoint(-BL + BLoffset);
+        FLpid.setSetpoint(-FL);
+        FRpid.setSetpoint(-FR);
+        BRpid.setSetpoint(-BR);
+        BLpid.setSetpoint(-BL);
         //System.out.println(driverFL.steering.getRotations());
-        // System.out.println("setpoint no offset: " + FR);
-        //System.out.println("Absolute Position/F current positiion FL: " + FLcoder.getAbsolutePosition());
-        //System.out.println("Absolute Position/ current positiion FR: " + FRcoder.getAbsolutePosition());
-        //System.out.println("Absolute Position/ current positiion BL: " + BLcoder.getAbsolutePosition());
-        //System.out.println("Absolute Position/ current positiion BR: " + BRcoder.getAbsolutePosition());
+        //System.out.println("setpoint no offset: " + FR);
+        System.out.println("Absolute Position/F current positiion FL: " + FLcoder.getAbsolutePosition());
+        System.out.println("Absolute Position/ current positiion FR: " + FRcoder.getAbsolutePosition());
+        System.out.println("Absolute Position/ current positiion BL: " + BLcoder.getAbsolutePosition());
+        System.out.println("Absolute Position/ current positiion BR: " + BRcoder.getAbsolutePosition());
         // System.out.println("turning speed/pid should be: " + FLpid.calculate(FLcoder.getAbsolutePosition()));
         driverFL.steering.moveAtPercent(-FLpid.calculate(FLcoder.getAbsolutePosition()));
         driverFR.steering.moveAtPercent(-FRpid.calculate(FRcoder.getAbsolutePosition()));
@@ -309,6 +310,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     @Override
+
     public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
         moduleStates = kinematics.toSwerveModuleStates(speeds);
 
@@ -327,6 +329,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         //try continuous here
 
+        System.out.println("FieldX: " + -guidance.fieldX());
+        System.out.println("FieldY: " + -guidance.fieldY());
+
         setSteeringContinuous(frontLeft.angle.getDegrees(), frontRight.angle.getDegrees(), backLeft.angle.getDegrees(), backRight.angle.getDegrees()); // <-- maybe here
         if (DEBUG) {
             //System.out.printf("%4f %4f %4f %4f \n", frontLeft.speedMetersPerSecond, frontRight.speedMetersPerSecond, backLeft.speedMetersPerSecond, backRight.speedMetersPerSecond);
@@ -336,6 +341,16 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void updateGeneric() {
+        UserInterface.smartDashboardPutNumber("DriverFL Absoluto positon", driverFL.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverFR Absoluto positon", driverFR.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverBL Absoluto positon", driverBL.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverBR Absoluto positon", driverBR.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverFL position", Math.toRadians(FLcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("DriverFR position", Math.toRadians(FRcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("DriverBL position", Math.toRadians(BLcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("DriverBR position", Math.toRadians(BRcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("Field X", -guidance.fieldX());
+        UserInterface.smartDashboardPutNumber("Field Y", -guidance.fieldY());
         MotorDisconnectedIssue.handleIssue(this, driverFL.driver);
         MotorDisconnectedIssue.handleIssue(this, driverFL.steering);
         MotorDisconnectedIssue.handleIssue(this, driverBL.driver);
@@ -393,7 +408,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     public SwerveModulePosition[] getModulePosition() {
         return new SwerveModulePosition[]{
-                driverFL.getPosition(), driverFR.getPosition(), driverBL.getPosition(), driverBR.getPosition()
+                new SwerveModulePosition(driverFL.driver.getRotations(), Rotation2d.fromDegrees(FLcoder.getAbsolutePosition())),
+                new SwerveModulePosition(driverFR.driver.getRotations(),  Rotation2d.fromDegrees(FLcoder.getAbsolutePosition())),
+                new SwerveModulePosition(driverBL.driver.getRotations(),  Rotation2d.fromDegrees(FLcoder.getAbsolutePosition())),
+                new SwerveModulePosition(driverBR.driver.getRotations(),  Rotation2d.fromDegrees(FLcoder.getAbsolutePosition()))
         };
     }
 
@@ -430,7 +448,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         FRcoder = new CANCoder(12);
         BRcoder = new CANCoder(13);
         BLcoder = new CANCoder(14);
-
+        FLcoder.configMagnetOffset(-16.5234375);
+        FRcoder.configMagnetOffset(-25.048828125);
+        BLcoder.configMagnetOffset(-169.716796875);
+        BRcoder.configMagnetOffset(-56.337890625);
     }
 
     public void createPIDControllers(PID steeringPID) {

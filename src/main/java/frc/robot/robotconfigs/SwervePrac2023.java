@@ -38,7 +38,8 @@ public class SwervePrac2023 extends DefaultConfig{
         AUTON_TYPE = AutonType.POINT_TO_POINT;
 
         DRIVEBASE_PID = new PID(0.0000001, 0, 0.0001);
-        HEADING_PID = new PID(0.08, 0.000005, 0.0003);
+        HEADING_PID = new PID(0.1, 0.000005, 0.0003);
+        AUTO_XYPID = new PID(0.1, 0.000005, 0.0003);
         DRIVEBASE_DISTANCE_BETWEEN_WHEELS = 0.435991;
         MAX_SPEED = 10; //max speed in fps - REAL IS 10(for 4in wheels)
         RUMBLE_TOLERANCE_FPS = 8;

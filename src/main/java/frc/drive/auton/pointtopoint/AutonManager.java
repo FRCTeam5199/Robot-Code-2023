@@ -10,11 +10,14 @@ import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
 import frc.robot.Robot;
 
+import static frc.robot.Robot.autonManager;
 import static frc.robot.Robot.robotSettings;
 
 public class AutonManager extends AbstractAutonManager {
     public final Timer timer = new Timer();
     private final PIDController ROT_PID;
+    private final PIDController X_PID;
+    private final PIDController Y_PID;
     public AbstractDriveManager drivingChild;
     public AutonRoutines autonPath;
     public boolean specialActionComplete = false;
@@ -28,6 +31,8 @@ public class AutonManager extends AbstractAutonManager {
         drivingChild = driveManager;
         autonPath = routine;
         ROT_PID = new PIDController(robotSettings.HEADING_PID.P, robotSettings.HEADING_PID.I, robotSettings.HEADING_PID.D);
+        X_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
+        Y_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
         init();
     }
 
@@ -124,23 +129,25 @@ public class AutonManager extends AbstractAutonManager {
     public boolean attackPoint(Point point, double speed, boolean permitSwiveling) {
         UserInterface.smartDashboardPutString("Location", point.toString());
         Point here = new Point(-drivingChild.guidance.fieldX(), -drivingChild.guidance.fieldY());
-
+        boolean angleTolerance =  Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()) <= (robotSettings.AUTON_TOLERANCE * 10.0);
         boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 3, point);
         if (point.X <= -9000 && point.Y <= -9000)
             inTolerance = true;
         UserInterface.smartDashboardPutNumber("rotOffset", -rotationOffset);
         UserInterface.smartDashboardPutString("Current Position", here.toString());
-        if (!inTolerance) {
+        if (!(inTolerance && angleTolerance)) {
             if (permitSwiveling) {
-
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X + drivingChild.guidance.fieldX();
                 double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y + drivingChild.guidance.fieldY();
                 double pythag = Math.sqrt((x*x) + (y*y));
                 double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y) : drivingChild.guidance.realHeadingError(x, y);
                 System.out.println("demanded X " + x + " Demanded Y " + y );
-                System.out.println("FieldX: " + -drivingChild.guidance.fieldX());
-                System.out.println("FieldY: " + -drivingChild.guidance.fieldY());
-                drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * (x/pythag), robotSettings.AUTO_SPEED * speed * (y/pythag), 0/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
+                System.out.println("Pidgeon Angle: " + drivingChild.guidance.imu.relativeYaw());
+                UserInterface.smartDashboardPutNumber("change in angle", autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw());
+                UserInterface.smartDashboardPutNumber("roation stick input", ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()));
+                UserInterface.smartDashboardPutNumber("X direction stick input", robotSettings.AUTO_SPEED * speed * ROT_PID.calculate(x));
+                UserInterface.smartDashboardPutNumber("Y direction stick input", robotSettings.AUTO_SPEED * speed * ROT_PID.calculate(y));
+                drivingChild.drivePure(robotSettings.AUTO_SPEED * speed * X_PID.calculate(x), -robotSettings.AUTO_SPEED * speed *X_PID.calculate(y),  -ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()));
             } else {
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;
                 double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).Y;
@@ -149,14 +156,17 @@ public class AutonManager extends AbstractAutonManager {
                 //drivingChild.drivePure(robotSettings.AUTO_SPEED * speed /* (robotSettings.INVERT_DRIVE_DIRECTION ? -1 : 0)*/, ROT_PID.calculate(targetHeading) * -robotSettings.AUTO_ROTATION_SPEED);
             }
         } else {
-            if(permitSwiveling)
+            if(permitSwiveling) {
                 drivingChild.drivePure(0, 0, 0);
-            drivingChild.drivePure(0, 0);
+            }else {
+                drivingChild.drivePure(0, 0);
+            }
+            System.out.println("Robot Shouldnt be moving");
             if (robotSettings.DEBUG)
                 System.out.println("In tolerance.");
             //System.out.println("Driving FPS " + 0);
         }
-        return inTolerance;
+        return inTolerance && angleTolerance;
     }
 
     /**
@@ -193,6 +203,11 @@ public class AutonManager extends AbstractAutonManager {
         timer.reset();
         timer.start();
         autonPath.currentWaypoint = 0;
+    }
+
+    public void printAutonPositions(){
+        UserInterface.smartDashboardPutNumber("rotOffset", -rotationOffset);
+        UserInterface.smartDashboardPutString("Current Position", autonManager.toString());
     }
 
     @Override
