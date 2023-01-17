@@ -47,7 +47,7 @@ public class AprilTagManager implements ISubsystem {
     Translation2d wheels = new Translation2d(10.5, 12.5);
 
 
-    static final Transform3d Campos = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    static final Transform3d Campos = new Transform3d(new Translation3d(18*(0.0254), -2*(0.0254), 0), new Rotation3d(0, 0, 0));
 
 
     // Everything to do with the april tag and Fields is in inches.

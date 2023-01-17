@@ -131,7 +131,7 @@ public class AutonManager extends AbstractAutonManager {
         UserInterface.smartDashboardPutString("Location", point.toString());
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
         boolean angleTolerance =  Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()) <= (robotSettings.AUTON_TOLERANCE * 10.0);
-        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 3, point);
+        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE, point);
         UserInterface.smartDashboardPutBoolean("angle tolerance", angleTolerance);
         UserInterface.smartDashboardPutBoolean("inTolerance", inTolerance);
         if (point.X <= -9000 && point.Y <= -9000)
@@ -208,6 +208,11 @@ public class AutonManager extends AbstractAutonManager {
         timer.reset();
         timer.start();
         autonPath.currentWaypoint = 0;
+        try {
+            autonPath = AutonRoutines.myChooser.getSelected();
+        }catch (Exception ignored){
+
+        }
         drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y);
     }
 

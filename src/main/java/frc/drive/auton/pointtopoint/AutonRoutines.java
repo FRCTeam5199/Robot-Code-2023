@@ -22,7 +22,22 @@ public enum AutonRoutines {
     ),
     PID_AND_APRIL_TEST(
             new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
-            new AutonWaypoint(new Point(-13, 2), .5, DRIVE_TO, 1)
+            new AutonWaypoint(new Point(-13, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 10), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1)
+    ),
+    PID_AND_APRIL_TEST_FLIP(
+            new AutonWaypoint(new Point(-20, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1)
+    ),
+    PID_AND_APRIL_TEST_SPIN(
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 90)
+    ),
+    PID_AND_APRIL_TEST_SIDE(
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 10), .5, DRIVE_TO, 1)
     ),
     SPIN_TEST(
             new AutonWaypoint(new Point(0, 0), 1, DRIVE_TO, 90)
@@ -34,7 +49,7 @@ public enum AutonRoutines {
             new AutonWaypoint(new Point(2.5, 0), 1, ROTATE_ROBOT, 180)
     );
 
-    private static SendableChooser<AutonRoutines> myChooser;
+    public static SendableChooser<AutonRoutines> myChooser;
     public final ArrayList<AutonWaypoint> WAYPOINTS = new ArrayList<>();
     public int currentWaypoint = 0;
 
