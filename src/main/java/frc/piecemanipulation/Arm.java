@@ -1,9 +1,15 @@
 package frc.piecemanipulation;
 
 import frc.controllers.basecontrollers.BaseController;
+import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
+import frc.misc.PID;
 import frc.misc.SubsystemStatus;
 import frc.motors.AbstractMotorController;
+import frc.motors.SparkMotorController;
+import frc.motors.TalonMotorController;
+
+import static frc.robot.Robot.robotSettings;
 
 public class Arm implements ISubsystem {
     public AbstractMotorController arm;
@@ -16,7 +22,9 @@ public class Arm implements ISubsystem {
 
     @Override
     public void init() {
-
+        createControllers();
+        createMotors();
+        createMotorPid(robotSettings.ARM_PID);
     }
 
     @Override
@@ -31,7 +39,8 @@ public class Arm implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-
+        if(robotSettings.ARM_MANUAL)
+            manuelDrive();
     }
 
     @Override
@@ -73,4 +82,33 @@ public class Arm implements ISubsystem {
     public String getSubsystemName() {
         return null;
     }
+
+    public void createControllers(){
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
+    }
+
+    public void createMotors(){
+        if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
+            arm = new TalonMotorController(robotSettings.ARM_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
+        if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
+            arm = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
+        arm.setRealFactorFromMotorRPM(robotSettings.ARM_GEARING * (robotSettings.ARM_SPROCKET_DIAMETER * Math.PI / 12), 1/60D );
+    }
+    public void createMotorPid(PID pid){
+        arm.setPid(pid);
+    }
+
+    public void manuelDrive(){
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
+            //System.out.println("X is being pressed");
+            arm.moveAtVelocity(1);
+        }else if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            //System.out.println("Y is being pressed");
+            arm.moveAtVelocity(-1);
+        }else{
+            arm.moveAtVelocity(0);
+        }
+        //System.out.println(elevate.getRotations());
+    }
+
 }

@@ -72,6 +72,15 @@ public abstract class DefaultConfig {
     public boolean ENABLE_ELEVATOR = true;
     public PID ELEVATORPID = EMPTY_PID;
 
+    public SupportedMotors ARM_MOTOR_TYPE = SupportedMotors.TALON_FX;
+    public int ARM_MOTOR_ID = 0;
+    public double ARM_GEARING = 1.0/9;
+    public double ARM_SPROCKET_DIAMETER = 2D;
+    public String ARM_MOTOR_CANBUS = "rio";
+    public boolean ARM_MANUAL = true;
+    public boolean ENABLE_ARM = true;
+    public PID ARM_PID = EMPTY_PID;
+
     public SupportedIMU IMU_TYPE = SupportedIMU.PIGEON;
     public AutonType AUTON_TYPE = AutonType.POINT_TO_POINT;
     public DriveBases DRIVE_BASE = DriveBases.STANDARD;

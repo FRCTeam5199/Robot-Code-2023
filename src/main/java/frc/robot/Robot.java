@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
     public static PDP pdp;
     public static LEDs leds;
     public static Elevator elevator;
+    public static Arm arm;
     public static AbstractAutonManager autonManager;
     public static boolean SECOND_TRY;
     public static String lastFoundSong = "";
@@ -75,6 +76,8 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_MUSIC) {
             chirp = new Chirp();
         }
+        if(robotSettings.ENABLE_ARM)
+            arm = new Arm();
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:

@@ -152,11 +152,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private void driveSwerve() {
         forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (-1);
         leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (1);
-        if ((xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) && visionCamera.hasValidTarget()) {
-            visionCamera.setLedMode(IVision.VisionLEDMode.ON);
-            rotation = -(visionCamera.getAngle() / 15);
-            startHeading = guidance.imu.relativeYaw();
-        } else {
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
             if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
                 rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
@@ -164,7 +159,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             } else {
                 rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
             }
-        }
         //System.out.println(forwards);
         driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
     }

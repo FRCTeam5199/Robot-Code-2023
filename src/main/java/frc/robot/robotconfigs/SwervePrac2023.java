@@ -9,6 +9,8 @@ import frc.motors.AbstractMotorController;
 import frc.sensors.camera.IVision;
 import frc.telemetry.imu.AbstractIMU;
 
+import static frc.misc.PID.EMPTY_PID;
+
 public class SwervePrac2023 extends DefaultConfig{
 
     public SwervePrac2023(){
@@ -33,8 +35,19 @@ public class SwervePrac2023 extends DefaultConfig{
         ELEVATOR_MOTOR_CANBUS = "rio";
         ELEVATOR_MOTOR_ID = 30;
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-        ELEVATOR_SPROCKET_DIAMETER = 2;
+        ELEVATOR_SPROCKET_DIAMETER = 2D;
         ELEVATORPID =  new PID(0.0004, 0.0, 0.0001);
+
+
+        //ARM
+         AbstractMotorController.SupportedMotors ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
+          ARM_MOTOR_ID = 0;
+          ARM_GEARING = 0;
+          ARM_SPROCKET_DIAMETER = 0;
+          ARM_MOTOR_CANBUS = "rio";
+          ARM_MANUAL = true;
+          ENABLE_ARM = true;
+        ARM_PID = new PID(0.0004, 0.0, 0.0001);
 
         //UI Styles
         DRIVE_STYLE = AbstractDriveManager.DriveControlStyles.STANDARD;
