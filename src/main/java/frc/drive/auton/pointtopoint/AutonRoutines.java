@@ -20,6 +20,10 @@ public enum AutonRoutines {
             new AutonWaypoint(new Point(0, 0), 1, DRIVE_TO, 1),
             new AutonWaypoint(new Point(8, -2), 1, DRIVE_TO, 90)
     ),
+    PID_AND_APRIL_TEST(
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-13, 2), .5, DRIVE_TO, 1)
+    ),
     SPIN_TEST(
             new AutonWaypoint(new Point(0, 0), 1, DRIVE_TO, 90)
     ),

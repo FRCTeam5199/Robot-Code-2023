@@ -48,7 +48,7 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
               //nothing
             }else {
                 try {
-                    Translation2d translation2dft = new Translation2d(54 + (apriltagpos.getFirst().getX() * -3.28), 27 - (apriltagpos.getFirst().getY() * 3.28));
+                    Translation2d translation2dft = new Translation2d(-54 + (apriltagpos.getFirst().getX() * 3.28),  (apriltagpos.getFirst().getY() * 3.28));
                     Pose2d poseinft = new Pose2d(translation2dft, apriltagpos.getFirst().getRotation());
                     UserInterface.smartDashboardPutNumber("April Field X", translation2dft.getX());
                     UserInterface.smartDashboardPutNumber("April Field Y", translation2dft.getY());
@@ -63,7 +63,7 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
         }
         if (robotSettings.ENABLE_IMU) {
             if (driver instanceof DriveManagerSwerve)
-                swerveRobotPose.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition());
+                swerveRobotPose.update(new Rotation2d(Units.degreesToRadians(imu.relativeYaw())), ((DriveManagerSwerve) driver).getModulePosition());
 
             //robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition());
 
@@ -114,18 +114,18 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
 
     public void resetSwerveOdometryandCreate(){
         if(driver instanceof DriveManagerSwerve) {
-            odometer = new SwerveDriveOdometry(((DriveManagerSwerve) driver).getKinematics(), Rotation2d.fromDegrees(imu.absoluteYaw()), ((DriveManagerSwerve) driver).getModulePosition());
-            swerveRobotPose = new SwerveDrivePoseEstimator(((DriveManagerSwerve) driver).getKinematics(), new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
+            odometer = new SwerveDriveOdometry(((DriveManagerSwerve) driver).getKinematics(), Rotation2d.fromDegrees(imu.relativeYaw()), ((DriveManagerSwerve) driver).getModulePosition());
+            swerveRobotPose = new SwerveDrivePoseEstimator(((DriveManagerSwerve) driver).getKinematics(), new Rotation2d(Units.degreesToRadians(imu.relativeYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
             //robotPose = odometer.update(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition());
-            odometer.resetPosition(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
-            swerveRobotPose.resetPosition(new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
+            odometer.resetPosition(new Rotation2d(Units.degreesToRadians(imu.relativeYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
+            swerveRobotPose.resetPosition(new Rotation2d(Units.degreesToRadians(imu.relativeYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d());
         }
     }
 
     @Override
     public void setSwerveOdometryCurrent(double currentX, double currentY){
-        odometer = new SwerveDriveOdometry(((DriveManagerSwerve) driver).getKinematics(), Rotation2d.fromDegrees(imu.absoluteYaw()), ((DriveManagerSwerve) driver).getModulePosition());
-        swerveRobotPose = new SwerveDrivePoseEstimator(((DriveManagerSwerve) driver).getKinematics(), new Rotation2d(Units.degreesToRadians(imu.absoluteYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d(currentX,currentY, new Rotation2d(Units.degreesToRadians(imu.absoluteYaw()))));
+        odometer = new SwerveDriveOdometry(((DriveManagerSwerve) driver).getKinematics(), Rotation2d.fromDegrees(imu.relativeYaw()), ((DriveManagerSwerve) driver).getModulePosition());
+        swerveRobotPose = new SwerveDrivePoseEstimator(((DriveManagerSwerve) driver).getKinematics(), new Rotation2d(Units.degreesToRadians(imu.relativeYaw())), ((DriveManagerSwerve) driver).getModulePosition(), new Pose2d(currentX,currentY, new Rotation2d(Units.degreesToRadians(imu.relativeYaw()))));
 
     }
 

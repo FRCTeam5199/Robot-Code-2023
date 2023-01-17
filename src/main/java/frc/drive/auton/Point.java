@@ -20,7 +20,7 @@ public class Point {
      * @return whether the distance between this and the other point is less than the provided tolerance
      */
     public boolean isWithin(double distance, Point otherPoint) {
-        boolean yInRange = distance > Math.abs(-Y - otherPoint.Y);
+        boolean yInRange = distance > Math.abs(Y - otherPoint.Y);
         boolean xInRange = distance > Math.abs(X - otherPoint.X);
         System.out.println(Math.abs(-Y - otherPoint.Y) + "  " + Math.abs(X - otherPoint.X));
         System.out.println(yInRange + " " + xInRange);

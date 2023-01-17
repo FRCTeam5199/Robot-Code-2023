@@ -8,6 +8,7 @@ import frc.drive.AbstractDriveManager;
 import frc.drive.DriveManagerStandard;
 import frc.drive.DriveManagerSwerve;
 import frc.drive.auton.AbstractAutonManager;
+import frc.drive.auton.pointtopoint.AutonManager;
 import frc.drive.auton.pointtopoint.AutonRoutines;
 import frc.misc.Chirp;
 import frc.misc.ISubsystem;
@@ -74,7 +75,8 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
-                    autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.DRIVE_OFF_INIT_LINE, driver);//Trajectories.TEST_PATH, driver);
+                    autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.PID_AND_APRIL_TEST, driver);//Trajectories.TEST_PATH, driver);
+                    System.out.println("autoRoutine waypoint");
                     break;
             }
         }
