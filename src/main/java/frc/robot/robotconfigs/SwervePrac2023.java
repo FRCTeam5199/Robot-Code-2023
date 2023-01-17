@@ -40,7 +40,7 @@ public class SwervePrac2023 extends DefaultConfig{
 
         DRIVEBASE_PID = new PID(0.0000001, 0, 0.0001);
         HEADING_PID = new PID(.5, 0.0, 0.0);
-        AUTO_XYPID = new PID(1.15, 0.13, 0.001);
+        AUTO_XYPID = new PID(1.16, 0.15, 0.007);
         DRIVEBASE_DISTANCE_BETWEEN_WHEELS = 0.435991;
         MAX_SPEED = 16; //max speed in fps - REAL IS 10(for 4in wheels)
         RUMBLE_TOLERANCE_FPS = 8;
