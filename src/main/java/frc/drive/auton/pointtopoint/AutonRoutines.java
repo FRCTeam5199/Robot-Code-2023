@@ -21,11 +21,11 @@ public enum AutonRoutines {
             new AutonWaypoint(new Point(8, -2), 1, DRIVE_TO, 90)
     ),
     PID_AND_APRIL_TEST(
-            new AutonWaypoint(new Point(-7, 2.5), .5, DRIVE_TO, 1),
-            new AutonWaypoint(new Point(-13, 2.5), .5, DRIVE_TO, 1),
-            new AutonWaypoint(new Point(-7, 2.5), .5, DRIVE_TO, 1),
-            new AutonWaypoint(new Point(-7, 10), .5, DRIVE_TO, 1),
-            new AutonWaypoint(new Point(-7, 2.5), .5, DRIVE_TO, 1)
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-13, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 10), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1)
     ),
     PID_AND_APRIL_TEST_FLIP(
             new AutonWaypoint(new Point(-20, 2), .5, DRIVE_TO, 1),
