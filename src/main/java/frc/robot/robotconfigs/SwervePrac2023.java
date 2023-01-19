@@ -41,14 +41,15 @@ public class SwervePrac2023 extends DefaultConfig{
 
         //ARM
          AbstractMotorController.SupportedMotors ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-          ARM_MOTOR_ID = 0;
-          ARM_GEARING = 0;
-          ARM_SPROCKET_DIAMETER = 0;
+          ARM_MOTOR_ID = 31;
+          ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
+          ARM_SPROCKET_DIAMETER = 1;
           ARM_MOTOR_CANBUS = "rio";
           ARM_MANUAL = true;
           ENABLE_ARM = true;
         ARM_PID = new PID(0.0004, 0.0, 0.0001);
 
+        // 61:15 52:28 15:1
         //UI Styles
         DRIVE_STYLE = AbstractDriveManager.DriveControlStyles.STANDARD;
         DRIVE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.TALON_FX;

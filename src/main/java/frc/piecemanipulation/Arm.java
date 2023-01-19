@@ -108,7 +108,7 @@ public class Arm implements ISubsystem {
         }else{
             arm.moveAtVelocity(0);
         }
-        //System.out.println(elevate.getRotations());
+        //System.out.println(arm.getRotations());
     }
 
 }
