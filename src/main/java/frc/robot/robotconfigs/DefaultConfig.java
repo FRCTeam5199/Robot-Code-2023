@@ -62,6 +62,14 @@ public abstract class DefaultConfig {
     public SupportedMotors DRIVE_MOTOR_TYPE = SupportedMotors.TALON_FX;
     public String DRIVE_MOTOR_CANBUS = "rio";
 
+    // Intake
+    public SupportedMotors INTAKE_MOTOR_TYPE =  SupportedMotors.VICTOR;
+    public int INTAKE_MOTOR_ID = 0;
+    public String INTAKE_MOTOR_CANBUS = "rio";
+    public boolean INTAKE_MANUAL = true;
+
+
+
     //Elevator
     public SupportedMotors ELEVATOR_MOTOR_TYPE = SupportedMotors.TALON_FX;
     public int ELEVATOR_MOTOR_ID = 0;
@@ -132,6 +140,7 @@ public abstract class DefaultConfig {
     public int PDP_ID = 0;
 
     public int XBOX_CONTROLLER_USB_SLOT = 0;
+    public int XBOX_CONTROLLER_USB_SLOT_2 = 1;
 
     //Limelight Distance Tracking
     public double CAMERA_HEIGHT = 0; //Inches

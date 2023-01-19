@@ -12,6 +12,8 @@ import static frc.robot.Robot.robotSettings;
  */
 public class Pneumatics implements ISubsystem {
     public DoubleSolenoid solenoidIntake;
+    public DoubleSolenoid subsolenoidIntake;
+
     public DoubleSolenoid climberLock;
     public DoubleSolenoid indexerBlocker;
     public Compressor compressor;
@@ -32,6 +34,8 @@ public class Pneumatics implements ISubsystem {
         }
         if (robotSettings.ENABLE_INTAKE && robotSettings.ENABLE_PNOOMATICS) {
             solenoidIntake = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
+            subsolenoidIntake = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
+
         }
 
     }
