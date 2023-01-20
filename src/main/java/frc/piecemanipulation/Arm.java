@@ -25,6 +25,7 @@ public class Arm implements ISubsystem {
         createControllers();
         createMotors();
         createMotorPid(robotSettings.ARM_PID);
+        arm.setBrake(true);
     }
 
     @Override
@@ -101,10 +102,10 @@ public class Arm implements ISubsystem {
     public void manuelDrive(){
         if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
-            arm.moveAtVelocity(1);
+            arm.moveAtVelocity(.05);
         }else if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("Y is being pressed");
-            arm.moveAtVelocity(-1);
+            arm.moveAtVelocity(-.05);
         }else{
             arm.moveAtVelocity(0);
         }

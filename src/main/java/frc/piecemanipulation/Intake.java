@@ -16,13 +16,10 @@ import static frc.robot.Robot.robotSettings;
 
 
 public class Intake implements ISubsystem {
-    public AbstractMotorController intake;
-    public BaseController xbox;
-    Pneumatics pneumatics;
-    DoubleSolenoid solenoidIntake;
-    DoubleSolenoid subSolenoidIntake;
+    public AbstractMotorController intakeLeft, intakeRight;
+    private BaseController xbox;
 
-    public void Intake() {
+    public Intake() {
         addToMetaList();
         init();
     }
@@ -44,7 +41,7 @@ public class Intake implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-
+        updateGeneric();
     }
 
     @Override
@@ -88,18 +85,19 @@ public class Intake implements ISubsystem {
         return null;
     }
 
-    public void createPneumatics(){
-        solenoidIntake = pneumatics.solenoidIntake;
-        subSolenoidIntake = pneumatics.subsolenoidIntake;
-
-    }
     public void createMotors(){
-        if(robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-            intake = new TalonMotorController(robotSettings.INTAKE_MOTOR_ID, robotSettings.INTAKE_MOTOR_CANBUS);
-        if(robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            intake = new SparkMotorController(robotSettings.INTAKE_MOTOR_ID);
-        if(robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.VICTOR)
-            intake = new VictorMotorController(robotSettings. INTAKE_MOTOR_ID);
+        if(robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX) {
+            intakeLeft = new TalonMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID, robotSettings.INTAKE_MOTOR_CANBUS);
+            intakeRight = new TalonMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID, robotSettings.INTAKE_MOTOR_CANBUS);
+        }
+        if(robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX) {
+            intakeLeft = new SparkMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID);
+            intakeRight = new SparkMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID);
+        }
+        if(robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.VICTOR) {
+            intakeLeft = new VictorMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID);
+            intakeRight = new VictorMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID);
+        }
     }
 
     public void createControllers(){
@@ -109,27 +107,30 @@ public class Intake implements ISubsystem {
     public void manuelDrive(){
         if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
-            intake.moveAtVoltage(2);
+            intakeRight.moveAtVoltage(-3);
+            intakeLeft.moveAtVoltage(3);
         }else if(xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("Y is being pressed");
-            intake.moveAtVoltage(-2);
+            intakeRight.moveAtVoltage(3);
+            intakeLeft.moveAtVoltage(-3);
         }else{
-            intake.moveAtVelocity(0);
+            intakeRight.moveAtVoltage(0);
+            intakeLeft.moveAtVoltage(0);
         }
         //System.out.println(elevate.getRotations());
-
+        /*
         if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
-            solenoidIntake.set(DoubleSolenoid.Value.kForward);
+            pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
         }
         if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
-            solenoidIntake.set(DoubleSolenoid.Value.kReverse);
+            pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
         }
 
         if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            solenoidIntake.set(DoubleSolenoid.Value.kForward);
+            pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
         }
         if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            solenoidIntake.set(DoubleSolenoid.Value.kReverse);
-        }
+            pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+        } */
     }
 }

@@ -6,6 +6,7 @@ import frc.drive.AbstractDriveManager;
 import frc.drive.auton.AutonType;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController;
+import frc.piecemanipulation.Intake;
 import frc.sensors.camera.IVision;
 import frc.telemetry.imu.AbstractIMU;
 
@@ -36,18 +37,32 @@ public class SwervePrac2023 extends DefaultConfig{
         ELEVATOR_MOTOR_ID = 30;
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ELEVATOR_SPROCKET_DIAMETER = 2D;
-        ELEVATORPID =  new PID(0.0004, 0.0, 0.0001);
+        ELEVATORPID =  new PID(0.0009, 0.0, 0.0001);
 
 
         //ARM
-         AbstractMotorController.SupportedMotors ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
+         ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
           ARM_MOTOR_ID = 31;
           ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
           ARM_SPROCKET_DIAMETER = 1;
           ARM_MOTOR_CANBUS = "rio";
           ARM_MANUAL = true;
           ENABLE_ARM = true;
-        ARM_PID = new PID(0.0004, 0.0, 0.0001);
+        ARM_PID = new PID(0.0004, 0.0, 0.00015);
+
+        //INTAKE
+          INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
+          INTAKE_MOTOR_LEFT_ID = 36;
+          INTAKE_MOTOR_RIGHT_ID = 35;
+          INTAKE_MOTOR_CANBUS = "rio";
+          INTAKE_MANUAL = true;
+          ENABLE_INTAKE = true;
+
+        INTAKE_IN_ID = 12;
+        INTAKE_OUT_ID = 3;
+        SPIKE_IN_ID = 2;
+        SPIKE_OUT_ID = 13;
+
 
         // 61:15 52:28 15:1
         //UI Styles

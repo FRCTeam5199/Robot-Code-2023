@@ -11,8 +11,8 @@ import static frc.robot.Robot.robotSettings;
  * @author Smaltin
  */
 public class Pneumatics implements ISubsystem {
-    public DoubleSolenoid solenoidIntake;
-    public DoubleSolenoid subsolenoidIntake;
+    public DoubleSolenoid intakePiston;
+    public DoubleSolenoid spikePiston;
 
     public DoubleSolenoid climberLock;
     public DoubleSolenoid indexerBlocker;
@@ -33,10 +33,10 @@ public class Pneumatics implements ISubsystem {
             compressor = new Compressor(robotSettings.PNEUMATICS_MODULE_TYPE);
         }
         if (robotSettings.ENABLE_INTAKE && robotSettings.ENABLE_PNOOMATICS) {
-            solenoidIntake = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
-            subsolenoidIntake = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
-
+            intakePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
         }
+        if(robotSettings.ENABLE_SPIKE && robotSettings.ENABLE_PNOOMATICS)
+            spikePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.SPIKE_OUT_ID, robotSettings.SPIKE_IN_ID);
 
     }
 
@@ -87,14 +87,10 @@ public class Pneumatics implements ISubsystem {
 
     @Override
     public void initDisabled() {
-        if (robotSettings.ENABLE_PNOOMATICS)
-            indexerBlocker.set(DoubleSolenoid.Value.kReverse);
     }
 
     @Override
     public void initGeneric() {
-        if (robotSettings.ENABLE_PNOOMATICS)
-            climberLock.set(DoubleSolenoid.Value.kReverse);
     }
 
     @Override

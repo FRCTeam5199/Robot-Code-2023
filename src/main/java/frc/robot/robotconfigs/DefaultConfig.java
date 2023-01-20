@@ -30,7 +30,6 @@ public abstract class DefaultConfig {
     public boolean autonComplete = false;
     //Subsystems
     public boolean ENABLE_DRIVE = false;
-    public boolean ENABLE_INTAKE = false;
     public boolean ENABLE_PNOOMATICS = false;
     public boolean ENABLE_DRIVE_BALL_TRACKING = false;
     public boolean ENABLE_SHOOTER = false;
@@ -50,6 +49,9 @@ public abstract class DefaultConfig {
     public int PCM_ID = 1;
     public int INTAKE_IN_ID;
     public int INTAKE_OUT_ID;
+    public int SPIKE_IN_ID;
+    public int SPIKE_OUT_ID;
+
 
     //SHOOTER
     public IVision.SupportedVision GOAL_CAMERA_TYPE = IVision.SupportedVision.PHOTON;
@@ -63,10 +65,13 @@ public abstract class DefaultConfig {
     public String DRIVE_MOTOR_CANBUS = "rio";
 
     // Intake
-    public SupportedMotors INTAKE_MOTOR_TYPE =  SupportedMotors.VICTOR;
-    public int INTAKE_MOTOR_ID = 0;
+    public SupportedMotors INTAKE_MOTOR_TYPE =  SupportedMotors.CAN_SPARK_MAX;
+    public int INTAKE_MOTOR_LEFT_ID = 0;
+    public int INTAKE_MOTOR_RIGHT_ID = 0;
     public String INTAKE_MOTOR_CANBUS = "rio";
     public boolean INTAKE_MANUAL = true;
+    public boolean ENABLE_INTAKE = false;
+    public boolean ENABLE_SPIKE = false;
 
 
 

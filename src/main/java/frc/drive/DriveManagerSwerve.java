@@ -180,14 +180,13 @@ public class DriveManagerSwerve extends AbstractDriveManager {
      * @param BR Back right translation requested. units?
      */
     private void setSteeringContinuous(double FL, double FR, double BL, double BR) {
-        double FLoffset = 16.5234375 /*196*/, FRoffset = 25.048828125 /*204*/, BLoffset = 169.716796875 /*351*/, BRoffset = 56.337890625/*-131*/;
         // try removing off set
         // try forcing Fl,FR,BL,BR 0
         BLcoder.setPositionToAbsolute();
-        FLpid.setSetpoint(-FL + FLoffset);
-        FRpid.setSetpoint(-FR + FRoffset);
-        BRpid.setSetpoint(-BR + BRoffset);
-        BLpid.setSetpoint(-BL + BLoffset);
+        FLpid.setSetpoint(-FL);
+        FRpid.setSetpoint(-FR);
+        BRpid.setSetpoint(-BR);
+        BLpid.setSetpoint(-BL);
         //System.out.println(driverFL.steering.getRotations());
         // System.out.println("setpoint no offset: " + FR);
         //System.out.println("Absolute Position/F current positiion FL: " + FLcoder.getAbsolutePosition());
@@ -423,6 +422,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         FRcoder = new CANCoder(12);
         BRcoder = new CANCoder(13);
         BLcoder = new CANCoder(14);
+        FLcoder.configMagnetOffset(-16.5234375);
+        FRcoder.configMagnetOffset(-25.048828125);
+        BLcoder.configMagnetOffset(-169.716796875);
+        BRcoder.configMagnetOffset(-56.337890625);
 
     }
 

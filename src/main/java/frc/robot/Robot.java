@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
     public static Chirp chirp;
     public static PDP pdp;
     public static LEDs leds;
+    public static Intake intake;
     public static Elevator elevator;
     public static Arm arm;
     public static AbstractAutonManager autonManager;
@@ -78,6 +79,8 @@ public class Robot extends TimedRobot {
         }
         if(robotSettings.ENABLE_ARM)
             arm = new Arm();
+        if(robotSettings.ENABLE_INTAKE)
+            intake = new Intake();
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
