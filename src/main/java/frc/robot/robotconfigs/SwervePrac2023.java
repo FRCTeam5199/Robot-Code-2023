@@ -19,6 +19,7 @@ public class SwervePrac2023 extends DefaultConfig{
         ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
+        ENABLE_PIECE_MANAGER = true;
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
@@ -37,7 +38,7 @@ public class SwervePrac2023 extends DefaultConfig{
         ELEVATOR_MOTOR_ID = 30;
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ELEVATOR_SPROCKET_DIAMETER = 2D;
-        ELEVATORPID =  new PID(0.0009, 0.0, 0.0001);
+        ELEVATORPID =  new PID(3, 0.0, 0.0);
 
 
         //ARM
@@ -48,15 +49,15 @@ public class SwervePrac2023 extends DefaultConfig{
           ARM_MOTOR_CANBUS = "rio";
           ARM_MANUAL = true;
           ENABLE_ARM = true;
-        ARM_PID = new PID(0.0004, 0.0, 0.00015);
+        ARM_PID = new PID(22, 0.0, 1);
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
           INTAKE_MOTOR_LEFT_ID = 36;
           INTAKE_MOTOR_RIGHT_ID = 35;
           INTAKE_MOTOR_CANBUS = "rio";
-          INTAKE_MANUAL = true;
-          ENABLE_INTAKE = true;
+          INTAKE_MANUAL = false;
+          ENABLE_INTAKE = false;
 
         INTAKE_IN_ID = 12;
         INTAKE_OUT_ID = 3;

@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
     public static LEDs leds;
     public static Intake intake;
     public static Elevator elevator;
+    public static ManipulationManager manipulationManager;
     public static Arm arm;
     public static AbstractAutonManager autonManager;
     public static boolean SECOND_TRY;
@@ -81,6 +82,8 @@ public class Robot extends TimedRobot {
             arm = new Arm();
         if(robotSettings.ENABLE_INTAKE)
             intake = new Intake();
+        if(robotSettings.ENABLE_PIECE_MANAGER)
+            manipulationManager = new ManipulationManager();
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:

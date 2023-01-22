@@ -1,5 +1,7 @@
 package frc.piecemanipulation;
 
+import frc.controllers.ButtonPanelController;
+import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
@@ -8,12 +10,14 @@ import frc.misc.SubsystemStatus;
 import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
+import org.glassfish.grizzly.compression.lzma.impl.Base;
 
+import static edu.wpi.first.wpilibj.RobotBase.suppressExitWarning;
 import static frc.robot.Robot.robotSettings;
 
 public class Arm implements ISubsystem {
     public AbstractMotorController arm;
-    public BaseController xbox;
+    public BaseController xbox, xbox2, panel;
 
     public Arm(){
         addToMetaList();
@@ -40,8 +44,24 @@ public class Arm implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if(robotSettings.ARM_MANUAL)
+        if(robotSettings.ARM_MANUAL) {
             manuelDrive();
+        }else{
+            if (!robotSettings.ENABLE_PIECE_MANAGER) {
+                PositionDrive();
+            }
+        }
+        if(xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
+            resetArmEncoder();
+        }
+        if(xbox2.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            robotSettings.ARM_MANUAL = true;
+        }
+        if(xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            robotSettings.ARM_MANUAL = false;
+        }
+        System.out.println("Arm Position: " + arm.getRotations());
+        System.out.println("Motor Power " + arm.getVoltage());
     }
 
     @Override
@@ -61,7 +81,6 @@ public class Arm implements ISubsystem {
 
     @Override
     public void initTeleop() {
-
     }
 
     @Override
@@ -86,6 +105,8 @@ public class Arm implements ISubsystem {
 
     public void createControllers(){
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public void createMotors(){
@@ -93,23 +114,56 @@ public class Arm implements ISubsystem {
             arm = new TalonMotorController(robotSettings.ARM_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
             arm = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
-        arm.setRealFactorFromMotorRPM(robotSettings.ARM_GEARING * (robotSettings.ARM_SPROCKET_DIAMETER * Math.PI / 12), 1/60D );
+        arm.setRealFactorFromMotorRPM(1, 1 );
     }
     public void createMotorPid(PID pid){
         arm.setPid(pid);
     }
 
+    public void resetArmEncoder(){
+        arm.resetEncoder();
+    }
+
     public void manuelDrive(){
         if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
-            arm.moveAtVelocity(.05);
+            arm.moveAtVoltage(2);
         }else if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("Y is being pressed");
-            arm.moveAtVelocity(-.05);
+            arm.moveAtVoltage(-2);
         }else{
-            arm.moveAtVelocity(0);
+            arm.moveAtVoltage(0);
         }
-        //System.out.println(arm.getRotations());
+        System.out.println("Manual Enabled");
     }
+    public void PositionDrive(){
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+            arm.moveAtPosition(-1);
+            //System.out.println("trying to go to zero");
+        }
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.TARMAC_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+            arm.moveAtPosition(-43);
+            //System.out.println("trying to go verticle");
+        }
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.LOW_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+            arm.moveAtPosition(-70);
+           // System.out.println("back horizontal");
+        }
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN){
+            arm.moveAtPosition(-90);
+            //System.out.println("trying to go groudn");
+        }
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
+            arm.moveAtPosition(-15);
+            //System.out.println("forward horizonal");
+        }
+        System.out.println("Motor Power " + arm.getVoltage());
+        //System.out.println("Arm Position: " + arm.getRotations());
+    }
+
+    public void moveArm(double position){
+        arm.moveAtPosition(position);
+    }
+
 
 }

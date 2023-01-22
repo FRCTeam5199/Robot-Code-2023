@@ -72,6 +72,7 @@ public abstract class DefaultConfig {
     public boolean INTAKE_MANUAL = true;
     public boolean ENABLE_INTAKE = false;
     public boolean ENABLE_SPIKE = false;
+    public boolean ENABLE_PIECE_MANAGER = false;
 
 
 
@@ -146,6 +147,7 @@ public abstract class DefaultConfig {
 
     public int XBOX_CONTROLLER_USB_SLOT = 0;
     public int XBOX_CONTROLLER_USB_SLOT_2 = 1;
+    public int BUTTON_PANEL_USB_SLOT = 2;
 
     //Limelight Distance Tracking
     public double CAMERA_HEIGHT = 0; //Inches
