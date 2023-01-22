@@ -57,7 +57,6 @@ public class ManipulationManager implements ISubsystem {
                     Robot.elevator.moveElevator(elevateGoal);
             }
         }
-
     }
 
     @Override
