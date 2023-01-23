@@ -38,7 +38,7 @@ public class SwervePrac2023 extends DefaultConfig{
         ELEVATOR_MOTOR_ID = 30;
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ELEVATOR_SPROCKET_DIAMETER = 2D;
-        ELEVATORPID =  new PID(3, 0.0, 0.0);
+        ELEVATORPID =  new PID(.08, 0.0, 0.0);
 
 
         //ARM
@@ -49,7 +49,7 @@ public class SwervePrac2023 extends DefaultConfig{
           ARM_MOTOR_CANBUS = "rio";
           ARM_MANUAL = true;
           ENABLE_ARM = true;
-        ARM_PID = new PID(22, 0.0, 1);
+        ARM_PID = new PID(1, 0.0, 0);
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;

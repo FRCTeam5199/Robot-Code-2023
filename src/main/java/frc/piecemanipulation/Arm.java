@@ -115,10 +115,14 @@ public class Arm implements ISubsystem {
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
             arm = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
         arm.setRealFactorFromMotorRPM(1, 1 );
+        //arm.setOutPutRange(-.8,.8);
+        arm.setCurrentLimit(40);
+
     }
     public void createMotorPid(PID pid){
         arm.setPid(pid);
     }
+
 
     public void resetArmEncoder(){
         arm.resetEncoder();
@@ -127,10 +131,10 @@ public class Arm implements ISubsystem {
     public void manuelDrive(){
         if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
-            arm.moveAtVoltage(2);
+            arm.moveAtVoltage(3);
         }else if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("Y is being pressed");
-            arm.moveAtVoltage(-2);
+            arm.moveAtVoltage(-3);
         }else{
             arm.moveAtVoltage(0);
         }
@@ -162,7 +166,8 @@ public class Arm implements ISubsystem {
     }
 
     public void moveArm(double position){
-        arm.moveAtPosition(position);
+        arm.moveAtPosition(position * 5D/3);
+
     }
 
 

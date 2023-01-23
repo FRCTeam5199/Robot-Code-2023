@@ -53,7 +53,6 @@ public class Elevator implements ISubsystem {
     @Override
     public void updateGeneric() {
        if (robotSettings.ELEVATOR_MANUAL){
-
             manuelDrive();
        }else{
            if (!robotSettings.ENABLE_PIECE_MANAGER)

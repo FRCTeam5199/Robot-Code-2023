@@ -42,11 +42,11 @@ public class ManipulationManager implements ISubsystem {
             elevateGoal = -5;
         }
         if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_2) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            Robot.arm.moveArm(-90);
+            Robot.arm.moveArm(-85);
             elevateGoal = -5;
         }
         if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            Robot.arm.moveArm(0);
+            Robot.arm.moveArm(-5);
             elevateGoal = 0;
         }
         if(!robotSettings.ARM_MANUAL) {
@@ -104,14 +104,14 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-25 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -69){
+        if (-40 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -105){
             return true;
         }
         return false;
     }
 
     public boolean checkArmCollision(){
-        if(Robot.arm.arm.getRotations() >= -15 || Robot.arm.arm.getRotations() <= -70){
+        if(Robot.arm.arm.getRotations() >= -25 || Robot.arm.arm.getRotations() <= -130){
            return true;
         }
         return false;
