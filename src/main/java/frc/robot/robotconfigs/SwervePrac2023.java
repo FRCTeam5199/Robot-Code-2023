@@ -1,6 +1,7 @@
 package frc.robot.robotconfigs;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.drive.AbstractDriveManager;
 import frc.drive.auton.AutonType;
@@ -20,19 +21,21 @@ public class SwervePrac2023 extends DefaultConfig{
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
         ENABLE_PIECE_MANAGER = true;
+        ENABLE_PNOOMATICS = true;
+        ENABLE_SPIKE = true;
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
 
         //Misc
-        ENABLE_VISION = false;
+        ENABLE_VISION = true;
         ENABLE_IMU = true;
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
+        limeLightPid = new PID(0.022, 0.0, 0.0);
 
         //Elevator
         ENABLE_ELEVATOR = true;
-        ELEVATOR_MANUAL = true;
         ELEVATOR_GEARING = 1/9.0;
         ELEVATOR_MOTOR_CANBUS = "rio";
         ELEVATOR_MOTOR_ID = 30;
@@ -40,29 +43,30 @@ public class SwervePrac2023 extends DefaultConfig{
         ELEVATOR_SPROCKET_DIAMETER = 2D;
         ELEVATORPID =  new PID(.08, 0.0, 0.0);
 
-
+        ARM_ELEVATOR_MANUAL = true;
         //ARM
          ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
           ARM_MOTOR_ID = 31;
           ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
           ARM_SPROCKET_DIAMETER = 1;
           ARM_MOTOR_CANBUS = "rio";
-          ARM_MANUAL = true;
           ENABLE_ARM = true;
-        ARM_PID = new PID(1, 0.0, 0);
+        ARM_PID = new PID(.5, 0.0, 0);
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
           INTAKE_MOTOR_LEFT_ID = 36;
           INTAKE_MOTOR_RIGHT_ID = 35;
           INTAKE_MOTOR_CANBUS = "rio";
-          INTAKE_MANUAL = false;
-          ENABLE_INTAKE = false;
+          INTAKE_MANUAL = true;
+          ENABLE_INTAKE = true;
 
-        INTAKE_IN_ID = 12;
-        INTAKE_OUT_ID = 3;
-        SPIKE_IN_ID = 2;
-        SPIKE_OUT_ID = 13;
+          PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
+          PCM_ID = 50;
+          INTAKE_IN_ID = 12;
+          INTAKE_OUT_ID = 2;
+          SPIKE_IN_ID = 3;
+          SPIKE_OUT_ID = 13;
 
 
         // 61:15 52:28 15:1
@@ -116,8 +120,8 @@ public class SwervePrac2023 extends DefaultConfig{
 
 
         // limelight
-        ENABLE_VISION = false;
-        ENABLE_CAMERA = false;
+        ENABLE_VISION = true;
+        ENABLE_CAMERA = true;
         GOAL_CAM_NAME = "GoalCamera";
         BALL_CAM_NAME = "BallCamera";
         GOAL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;

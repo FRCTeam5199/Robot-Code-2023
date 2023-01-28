@@ -52,7 +52,7 @@ public class Elevator implements ISubsystem {
 
     @Override
     public void updateGeneric() {
-       if (robotSettings.ELEVATOR_MANUAL){
+       if (robotSettings.ARM_ELEVATOR_MANUAL){
             manuelDrive();
        }else{
            if (!robotSettings.ENABLE_PIECE_MANAGER)
@@ -60,12 +60,6 @@ public class Elevator implements ISubsystem {
         }
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
             resetElevateEncoder();
-        }
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
-            robotSettings.ELEVATOR_MANUAL = true;
-        }
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            robotSettings.ELEVATOR_MANUAL = false;
         }
     }
 
@@ -112,6 +106,7 @@ public class Elevator implements ISubsystem {
             elevate = new SparkMotorController(robotSettings.ELEVATOR_MOTOR_ID);
         //elevate.setRealFactorFromMotorRPM(robotSettings.ELEVATOR_GEARING * (robotSettings.ELEVATOR_SPROCKET_DIAMETER * Math.PI / 12), 1/60D );
         elevate.setRealFactorFromMotorRPM(1, 1 );
+        elevate.setCurrentLimit(40);
     }
 
     public void resetElevateEncoder(){
@@ -123,12 +118,12 @@ public class Elevator implements ISubsystem {
     }
 
     public void manuelDrive(){
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.TARMAC_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
-            elevate.moveAtVoltage(2);
-        }else if(xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            elevate.moveAtVoltage(5);
+        }else if(panel.get(ControllerEnums.ButtonPanelButtons2022.FAR_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("Y is being pressed");
-            elevate.moveAtVoltage(-2);
+            elevate.moveAtVoltage(-5);
         }else{
             elevate.moveAtVoltage(0);
         }
@@ -136,7 +131,7 @@ public class Elevator implements ISubsystem {
     }
 
     public void positionDrive(){
-        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
+       /* if(panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
             elevate.moveAtPosition(-1);
             System.out.println("top");
         }
@@ -149,7 +144,7 @@ public class Elevator implements ISubsystem {
             System.out.println("bottom");
         }
         System.out.println("Elevator Position: " + elevate.getRotations());
-        System.out.println("Elevator Voltage: " + elevate.getVoltage());
+        System.out.println("Elevator Voltage: " + elevate.getVoltage()); */
     }
 
     public void moveElevator(double position){

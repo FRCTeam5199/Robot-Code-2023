@@ -51,6 +51,7 @@ public abstract class DefaultConfig {
     public int INTAKE_OUT_ID;
     public int SPIKE_IN_ID;
     public int SPIKE_OUT_ID;
+    public PID limeLightPid = EMPTY_PID;
 
 
     //SHOOTER
@@ -91,6 +92,7 @@ public abstract class DefaultConfig {
     public double ARM_GEARING = 1.0/9;
     public double ARM_SPROCKET_DIAMETER = 2D;
     public String ARM_MOTOR_CANBUS = "rio";
+    public boolean ARM_ELEVATOR_MANUAL = true;
     public boolean ARM_MANUAL = true;
     public boolean ENABLE_ARM = true;
     public PID ARM_PID = EMPTY_PID;

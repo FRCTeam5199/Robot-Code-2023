@@ -44,7 +44,7 @@ public class Arm implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if(robotSettings.ARM_MANUAL) {
+        if(robotSettings.ARM_ELEVATOR_MANUAL) {
             manuelDrive();
         }else{
             if (!robotSettings.ENABLE_PIECE_MANAGER) {
@@ -53,12 +53,6 @@ public class Arm implements ISubsystem {
         }
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
             resetArmEncoder();
-        }
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            robotSettings.ARM_MANUAL = true;
-        }
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            robotSettings.ARM_MANUAL = false;
         }
         System.out.println("Arm Position: " + arm.getRotations());
         System.out.println("Motor Power " + arm.getVoltage());
@@ -129,19 +123,20 @@ public class Arm implements ISubsystem {
     }
 
     public void manuelDrive(){
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
-            arm.moveAtVoltage(3);
-        }else if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            arm.moveAtVoltage(6);
+        }else if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("Y is being pressed");
-            arm.moveAtVoltage(-3);
+            arm.moveAtVoltage(-6);
         }else{
             arm.moveAtVoltage(0);
         }
-        System.out.println("Manual Enabled");
+        System.out.println("ARM POSTITION: " + arm.getRotations());
+        //System.out.println("Manual Enabled");
     }
     public void PositionDrive(){
-        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+       /* if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
             arm.moveAtPosition(-1);
             //System.out.println("trying to go to zero");
         }
@@ -162,11 +157,11 @@ public class Arm implements ISubsystem {
             //System.out.println("forward horizonal");
         }
         System.out.println("Motor Power " + arm.getVoltage());
-        //System.out.println("Arm Position: " + arm.getRotations());
+        //System.out.println("Arm Position: " + arm.getRotations()); */
     }
 
     public void moveArm(double position){
-        arm.moveAtPosition(position * 5D/3);
+        arm.moveAtPosition(position);
 
     }
 

@@ -1,5 +1,6 @@
 package frc.piecemanipulation;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
@@ -8,16 +9,18 @@ import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 import frc.motors.VictorMotorController;
+import frc.robot.Robot;
+import frc.piecemanipulation.ManipulationManager;
 import frc.robot.robotconfigs.*;
 import frc.telemetry.imu.AbstractIMU;
 import frc.misc.Pneumatics;
 
-import static frc.robot.Robot.robotSettings;
+import static frc.robot.Robot.*;
 
 
 public class Intake implements ISubsystem {
     public AbstractMotorController intakeLeft, intakeRight;
-    private BaseController xbox;
+    private BaseController xbox, panel;
 
     public Intake() {
         addToMetaList();
@@ -98,39 +101,48 @@ public class Intake implements ISubsystem {
             intakeLeft = new VictorMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID);
             intakeRight = new VictorMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID);
         }
+        intakeLeft.setCurrentLimit(20);
+        intakeRight.setCurrentLimit(20);
     }
 
     public void createControllers(){
-        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public void manuelDrive(){
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            //System.out.println("X is being pressed");
-            intakeRight.moveAtVoltage(-3);
-            intakeLeft.moveAtVoltage(3);
-        }else if(xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            //System.out.println("Y is being pressed");
-            intakeRight.moveAtVoltage(3);
-            intakeLeft.moveAtVoltage(-3);
-        }else{
+        if(!manipulationManager.cubeConeMode) {
+            if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                //System.out.println("X is being pressed");
+                intakeRight.moveAtVoltage(-8);
+                intakeLeft.moveAtVoltage(8);
+            } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                //System.out.println("Y is being pressed");
+                intakeRight.moveAtVoltage(4);
+                intakeLeft.moveAtVoltage(-4);
+            } else {
+                intakeRight.moveAtVoltage(0);
+                intakeLeft.moveAtVoltage(0);
+            }
+        }
+        if(manipulationManager.cubeConeMode){
+            //System.out.println(elevate.getRotations());
             intakeRight.moveAtVoltage(0);
             intakeLeft.moveAtVoltage(0);
+            if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+            }
+            if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+            }
         }
-        //System.out.println(elevate.getRotations());
         /*
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
-            pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+            Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
         }
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
-            pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.LOW_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
         }
-
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        }
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-        } */
+        */
     }
 }
