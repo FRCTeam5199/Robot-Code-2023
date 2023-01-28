@@ -34,7 +34,7 @@ max speed 3.6 m/s
 
  */
 public class DriveManagerSwerve extends AbstractDriveManager {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private final Translation2d driftOffset = new Translation2d(-0.6, 0);
     private final double trackWidth = 21;
     private final double trackLength = 24.5;
@@ -56,6 +56,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private Translation2d backRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
     private PIDController FRpid, BRpid, BLpid, FLpid;
+    private PIDController limeLightPid;
     private BaseController xbox;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
 
@@ -72,6 +73,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         setCANCoder();
         setupSteeringEncoders();
         setKin();
+        limeLightPid = new PIDController(robotSettings.limeLightPid.P, robotSettings.limeLightPid.I, robotSettings.limeLightPid.D);
 
         if (robotSettings.ENABLE_VISION) {
             visionCamera = IVision.manufactureGoalCamera(robotSettings.GOAL_CAMERA_TYPE);
@@ -155,14 +157,22 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     private void driveSwerve() {
         forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (-1);
-        leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (1);
-        if ((xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) && visionCamera.hasValidTarget()) {
+        if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             visionCamera.setLedMode(IVision.VisionLEDMode.ON);
-            rotation = -(visionCamera.getAngle() / 15);
+            if(visionCamera.hasValidTarget()) {
+                System.out.println("AIMING");
+                leftwards = limeLightPid.calculate(visionCamera.getAngle());
+            }
+        } else {
+            visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+            leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (1);
+        }
+            //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+        if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
+            rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
             startHeading = guidance.imu.relativeYaw();
         } else {
-            //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
-            rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
+            rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
         //System.out.println(forwards);
         driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
@@ -447,6 +457,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         FRcoder.configMagnetOffset(-25.048828125);
         BLcoder.configMagnetOffset(-169.716796875);
         BRcoder.configMagnetOffset(-56.337890625);
+
     }
 
     public void createPIDControllers(PID steeringPID) {
@@ -478,7 +489,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         } else {
             motorRot = 0;
             resetWheels();
-            System.out.println("we are all done in here");
+            //System.out.println("we are all done in here");
             return true;
         }
     }

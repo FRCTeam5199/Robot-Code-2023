@@ -15,7 +15,7 @@ import frc.robot.Robot;
  * @see DefaultControllerEnums.ButtonStatus
  */
 public class ButtonPanelController extends BaseController {
-    ButtonPanelController(Integer n) {
+    public ButtonPanelController(Integer n) {
         super(n);
     }
 
@@ -24,7 +24,7 @@ public class ButtonPanelController extends BaseController {
      */
     @Override
     public DefaultControllerEnums.ButtonStatus get(ControllerInterfaces.IDiscreteInput button) {
-        if (button instanceof ButtonPanelButtons || button instanceof ControllerEnums.ButtonPanelTapedButtons || Robot.robotSettings.PERMIT_ROUGE_INPUT_MAPPING)
+        if (button instanceof ButtonPanelButtons || button instanceof ControllerEnums.ButtonPanelTapedButtons || button instanceof ControllerEnums.ButtonPanelButtons2022 || Robot.robotSettings.PERMIT_ROUGE_INPUT_MAPPING)
             return DefaultControllerEnums.ButtonStatus.get(controller.getRawButton(button.getChannel()));
         throw new IllegalArgumentException("Wrong mapping. Expected an enum of type " + ButtonPanelButtons.class.toString() + " but got " + button.getClass().toString() + " instead");
     }

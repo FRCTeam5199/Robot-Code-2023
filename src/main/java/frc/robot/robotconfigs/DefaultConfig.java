@@ -2,7 +2,6 @@ package frc.robot.robotconfigs;
 
 import edu.wpi.first.wpilibj.*;
 import frc.drive.auton.AutonType;
-import frc.drive.auton.pointtopoint.AutonRoutines;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController.SupportedMotors;
 import frc.sensors.camera.IVision;
@@ -32,7 +31,6 @@ public abstract class DefaultConfig {
     //Subsystems
     public boolean ENABLE_APRILTAG = false;
     public boolean ENABLE_DRIVE = false;
-    public boolean ENABLE_INTAKE = false;
     public boolean ENABLE_PNOOMATICS = false;
     public boolean ENABLE_DRIVE_BALL_TRACKING = false;
     public boolean ENABLE_SHOOTER = false;
@@ -52,6 +50,10 @@ public abstract class DefaultConfig {
     public int PCM_ID = 1;
     public int INTAKE_IN_ID;
     public int INTAKE_OUT_ID;
+    public int SPIKE_IN_ID;
+    public int SPIKE_OUT_ID;
+    public PID limeLightPid = EMPTY_PID;
+
 
     //SHOOTER
     public IVision.SupportedVision GOAL_CAMERA_TYPE = IVision.SupportedVision.PHOTON;
@@ -63,6 +65,38 @@ public abstract class DefaultConfig {
     //Motor Types
     public SupportedMotors DRIVE_MOTOR_TYPE = SupportedMotors.TALON_FX;
     public String DRIVE_MOTOR_CANBUS = "rio";
+
+    // Intake
+    public SupportedMotors INTAKE_MOTOR_TYPE =  SupportedMotors.CAN_SPARK_MAX;
+    public int INTAKE_MOTOR_LEFT_ID = 0;
+    public int INTAKE_MOTOR_RIGHT_ID = 0;
+    public String INTAKE_MOTOR_CANBUS = "rio";
+    public boolean INTAKE_MANUAL = true;
+    public boolean ENABLE_INTAKE = false;
+    public boolean ENABLE_SPIKE = false;
+    public boolean ENABLE_PIECE_MANAGER = false;
+
+
+
+    //Elevator
+    public SupportedMotors ELEVATOR_MOTOR_TYPE = SupportedMotors.TALON_FX;
+    public int ELEVATOR_MOTOR_ID = 0;
+    public double ELEVATOR_GEARING = 1.0/9;
+    public double ELEVATOR_SPROCKET_DIAMETER = 2D;
+    public String ELEVATOR_MOTOR_CANBUS = "rio";
+    public boolean ELEVATOR_MANUAL = true;
+    public boolean ENABLE_ELEVATOR = true;
+    public PID ELEVATORPID = EMPTY_PID;
+
+    public SupportedMotors ARM_MOTOR_TYPE = SupportedMotors.TALON_FX;
+    public int ARM_MOTOR_ID = 0;
+    public double ARM_GEARING = 1.0/9;
+    public double ARM_SPROCKET_DIAMETER = 2D;
+    public String ARM_MOTOR_CANBUS = "rio";
+    public boolean ARM_ELEVATOR_MANUAL = true;
+    public boolean ARM_MANUAL = true;
+    public boolean ENABLE_ARM = true;
+    public PID ARM_PID = EMPTY_PID;
 
     public SupportedIMU IMU_TYPE = SupportedIMU.PIGEON;
     public AutonType AUTON_TYPE = AutonType.POINT_TO_POINT;
@@ -116,6 +150,8 @@ public abstract class DefaultConfig {
     public int PDP_ID = 0;
 
     public int XBOX_CONTROLLER_USB_SLOT = 0;
+    public int XBOX_CONTROLLER_USB_SLOT_2 = 1;
+    public int BUTTON_PANEL_USB_SLOT = 2;
 
     //Limelight Distance Tracking
     public double CAMERA_HEIGHT = 0; //Inches

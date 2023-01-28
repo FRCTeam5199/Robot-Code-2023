@@ -10,16 +10,15 @@ import frc.drive.DriveManagerSwerve;
 import frc.drive.auton.AbstractAutonManager;
 import frc.drive.auton.pointtopoint.AutonManager;
 import frc.drive.auton.pointtopoint.AutonRoutines;
-import frc.misc.Chirp;
-import frc.misc.ISubsystem;
-import frc.misc.LEDs;
-import frc.misc.UserInterface;
+import frc.misc.*;
 import frc.motors.AbstractMotorController;
 import frc.pdp.PDP;
 import frc.robot.robotconfigs.DefaultConfig;
 import frc.robot.robotconfigs.Swerve2022;
 import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
+import frc.piecemanipulation.*;
+import frc.sensors.camera.IVision;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,9 +42,15 @@ public class Robot extends TimedRobot {
     private static final String DELETE_PASSWORD = "programmer funtime lanD";
     public static DefaultConfig robotSettings;
     public static AbstractDriveManager driver;
+    // true = cone, false = cube
     public static Chirp chirp;
     public static PDP pdp;
     public static LEDs leds;
+    public static Intake intake;
+    public static Elevator elevator;
+    public static Pneumatics pneumatics;
+    public static ManipulationManager manipulationManager;
+    public static Arm arm;
     public static AbstractAutonManager autonManager;
     public static boolean SECOND_TRY;
     public static String lastFoundSong = "";
@@ -68,10 +73,22 @@ public class Robot extends TimedRobot {
             else if (robotSettings.DRIVE_BASE == AbstractDriveManager.DriveBases.SWIVEL)
                 driver = new DriveManagerSwerve();
         }
+
+        if (robotSettings.ENABLE_ELEVATOR)
+            elevator = new Elevator();
         if (robotSettings.ENABLE_MUSIC) {
             chirp = new Chirp();
         }
 
+        if(robotSettings.ENABLE_ARM)
+            arm = new Arm();
+        if(robotSettings.ENABLE_INTAKE)
+            intake = new Intake();
+        if(robotSettings.ENABLE_PIECE_MANAGER) {
+            manipulationManager = new ManipulationManager();
+        }
+        if(robotSettings.ENABLE_PNOOMATICS)
+            pneumatics =  new Pneumatics();
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
@@ -89,6 +106,9 @@ public class Robot extends TimedRobot {
                 UserInterface.motorTemperatureMonitors.put(motor, UserInterface.WARNINGS_TAB.add(motor.getName(), motor.getMotorTemperature()).withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", 30, "Max", 80)));
             }
         }
+        if (robotSettings.ENABLE_VISION)
+            IVision.manufactureGoalCamera(robotSettings.GOAL_CAMERA_TYPE).setLedMode(IVision.VisionLEDMode.OFF);
+
     }
 
     /**
