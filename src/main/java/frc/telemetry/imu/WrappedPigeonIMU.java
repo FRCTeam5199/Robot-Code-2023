@@ -53,6 +53,8 @@ public class WrappedPigeonIMU extends AbstractIMU {
         updateGeneric();
         startypr = ypr;
         startYaw = absoluteYaw();
+        startRoll = absoluteRoll();
+        startPitch = absolutePitch();
     }
 
     /**

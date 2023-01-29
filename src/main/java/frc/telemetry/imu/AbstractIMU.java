@@ -12,6 +12,8 @@ import frc.selfdiagnostics.IMUNonOpIssue;
  */
 public abstract class AbstractIMU implements ISubsystem {
     protected double startYaw;
+    protected double startRoll;
+    protected double startPitch;
     protected double[] ypr = new double[3];
     protected double[] startypr = new double[3];
 
@@ -60,6 +62,15 @@ public abstract class AbstractIMU implements ISubsystem {
         updateGeneric();
         return ypr[0];
     }
+    public double absolutePitch(){
+        updateGeneric();
+        return ypr[1];
+    }
+
+    public double absoluteRoll() {
+        updateGeneric();
+        return ypr[2];
+    }
 
     @Override
     public void updateTest() {
@@ -103,6 +114,14 @@ public abstract class AbstractIMU implements ISubsystem {
     public double relativeYaw() {
         return (absoluteYaw() - startYaw);
     }
+
+    public double relativeRoll(){
+        return(absoluteRoll() - startRoll);
+    }
+    public double relativePitch(){
+        return(absolutePitch() - startPitch);
+    }
+
 
     /**
      * What dont you get about SIMPLY VIBING?

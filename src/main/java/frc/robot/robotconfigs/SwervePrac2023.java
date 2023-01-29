@@ -44,6 +44,7 @@ public class SwervePrac2023 extends DefaultConfig{
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
         limeLightPid = new PID(0.022, 0.0, 0.0);
+        leveling = new PID(0.01,0.0,0.002);
 
         //Elevator
         ENABLE_ELEVATOR = true;

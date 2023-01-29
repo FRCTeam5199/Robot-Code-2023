@@ -53,6 +53,7 @@ public abstract class DefaultConfig {
     public int SPIKE_IN_ID;
     public int SPIKE_OUT_ID;
     public PID limeLightPid = EMPTY_PID;
+    public PID leveling = EMPTY_PID;
 
 
     //SHOOTER
