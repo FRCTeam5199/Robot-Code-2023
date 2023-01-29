@@ -20,6 +20,7 @@ import frc.misc.UserInterface;
 import frc.motors.SwerveMotorController;
 import frc.selfdiagnostics.MotorDisconnectedIssue;
 import frc.sensors.camera.IVision;
+import frc.telemetry.imu.WrappedPigeonIMU;
 
 import java.util.Objects;
 
@@ -174,8 +175,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         } else {
             rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
+
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
+            forwards = guidance.imu.relativeRoll() * -.05;
+            leftwards = guidance.imu.relativePitch() * -.05;
+        }
         //System.out.println(forwards);
         driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
+
     }
 
     private boolean useLocalOrientation() {
@@ -582,5 +589,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public void resetWheels() {
         driveMPS(0.005, 0, 0);
     }
+
 }
 
