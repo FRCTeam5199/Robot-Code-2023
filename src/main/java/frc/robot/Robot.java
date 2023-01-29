@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
     // true = cone, false = cube
     public static Chirp chirp;
     public static PDP pdp;
+    public static Wrist wrist;
     public static LEDs leds;
     public static Intake intake;
     public static Elevator elevator;
@@ -79,7 +80,8 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_MUSIC) {
             chirp = new Chirp();
         }
-
+        if(robotSettings.ENABLE_WRIST)
+            wrist =  new Wrist();
         if(robotSettings.ENABLE_ARM)
             arm = new Arm();
         if(robotSettings.ENABLE_INTAKE)

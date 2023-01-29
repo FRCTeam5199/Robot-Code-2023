@@ -51,7 +51,7 @@ public class Arm implements ISubsystem {
                 PositionDrive();
             }
         }
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
             resetArmEncoder();
         }
         System.out.println("Arm Position: " + arm.getRotations());

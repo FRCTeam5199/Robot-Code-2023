@@ -76,6 +76,13 @@ public abstract class DefaultConfig {
     public boolean ENABLE_SPIKE = false;
     public boolean ENABLE_PIECE_MANAGER = false;
 
+    public SupportedMotors WRIST_MOTOR_TYPE =  SupportedMotors.CAN_SPARK_MAX;
+    public int WRIST_MOTOR_ID = 0;
+    public String WRIST_MOTOR_CANBUS = "rio";
+    public boolean WRIST_MANUAL = true;
+    public boolean WRIST_INTAKE = false;
+    public PID WRISTPID = EMPTY_PID;
+
 
 
     //Elevator
@@ -96,6 +103,7 @@ public abstract class DefaultConfig {
     public boolean ARM_ELEVATOR_MANUAL = true;
     public boolean ARM_MANUAL = true;
     public boolean ENABLE_ARM = true;
+    public boolean ENABLE_WRIST = true;
     public PID ARM_PID = EMPTY_PID;
 
     public SupportedIMU IMU_TYPE = SupportedIMU.PIGEON;

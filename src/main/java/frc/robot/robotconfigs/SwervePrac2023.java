@@ -20,13 +20,23 @@ public class SwervePrac2023 extends DefaultConfig{
         ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
-        ENABLE_APRILTAG = true;
+        ENABLE_APRILTAG = false;
         ENABLE_PIECE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
+
         ENABLE_SPIKE = true;
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
+
+
+        //Wrist
+        WRIST_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
+        WRIST_MOTOR_ID = 36;
+        WRIST_MOTOR_CANBUS = "rio";
+        WRIST_MANUAL = true;
+        ENABLE_WRIST = true;
+        WRISTPID = new PID(0.1 , 0.0001, 0.03);
 
         //Misc
         ENABLE_VISION = true;
@@ -56,8 +66,8 @@ public class SwervePrac2023 extends DefaultConfig{
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-          INTAKE_MOTOR_LEFT_ID = 36;
-          INTAKE_MOTOR_RIGHT_ID = 35;
+          INTAKE_MOTOR_LEFT_ID = 33;
+          INTAKE_MOTOR_RIGHT_ID = 37;
           INTAKE_MOTOR_CANBUS = "rio";
           INTAKE_MANUAL = true;
           ENABLE_INTAKE = true;

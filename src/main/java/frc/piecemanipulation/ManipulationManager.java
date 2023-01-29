@@ -7,6 +7,7 @@ import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 import frc.robot.Robot;
 
+import static frc.robot.Robot.arm;
 import static frc.robot.Robot.robotSettings;
 
 
@@ -55,51 +56,65 @@ public class ManipulationManager implements ISubsystem {
 
         if(!robotSettings.ARM_ELEVATOR_MANUAL) {
             if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                Robot.arm.moveArm(-5);
+                goTo(-2, -5);
                 elevateGoal = -2;
+                armGoal = -5;
             }
             if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_5) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                Robot.arm.moveArm(-62.5);
                 elevateGoal = -8.5;
+                armGoal = -62.5;
             }
             if (panel.get(ControllerEnums.ButtonPanelButtons2022.PIVOT_PISTON_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                Robot.arm.moveArm(-63);
                 elevateGoal = -50;
+                armGoal = -63;
             }
 
             if(!cubeConeMode) {
+
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.arm.moveArm(-235);
                     elevateGoal = -5;
+                    armGoal = -235;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.PIVOT_PISTON_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.arm.moveArm(-248);
                     elevateGoal = -5;
+                    armGoal = -248;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.arm.moveArm(-275);
                     elevateGoal = -5;
+                    armGoal = -275;
                 }
             }
             if(cubeConeMode) {
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.arm.moveArm(-225);
                     elevateGoal = -5;
+                    armGoal = -225;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.PIVOT_PISTON_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.arm.moveArm(-205);
                     elevateGoal = -50;
+                    armGoal = -205;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.arm.moveArm(-275);
                     elevateGoal = -5;
+                    armGoal = -275;
                 }
-            }
-            if (checkArmCollision()) {
-            } else if (checkArmPassover()) {
-                Robot.elevator.moveElevator(-50);
-            } else {
+
+                Robot.arm.moveArm(armGoal);
+
+                if (checkArmCollision()) {
+                } else if (checkArmPassover()) {
+                    Robot.elevator.moveElevator(-50);
+                } else {
                     Robot.elevator.moveElevator(elevateGoal);
+                }
+
+            }
+            if(robotSettings.ENABLE_WRIST){
+                //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
+                if(arm.arm.getRotations() >= -137){
+                    Robot.wrist.wrist.moveAtPosition(0);
+                }else {
+                    Robot.wrist.wrist.moveAtPosition(5);
+                }
             }
         }
     }
@@ -150,7 +165,7 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200){
+        if (-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -210){
             return true;
         }
         return false;
@@ -161,6 +176,18 @@ public class ManipulationManager implements ISubsystem {
            return true;
         }
         return false;
+    }
+
+    public void goTo(double elevator, double arm){
+
+        Robot.arm.moveArm(arm);
+
+        if (checkArmCollision()) {
+        } else if (checkArmPassover()) {
+            Robot.elevator.moveElevator(-50);
+        } else {
+            Robot.elevator.moveElevator(elevator);
+        }
     }
 
     public void changeCubeCone(boolean cubeCone){

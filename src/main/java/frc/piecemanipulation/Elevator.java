@@ -7,6 +7,7 @@ import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
 import frc.misc.PID;
 import frc.misc.SubsystemStatus;
+import frc.misc.UserInterface;
 import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
@@ -149,5 +150,6 @@ public class Elevator implements ISubsystem {
 
     public void moveElevator(double position){
         elevate.moveAtPosition(position);
+        UserInterface.smartDashboardPutNumber("trying to go to: ", position);
     }
 }

@@ -17,8 +17,15 @@ public enum AutonRoutines {
             new AutonWaypoint(new Point(0, 0))
     ),
     DRIVE_OFF_INIT_LINE(
-            new AutonWaypoint(new Point(0, 0), 1, DRIVE_TO, 1),
-            new AutonWaypoint(new Point(8, -2), 1, DRIVE_TO, 90)
+            new AutonWaypoint(new Point(-8, 2.5), 1, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-17, 2.7), 1, DRIVE_TO, 1)
+    ),
+    PID_AND_APRIL_TEST_2(
+            new AutonWaypoint(new Point(-7.5, 2.5), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-7.5, 8), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-7.5, 2.5), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-17, 2.7), .5, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(-7.5, 2.5), .5, DRIVE_TO, 1)
     ),
     PID_AND_APRIL_TEST(
             new AutonWaypoint(new Point(-6, 2), .5, DRIVE_TO, 1),
@@ -40,7 +47,7 @@ public enum AutonRoutines {
             new AutonWaypoint(new Point(-6, 10), .5, DRIVE_TO, 1)
     ),
     SPIN_TEST(
-            new AutonWaypoint(new Point(0, 0), 1, DRIVE_TO, 90)
+            new AutonWaypoint(new Point(7.5, 3), 1, DRIVE_TO, 90)
     ),
     NEO_DRIVE(
             new AutonWaypoint(new Point(0,0)),
