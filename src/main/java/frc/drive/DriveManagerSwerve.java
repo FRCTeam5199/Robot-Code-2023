@@ -57,7 +57,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private Translation2d backRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
     private PIDController FRpid, BRpid, BLpid, FLpid;
-    private PIDController limeLightPid;
+    private PIDController limeLightPid, leveling;
     private BaseController xbox;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
 
@@ -75,6 +75,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         setupSteeringEncoders();
         setKin();
         limeLightPid = new PIDController(robotSettings.limeLightPid.P, robotSettings.limeLightPid.I, robotSettings.limeLightPid.D);
+        leveling =  new PIDController(robotSettings.leveling.P, robotSettings.leveling.I, robotSettings.leveling.D);
 
         if (robotSettings.ENABLE_VISION) {
             visionCamera = IVision.manufactureGoalCamera(robotSettings.GOAL_CAMERA_TYPE);
@@ -176,9 +177,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
 
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN){
-            forwards = guidance.imu.relativeRoll() * -.05;
-            leftwards = guidance.imu.relativePitch() * -.05;
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            forwards = -leveling.calculate(guidance.imu.relativeRoll());
+            leftwards = guidance.imu.relativePitch() * -.01;
         }
         //System.out.println(forwards);
         driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
