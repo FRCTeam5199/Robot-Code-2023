@@ -20,7 +20,7 @@ public class SwervePrac2023 extends DefaultConfig{
         ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
-        ENABLE_APRILTAG = false;
+        ENABLE_APRILTAG = true;
         ENABLE_PIECE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
 
@@ -44,7 +44,7 @@ public class SwervePrac2023 extends DefaultConfig{
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
         limeLightPid = new PID(0.022, 0.0, 0.0);
-        leveling = new PID(0.01,0.0,0.002);
+        leveling = new PID(0.0105,0.0,0.002);
 
         //Elevator
         ENABLE_ELEVATOR = true;
@@ -54,8 +54,8 @@ public class SwervePrac2023 extends DefaultConfig{
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ELEVATOR_SPROCKET_DIAMETER = 2D;
         ELEVATORPID =  new PID(.08, 0.0, 0.0);
-
         ARM_ELEVATOR_MANUAL = true;
+
         //ARM
          ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
           ARM_MOTOR_ID = 31;

@@ -218,6 +218,12 @@ public class DriveManagerStandard extends AbstractDriveManager {
         initMisc();
     }
 
+    @Override
+    public boolean leveling() {
+        return true;
+
+    }
+
     /**
      * Drives the bot based on the requested left and right speed
      *

@@ -16,6 +16,10 @@ public enum AutonSpecialActions {
      */
     ROTATE_ROBOT,
     /**
+        Intarg will not be used
+     */
+    AUTO_LEVEL,
+    /**
      * If intarg is != 0, will swerve, otherwise will west coast
      */
     DRIVE_TO;

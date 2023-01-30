@@ -1,7 +1,6 @@
 package frc.drive;
 
 import com.ctre.phoenix.sensors.CANCoder;
-import com.slack.api.model.User;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -10,7 +9,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.GenericEntry;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.InitializationFailureException;
@@ -20,7 +18,6 @@ import frc.misc.UserInterface;
 import frc.motors.SwerveMotorController;
 import frc.selfdiagnostics.MotorDisconnectedIssue;
 import frc.sensors.camera.IVision;
-import frc.telemetry.imu.WrappedPigeonIMU;
 
 import java.util.Objects;
 
@@ -60,6 +57,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private PIDController limeLightPid, leveling;
     private BaseController xbox;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
+    private double leveling_auto = 0;
 
     public DriveManagerSwerve() {
         super();
@@ -300,7 +298,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void driveMPS(double xMeters, double yMeters, double rotation) { // after here
         ChassisSpeeds speeds;
-
+        System.out.println("xmeters: + " + xMeters + "ymeters: " + yMeters + "rotation + " + rotation);
         //x+ m/s forwards, y+ m/s left, omega+ rad/sec ccw
         if (useLocalOrientation()) {
             speeds = new ChassisSpeeds(xMeters, yMeters, rotation);
@@ -326,7 +324,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
         moduleStates = kinematics.toSwerveModuleStates(speeds);
-
+        System.out.println("notice me");
         if (xbox.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) { // ignore for now
             moduleStates = kinematics.toSwerveModuleStates(speeds, frontRightLocation);
         } else if (dorifto()) {
@@ -590,6 +588,20 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public void resetWheels() {
         driveMPS(0.005, 0, 0);
     }
+    @Override
+    public boolean leveling(){
+        if(leveling_auto == 0){
+            leveling_auto = guidance.imu.relativeYaw();
+        }
 
+        forwards = -leveling.calculate(guidance.imu.relativeRoll());
+        System.out.println("ROLL: " + guidance.imu.absoluteRoll());
+        System.out.println("forwards: " + forwards);
+        System.out.println("rot: " + adjustedRotation((guidance.imu.relativeYaw() - leveling_auto) * -.05));
+        drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+
+        return Math.abs(guidance.imu.relativeYaw()) <= 0.5;
+    }
 }
+
 

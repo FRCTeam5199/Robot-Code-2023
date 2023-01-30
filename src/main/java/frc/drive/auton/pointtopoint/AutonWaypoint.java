@@ -9,6 +9,7 @@ public class AutonWaypoint {
     public final Point LOCATION;
     public final double SPEED;
     public final AutonSpecialActions SPECIAL_ACTION;
+    //public AutonSpecialActions SPECIAL_ACTION_2 = NONE;
     public final int INTARG;
 
     public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction, int intarg) {
@@ -17,7 +18,15 @@ public class AutonWaypoint {
         SPECIAL_ACTION = specialAction;
         INTARG = intarg;
     }
-
+    /*
+    public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction, int intarg, AutonSpecialActions specialActions2) {
+        LOCATION = pos;
+        SPEED = speed;
+        SPECIAL_ACTION = specialAction;
+        INTARG = intarg;
+        SPECIAL_ACTION_2 = specialActions2;
+    }
+    */
     public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction) {
         this(pos, speed, specialAction, 0);
     }

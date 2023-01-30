@@ -95,6 +95,10 @@ public class AutonManager extends AbstractAutonManager {
             DriverStation.reportWarning("IN TOLERANCE", false);
             System.out.println("Special Action: " + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION.toString());
             switch (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION) {
+                case AUTO_LEVEL:
+                    System.out.println("TRYINginging");
+                    specialActionComplete = drivingChild.leveling();
+                    break;
                 case DRIVE_TO:
                 case NONE:
                     //litterally do nothing
@@ -103,6 +107,19 @@ public class AutonManager extends AbstractAutonManager {
                 default:
                     throw new UnsupportedOperationException("Cringe. You're unable to use the Special Action " + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION.name() + " in your auton.");
             }
+            /*
+            switch (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2) {
+                case AUTO_LEVEL:
+                    drivingChild.leveling();
+                case DRIVE_TO:
+                case NONE:
+                    //litterally do nothing
+                    specialActionComplete = true;
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Cringe. You're unable to use the Special Action 2" + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2.name() + " in your auton.");
+            }*/
+
             if (specialActionComplete) {
                 if (++autonPath.currentWaypoint < autonPath.WAYPOINTS.size()) {
                     isInTolerance = false;
@@ -132,10 +149,15 @@ public class AutonManager extends AbstractAutonManager {
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
         boolean angleTolerance =  Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()) <= (robotSettings.AUTON_TOLERANCE * 10.0);
         boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE, point);
+        if(Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 1){
+            inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE*6, point);
+        }
         UserInterface.smartDashboardPutBoolean("angle tolerance", angleTolerance);
         UserInterface.smartDashboardPutBoolean("inTolerance", inTolerance);
-        if (point.X <= -9000 && point.Y <= -9000)
+        if (point.X <= -9000 && point.Y <= -9000) {
             inTolerance = true;
+            angleTolerance = true;
+        }
         UserInterface.smartDashboardPutNumber("rotOffset", -rotationOffset);
         UserInterface.smartDashboardPutString("Current Position", here.toString());
         if (!(inTolerance && angleTolerance)) {
@@ -161,10 +183,14 @@ public class AutonManager extends AbstractAutonManager {
                 //drivingChild.drivePure(robotSettings.AUTO_SPEED * speed /* (robotSettings.INVERT_DRIVE_DIRECTION ? -1 : 0)*/, ROT_PID.calculate(targetHeading) * -robotSettings.AUTO_ROTATION_SPEED);
             }
         } else {
-            if(permitSwiveling) {
-                drivingChild.drivePure(0, 0, 0);
-            }else {
-                drivingChild.drivePure(0, 0);
+            if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION != AutonSpecialActions.AUTO_LEVEL) {
+                if (permitSwiveling) {
+                    drivingChild.drivePure(0, 0, 0);
+                } else {
+
+                    drivingChild.drivePure(0, 0);
+
+                }
             }
             System.out.println("Robot Shouldnt be moving");
             if (robotSettings.DEBUG)
