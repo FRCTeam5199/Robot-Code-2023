@@ -18,6 +18,7 @@ import frc.drive.DriveManagerSwerve;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
+import frc.robot.Robot;
 import org.photonvision.*;
 import edu.wpi.first.math.*;
 import frc.telemetry.RobotTelemetrySwivel;
@@ -39,15 +40,21 @@ public class AprilTagManager implements ISubsystem {
     RobotTelemetrySwivel swiveltelem;
     Rotation2d initrotate = new Rotation2d(0);
     AbstractDriveManager driver;
-    PhotonCamera photonCamera;
+    PhotonCamera photonCamera1;
+    PhotonCamera photonCamera2;
+    PhotonCamera photonCamera3;
+    PhotonCamera photonCamera4;
 
     ArrayList<SwerveModulePosition> swervearray;
-    Config config;
 
     Translation2d wheels = new Translation2d(10.5, 12.5);
 
 
-    static final Transform3d Campos = new Transform3d(new Translation3d(-18*(0.0254), 2.2*(0.0254), 0), new Rotation3d(0, 0, 0));
+    static final Transform3d campos1 = new Transform3d(new Translation3d(18*(0.0254), -2*(0.0254), 0), new Rotation3d(0, 0, 0));
+    static final Transform3d campos2 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    static final Transform3d campos3 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    static final Transform3d campos4 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+
 
 
     // Everything to do with the april tag and Fields is in inches.
@@ -61,6 +68,7 @@ public class AprilTagManager implements ISubsystem {
 
     AprilTagFieldLayout fieldLayout;
     ArrayList<Pair<PhotonCamera, Transform3d>> cams;
+    ArrayList<PhotonCamera> cameras;
     RobotPoseEstimator.PoseStrategy poseStrategy;
     RobotPoseEstimator robotPoseEstimator;
     SwerveDriveKinematics swervekin;
@@ -93,15 +101,25 @@ public class AprilTagManager implements ISubsystem {
         ApriList.add(tag7);
         ApriList.add(tag8);
 
-        photonCamera = new PhotonCamera("Global_Shutter_Camera");
+        photonCamera1 = new PhotonCamera("Global_Shutter_Camera");
+        if(Robot.robotSettings.FOUR_CAMERA) {
+            photonCamera2 = new PhotonCamera("back");
+            photonCamera3 = new PhotonCamera("left");
+            photonCamera4 = new PhotonCamera("right");
+        }
         try {
             fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
         }catch(IOException e) {
             fieldLayout = new AprilTagFieldLayout(ApriList, fieldlength, fieldwidth);
         }
-        cams = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-        cams.add(new Pair<PhotonCamera, Transform3d>(photonCamera, Campos));
 
+        cams = new ArrayList<Pair<PhotonCamera, Transform3d>>();
+        cams.add(new Pair<>(photonCamera1, campos1));
+        if(Robot.robotSettings.FOUR_CAMERA) {
+            cams.add(new Pair<>(photonCamera2, campos2));
+            cams.add(new Pair<>(photonCamera3, campos3));
+            cams.add(new Pair<>(photonCamera4, campos4));
+        }
         SwerveModulePosition swervemodpos1 = new SwerveModulePosition(16.43, initrotate);
         SwerveModulePosition swervemodpos2 = new SwerveModulePosition(16.43, initrotate);
         SwerveModulePosition swervemodpos3 = new SwerveModulePosition(16.43, initrotate);

@@ -130,7 +130,9 @@ public class SwervePrac2023 extends DefaultConfig{
         SWERVE_DRIVE_BL = 7;
         SWERVE_TURN_BL = 8;
 
-
+        // Camera Settings
+        ONE_CAMERA = true;
+        FOUR_CAMERA = false;
 
         // limelight
         ENABLE_VISION = true;

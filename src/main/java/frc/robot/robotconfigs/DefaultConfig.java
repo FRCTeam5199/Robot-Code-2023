@@ -55,6 +55,10 @@ public abstract class DefaultConfig {
     public PID limeLightPid = EMPTY_PID;
     public PID leveling = EMPTY_PID;
 
+    //Camera Settings
+    public boolean ONE_CAMERA = true;
+    public boolean FOUR_CAMERA = false;
+
 
     //SHOOTER
     public IVision.SupportedVision GOAL_CAMERA_TYPE = IVision.SupportedVision.PHOTON;
