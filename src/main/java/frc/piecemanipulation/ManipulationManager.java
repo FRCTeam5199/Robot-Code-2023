@@ -6,6 +6,7 @@ import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 import frc.robot.Robot;
+import frc.misc.LEDs;
 
 import static frc.robot.Robot.arm;
 import static frc.robot.Robot.robotSettings;
@@ -70,7 +71,7 @@ public class ManipulationManager implements ISubsystem {
             }
 
             if(!cubeConeMode) {
-
+                LEDs.yellow();
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -5;
                     armGoal = -235;

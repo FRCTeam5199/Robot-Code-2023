@@ -12,8 +12,8 @@ import static frc.robot.Robot.robotSettings;
 public class LEDs {
     private static final Random random = new Random(System.currentTimeMillis());
     private final boolean drawBackGround = true;
-    private AddressableLED ledConfig;
-    private AddressableLEDBuffer ledBuffer;
+    private static AddressableLED ledConfig;
+    private static AddressableLEDBuffer ledBuffer;
     private int chaseLastLEDSet = 0;
 
     public void init() {
@@ -28,6 +28,26 @@ public class LEDs {
         //LEDEnums.CHASE_RGB.runLightFunction(new int[][]{{22, 71, 142}, {0, 0, 0}}); //Robot Dolphins color ig
         LEDEnums.EYES_DESERVE_TO_BLEED.runLightFunction(null);
         ledConfig.setData(ledBuffer);
+    }
+
+    //makes the length of the led yellow
+    public static void yellow() {
+        for(var i = 0; i < ledBuffer.getLength(); i++) {
+            ledBuffer.setRGB(i, 255, 255, 0);
+        }
+        ledConfig.setLength(ledBuffer.getLength());
+        ledConfig.setData(ledBuffer);
+        ledConfig.start();
+    }
+
+    //makes the length of the led purple
+    public void purple() {
+        for(var i = 0; i < ledBuffer.getLength(); i++) {
+            ledBuffer.setRGB(i, 138, 43, 226);
+        }
+        ledConfig.setLength(ledBuffer.getLength());
+        ledConfig.setData(ledBuffer);
+        ledConfig.start();
     }
 
     public enum LEDEnums {
