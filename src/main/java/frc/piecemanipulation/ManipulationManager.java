@@ -4,19 +4,26 @@ import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
-import frc.misc.SubsystemStatus;
-import frc.robot.Robot;
 import frc.misc.LEDs;
+import frc.misc.SubsystemStatus;
+import frc.misc.LEDs.LEDEnums;
+import frc.robot.Robot;
 
 import static frc.robot.Robot.arm;
 import static frc.robot.Robot.robotSettings;
 
+import java.io.IOError;
+import java.io.IOException;
+
 
 public class ManipulationManager implements ISubsystem {
+    public static LEDs leds;
     public BaseController panel, xbox2;
     public double armGoal = 0;
     public double elevateGoal = 0;
     public boolean cubeConeMode = true; // true =  Cone, false  = Cube
+    int[] rgby = {255, 255, 0};
+    int[] rgbp = {138, 43, 226};
 
     public ManipulationManager(){
         addToMetaList();
@@ -27,6 +34,10 @@ public class ManipulationManager implements ISubsystem {
     public void init() {
         enableControllers();
         cubeConeMode = true;
+        if(robotSettings.ENABLE_LEDS){
+            leds = new LEDs();
+            leds.init();
+        }
     }
 
     @Override
@@ -43,8 +54,20 @@ public class ManipulationManager implements ISubsystem {
     public void updateTeleop() {
         if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN)
             changeCubeCone(true);
+            //ledenum(rgby);
+            try{
+            leds.yellow();
+            }catch(IOError e){
+                System.out.println("Yellow LED not working: most likely bc ENABLE_LEDS is false");
+            }
         if (panel.get(ControllerEnums.ButtonPanelButtons2022.LOW_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN)
             changeCubeCone(false);
+            //ledenum(rgbp);
+            try{
+            leds.purple();
+            }catch(IOError e){
+                System.out.println("Purple LED not working: most likely bc ENABLE_LEDS is false");
+            }
 
 
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
@@ -71,7 +94,7 @@ public class ManipulationManager implements ISubsystem {
             }
 
             if(!cubeConeMode) {
-                LEDs.yellow();
+                
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -5;
                     armGoal = -235;
@@ -86,6 +109,7 @@ public class ManipulationManager implements ISubsystem {
                 }
             }
             if(cubeConeMode) {
+                
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -5;
                     armGoal = -225;
@@ -193,5 +217,9 @@ public class ManipulationManager implements ISubsystem {
 
     public void changeCubeCone(boolean cubeCone){
         cubeConeMode = cubeCone;
+    }
+
+    public static void ledenum(int rgbl[]){
+        LEDEnums rgbEnums = LEDEnums.SOLID_COLOR_RGB;
     }
 }

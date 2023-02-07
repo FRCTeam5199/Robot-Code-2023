@@ -12,8 +12,8 @@ import static frc.robot.Robot.robotSettings;
 public class LEDs {
     private static final Random random = new Random(System.currentTimeMillis());
     private final boolean drawBackGround = true;
-    private static AddressableLED ledConfig;
-    private static AddressableLEDBuffer ledBuffer;
+    private  AddressableLED ledConfig;
+    private  AddressableLEDBuffer ledBuffer;
     private int chaseLastLEDSet = 0;
 
     public void init() {
@@ -31,11 +31,10 @@ public class LEDs {
     }
 
     //makes the length of the led yellow
-    public static void yellow() {
+    public void yellow() {
         for(var i = 0; i < ledBuffer.getLength(); i++) {
             ledBuffer.setRGB(i, 255, 255, 0);
         }
-        ledConfig.setLength(ledBuffer.getLength());
         ledConfig.setData(ledBuffer);
         ledConfig.start();
     }
@@ -45,7 +44,6 @@ public class LEDs {
         for(var i = 0; i < ledBuffer.getLength(); i++) {
             ledBuffer.setRGB(i, 138, 43, 226);
         }
-        ledConfig.setLength(ledBuffer.getLength());
         ledConfig.setData(ledBuffer);
         ledConfig.start();
     }
