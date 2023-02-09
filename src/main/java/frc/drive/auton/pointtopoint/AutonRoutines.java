@@ -6,6 +6,7 @@ import frc.drive.auton.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import frc.misc.LEDs;
 
 import static frc.drive.auton.pointtopoint.AutonSpecialActions.*;
 

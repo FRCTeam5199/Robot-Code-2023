@@ -48,6 +48,22 @@ public class LEDs {
         ledConfig.start();
     }
 
+    public void red() {
+        for(var i = 0; i < ledBuffer.getLength(); i++) {
+            ledBuffer.setRGB(i, 255, 0, 0);
+        }
+        ledConfig.setData(ledBuffer);
+        ledConfig.start();
+    }
+
+    public void blue() {
+        for(var i = 0; i < ledBuffer.getLength(); i++) {
+            ledBuffer.setRGB(i, 0, 0, 255);
+        }
+        ledConfig.setData(ledBuffer);
+        ledConfig.start();
+    }
+
     public enum LEDEnums {
         //Really basic, set the background
         SOLID_COLOR_RGB((RGB) -> {
