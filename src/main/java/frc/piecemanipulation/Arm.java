@@ -125,10 +125,10 @@ public class Arm implements ISubsystem {
     public void manuelDrive(){
         if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
-            arm.moveAtVoltage(6);
+            arm.moveAtVoltage(10);
         }else if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("Y is being pressed");
-            arm.moveAtVoltage(-6);
+            arm.moveAtVoltage(-10);
         }else{
             arm.moveAtVoltage(0);
         }

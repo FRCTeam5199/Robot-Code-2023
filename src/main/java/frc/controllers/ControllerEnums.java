@@ -97,4 +97,22 @@ public class ControllerEnums {
             return AXIS_VALUE;
         }
     }
+    //Row # colum # is writen as R#C#
+    public enum MidiController implements ControllerInterfaces.IDiscreteInput {
+        R1C1(1), R1C2(2), R1C3(3),  R1C4(4), R1C5(5), R1C6(6), R1C7(7),  R1C8(8),
+        R2C1(9), R2C2(10), R2C3(11),  R2C4(12), R2C5(13), R2C6(14), R2C7(15),  R2C8(16),
+        R3C1(17), R3C2(18), R3C3(19),  R3C4(20), R3C5(21), R3C6(22), R3C7(23),  R3C8(24),
+        R4C1(25), R4C2(26), R4C3(27),  R4C4(28), R4C5(29), R4C6(30), R4C7(31),  R4C8(32);
+
+        public final int AXIS_VALUE;
+
+        MidiController(int value) {
+            this.AXIS_VALUE = value;
+        }
+
+        @Override
+        public int getChannel() {
+            return AXIS_VALUE;
+        }
+    }
 }
