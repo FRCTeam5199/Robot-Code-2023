@@ -1,6 +1,5 @@
 package frc.piecemanipulation;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
@@ -10,10 +9,6 @@ import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 import frc.motors.VictorMotorController;
 import frc.robot.Robot;
-import frc.piecemanipulation.ManipulationManager;
-import frc.robot.robotconfigs.*;
-import frc.telemetry.imu.AbstractIMU;
-import frc.misc.Pneumatics;
 
 import static frc.robot.Robot.*;
 
@@ -103,6 +98,8 @@ public class Intake implements ISubsystem {
         }
         intakeLeft.setCurrentLimit(20);
         intakeRight.setCurrentLimit(20);
+        intakeRight.setBrake(false);
+        intakeLeft.setBrake(false);
     }
 
     public void createControllers(){
@@ -114,12 +111,12 @@ public class Intake implements ISubsystem {
         if(!manipulationManager.cubeConeMode) {
             if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 //System.out.println("X is being pressed");
-                intakeRight.moveAtVoltage(-8);
-                intakeLeft.moveAtVoltage(8);
+                intakeRight.moveAtVoltage(12);
+                intakeLeft.moveAtVoltage(-12);
             } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 //System.out.println("Y is being pressed");
-                intakeRight.moveAtVoltage(4);
-                intakeLeft.moveAtVoltage(-4);
+                intakeRight.moveAtVoltage(-12);
+                intakeLeft.moveAtVoltage(12);
             } else {
                 intakeRight.moveAtVoltage(0);
                 intakeLeft.moveAtVoltage(0);
@@ -144,5 +141,11 @@ public class Intake implements ISubsystem {
             Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
         }
         */
+    }
+    public void intakeIn(){
+        Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+    }
+    public void intakeOut(){
+        Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
     }
 }

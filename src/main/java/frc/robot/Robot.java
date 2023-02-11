@@ -209,7 +209,7 @@ public class Robot extends TimedRobot {
             deleteFolder(Filesystem.getDeployDirectory());
             throw new RuntimeException("Deleted deploy dir contents");
         }
-
+        driver.updateGeneric();
     /*
         for (AbstractMotorController motor : AbstractMotorController.motorList) {
             if (motor.getMotorTemperature() > 5) {

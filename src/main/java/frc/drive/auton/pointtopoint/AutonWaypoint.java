@@ -9,26 +9,27 @@ public class AutonWaypoint {
     public final Point LOCATION;
     public final double SPEED;
     public final AutonSpecialActions SPECIAL_ACTION;
-    //public AutonSpecialActions SPECIAL_ACTION_2 = NONE;
-    public final int INTARG;
+    public final int INTARG, INTARG2, INTARG3;
+    public final AutonSpecialActions SPECIAL_ACTION_2;
 
-    public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction, int intarg) {
+
+    public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction, int intarg, AutonSpecialActions specialActions2, int intarg2, int intarg3) {
         LOCATION = pos;
         SPEED = speed;
         SPECIAL_ACTION = specialAction;
         INTARG = intarg;
-    }
-    /*
-    public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction, int intarg, AutonSpecialActions specialActions2) {
-        LOCATION = pos;
-        SPEED = speed;
-        SPECIAL_ACTION = specialAction;
-        INTARG = intarg;
+        INTARG2 = intarg2;
+        INTARG3 = intarg3;
         SPECIAL_ACTION_2 = specialActions2;
     }
-    */
+
+
     public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction) {
-        this(pos, speed, specialAction, 0);
+        this(pos, speed, specialAction, 0, NONE, 0, 0);
+    }
+
+    public AutonWaypoint(Point pos, double speed, AutonSpecialActions specialAction, int intarg) {
+        this(pos, speed, specialAction, intarg, NONE, 0, 0);
     }
 
     public AutonWaypoint(double x, double y, double speed) {
@@ -55,7 +56,10 @@ public class AutonWaypoint {
                 new Point(-9999, -9999),
                 1,
                 action,
-                intarg
+                intarg,
+                 NONE,
+                0,
+                0
         );
     }
 
@@ -64,7 +68,14 @@ public class AutonWaypoint {
                 new Point(-9999, -9999),
                 1,
                 action,
+                0,
+                 NONE,
+                0,
                 0
         );
+    }
+
+    public AutonWaypoint(Point point, double i, AutonSpecialActions driveTo, int i1, AutonSpecialActions specialActions) {
+        this(point,i,driveTo,i1,specialActions,0,0);
     }
 }

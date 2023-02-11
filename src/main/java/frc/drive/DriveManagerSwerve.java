@@ -66,7 +66,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void init() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        createPIDControllers(new PID(0.0042, 0.00000, 0.00005));
+        createPIDControllers(new PID(0.01, 0.0, 0.0));
         createDriveMotors();
         setDrivingPIDS(new PID(0.0002, 0, 0.0001, 0.03));
         setCANCoder();
@@ -89,7 +89,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void updateTest() {
-        //updateGeneric();
+        updateGeneric();
         //if (robotSettings.DEBUG && DEBUG) {
             System.out.println(FRcoder.getAbsolutePosition() + " FR " /*+ driverFR.steering.getRotations()*/);
             System.out.println(FLcoder.getAbsolutePosition() + " FL " /* + driverFL.steering.getRotations()*/);
@@ -160,7 +160,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             if(visionCamera.hasValidTarget()) {
-                System.out.println("AIMING");
+                //System.out.println("AIMING");
                 leftwards = limeLightPid.calculate(visionCamera.getAngle());
             }
         } else {
@@ -298,7 +298,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void driveMPS(double xMeters, double yMeters, double rotation) { // after here
         ChassisSpeeds speeds;
-        System.out.println("xmeters: + " + xMeters + "ymeters: " + yMeters + "rotation + " + rotation);
+        //System.out.println("xmeters: + " + xMeters + "ymeters: " + yMeters + "rotation + " + rotation);
         //x+ m/s forwards, y+ m/s left, omega+ rad/sec ccw
         if (useLocalOrientation()) {
             speeds = new ChassisSpeeds(xMeters, yMeters, rotation);
@@ -309,7 +309,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         }
         driveWithChassisSpeeds(speeds);
     }
-
     @Override
     public void drivePure(double forward, double omega) {
         drivePure(forward, 0, omega);
@@ -324,7 +323,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
         moduleStates = kinematics.toSwerveModuleStates(speeds);
-        System.out.println("notice me");
+        //System.out.println("notice me");
         if (xbox.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) { // ignore for now
             moduleStates = kinematics.toSwerveModuleStates(speeds, frontRightLocation);
         } else if (dorifto()) {
@@ -352,14 +351,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void updateGeneric() {
-        //UserInterface.smartDashboardPutNumber("DriverFL Absoluto positon", driverFL.driver.getRotations());
-        //UserInterface.smartDashboardPutNumber("DriverFR Absoluto positon", driverFR.driver.getRotations());
-        //UserInterface.smartDashboardPutNumber("DriverBL Absoluto positon", driverBL.driver.getRotations());
-        //UserInterface.smartDashboardPutNumber("DriverBR Absoluto positon", driverBR.driver.getRotations());
-        //UserInterface.smartDashboardPutNumber("DriverFL position", Math.toRadians(FLcoder.getAbsolutePosition()));
-        //UserInterface.smartDashboardPutNumber("DriverFR position", Math.toRadians(FRcoder.getAbsolutePosition()));
-        //UserInterface.smartDashboardPutNumber("DriverBL position", Math.toRadians(BLcoder.getAbsolutePosition()));
-        //UserInterface.smartDashboardPutNumber("DriverBR position", Math.toRadians(BRcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("DriverFL Absoluto positon", driverFL.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverFR Absoluto positon", driverFR.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverBL Absoluto positon", driverBL.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverBR Absoluto positon", driverBR.driver.getRotations());
+        UserInterface.smartDashboardPutNumber("DriverFL position", Math.toRadians(FLcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("DriverFR position", Math.toRadians(FRcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("DriverBL position", Math.toRadians(BLcoder.getAbsolutePosition()));
+        UserInterface.smartDashboardPutNumber("DriverBR position", Math.toRadians(BRcoder.getAbsolutePosition()));
         UserInterface.smartDashboardPutNumber("Field X", guidance.fieldX());
         UserInterface.smartDashboardPutNumber("Field Y", guidance.fieldY());
         MotorDisconnectedIssue.handleIssue(this, driverFL.driver);
@@ -459,10 +458,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         FRcoder = new CANCoder(12);
         BRcoder = new CANCoder(13);
         BLcoder = new CANCoder(14);
-        FLcoder.configMagnetOffset(-16.5234375);
-        FRcoder.configMagnetOffset(-25.048828125);
-        BLcoder.configMagnetOffset(-169.716796875);
-        BRcoder.configMagnetOffset(-56.337890625);
+        FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
+        FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
+        BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
+        BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));
 
     }
 
@@ -494,7 +493,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             return false;
         } else {
             motorRot = 0;
-            resetWheels();
+            lockWheels();
             //System.out.println("we are all done in here");
             return true;
         }
@@ -516,8 +515,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             return false;
         } else {
             motorRot = 0;
-            resetWheels();
-            System.out.println("we are all done in here");
+            lockWheels();
+           // System.out.println("we are all done in here");
             return true;
         }
     }
@@ -537,8 +536,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             return false;
         } else {
             motorRot = 0;
-            resetWheels();
-            System.out.println("we are all done in here");
+            lockWheels();
+            //System.out.println("we are all done in here");
             return true;
         }
     }
@@ -557,7 +556,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             //System.out.println("The original degree was: " + orgDeg + "The Current Degree was: " + guidance.imu.relativeYaw());
             return false;
         } else {
-            resetWheels();
+            lockWheels();
             orgDeg = 0;
             System.out.println("finished turning");
             return true;
@@ -571,27 +570,27 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if (!visionCamera.hasValidTarget()) {
             //System.out.println("not target found");
             if (limelightcounter == 1) {
-                resetWheels();
+                lockWheels();
                 return true;
             }
             limelightcounter++;
         }
         if (Math.abs(visionCamera.getAngle()) <= 4) {
             //System.out.println("inrange of limelight");
-            resetWheels();
+            lockWheels();
             return true;
         }
         System.out.println("turning");
         return false;
     }
-
-    public void resetWheels() {
-        driveMPS(0.005, 0, 0);
+    @Override
+    public void lockWheels() {
+        driveMPS(0.0, 0, 0.01);
     }
     @Override
     public boolean leveling(){
         if(leveling_auto == 0){
-            leveling_auto = guidance.imu.relativeYaw();
+            leveling_auto = guidance.imu.relativeRoll();
         }
 
         forwards = -leveling.calculate(guidance.imu.relativeRoll());
@@ -600,7 +599,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         System.out.println("rot: " + adjustedRotation((guidance.imu.relativeYaw() - leveling_auto) * -.05));
         drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
 
-        return Math.abs(guidance.imu.relativeYaw()) <= 0.5;
+        return Math.abs(guidance.imu.relativeRoll()) <= 0.5;
     }
 }
 

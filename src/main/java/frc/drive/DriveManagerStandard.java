@@ -219,6 +219,11 @@ public class DriveManagerStandard extends AbstractDriveManager {
     }
 
     @Override
+    public void lockWheels() {
+
+    }
+
+    @Override
     public boolean leveling() {
         return true;
 

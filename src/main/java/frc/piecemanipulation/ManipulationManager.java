@@ -12,7 +12,7 @@ import static frc.robot.Robot.robotSettings;
 
 
 public class ManipulationManager implements ISubsystem {
-    public BaseController panel, xbox2;
+    public BaseController panel, xbox2, TCannon;
     public double armGoal = 0;
     public double elevateGoal = 0;
     public boolean cubeConeMode = true; // true =  Cone, false  = Cube
@@ -55,58 +55,61 @@ public class ManipulationManager implements ISubsystem {
 
 
         if(!robotSettings.ARM_ELEVATOR_MANUAL) {
+            //spike pickup
             if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                goTo(-2, -5);
-                elevateGoal = -2;
-                armGoal = -5;
+                elevateGoal = -1;
+                armGoal = -13;
             }
             if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_5) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                elevateGoal = -8.5;
-                armGoal = -62.5;
+                elevateGoal = -2;
+                armGoal = -53;
             }
             if (panel.get(ControllerEnums.ButtonPanelButtons2022.PIVOT_PISTON_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 elevateGoal = -50;
                 armGoal = -63;
             }
+//            if (TCannon.get(ControllerEnums.TCannonExtraButtons.TILT_LOW) == DefaultControllerEnums.ButtonStatus.DOWN){
+//                elevateGoal = -6.5;
+//                armGoal = -18.5;
+//            }
 
             if(!cubeConeMode) {
 
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -5;
-                    armGoal = -235;
+                    elevateGoal = -1;
+                    armGoal = -226;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.PIVOT_PISTON_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -5;
-                    armGoal = -248;
+                    elevateGoal = -0;
+                    armGoal = -243;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -5;
+                    elevateGoal = -1;
                     armGoal = -275;
                 }
             }
             if(cubeConeMode) {
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -5;
-                    armGoal = -225;
+                    elevateGoal = -1;
+                    armGoal = -219;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.PIVOT_PISTON_UP) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -50;
-                    armGoal = -205;
+                    elevateGoal = -0;
+                    armGoal = -236;
                 }
                 if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -5;
+                    elevateGoal = -1;
                     armGoal = -275;
                 }
 
-                Robot.arm.moveArm(armGoal);
+            }
+            Robot.arm.moveArm(armGoal);
 
-                if (checkArmCollision()) {
-                } else if (checkArmPassover()) {
-                    Robot.elevator.moveElevator(-50);
-                } else {
-                    Robot.elevator.moveElevator(elevateGoal);
-                }
-
+            if (checkArmCollision()) {
+            } else if (checkArmPassover()) {
+                Robot.elevator.moveElevator(-44);
+            } else {
+                Robot.elevator.moveElevator(elevateGoal);
             }
             if(robotSettings.ENABLE_WRIST){
                 //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
@@ -162,24 +165,28 @@ public class ManipulationManager implements ISubsystem {
     public void enableControllers(){
         panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        //TCannon = BaseController.createOrGet(5, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public boolean checkArmPassover(){
-        if (-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -210){
+        if (-66 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -190){
             return true;
         }
         return false;
     }
 
     public boolean checkArmCollision(){
-        if(Robot.arm.arm.getRotations() >= -10 || Robot.arm.arm.getRotations() <= -261){
+        if(Robot.arm.arm.getRotations() >= 5 || Robot.arm.arm.getRotations() <= -276){
            return true;
         }
         return false;
     }
 
-    public void goTo(double elevator, double arm){
+    public boolean goTo(double elevator, double arm){
 
+        if(Math.abs(elevator - Robot.elevator.elevate.getRotations()) <= .2 && Math.abs(arm - Robot.arm.arm.getRotations()) <= .2) {
+            return true;
+        }
         Robot.arm.moveArm(arm);
 
         if (checkArmCollision()) {
@@ -187,7 +194,20 @@ public class ManipulationManager implements ISubsystem {
             Robot.elevator.moveElevator(-50);
         } else {
             Robot.elevator.moveElevator(elevator);
+            System.out.println("tring to move to: " + elevator);
         }
+        System.out.println("current elevator position: " + Robot.elevator.elevate.getRotations());
+
+        if(robotSettings.ENABLE_WRIST){
+            //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
+            if(Robot.arm.arm.getRotations() >= -70){
+                Robot.wrist.wrist.moveAtPosition(0);
+            }else {
+                Robot.wrist.wrist.moveAtPosition(5);
+            }
+        }
+
+        return false;
     }
 
     public void changeCubeCone(boolean cubeCone){

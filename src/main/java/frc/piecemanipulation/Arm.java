@@ -79,7 +79,7 @@ public class Arm implements ISubsystem {
 
     @Override
     public void initAuton() {
-
+        arm.resetEncoder();
     }
 
     @Override

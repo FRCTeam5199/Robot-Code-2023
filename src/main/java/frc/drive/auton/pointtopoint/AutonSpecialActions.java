@@ -20,7 +20,34 @@ public enum AutonSpecialActions {
      */
     AUTO_LEVEL,
     /**
+      Uses intarg 2 and 3 in the special action 2
+     */
+    ARM_ELEVATOR_GO_TO,
+    /**
+        Dousnt use the Intarf
+     */
+    ARM_ELEVATOR_UP,
+    ARM_ELEVATOR_DOWN,
+    CUBE_TOP,
+    /**
+     Intarg will not be used
+     locks swerve wheels at a 45 degree angle
+     */
+    LOCK_WHEELS,
+
+    INTAKE_PISTON_IN,
+
+    INTAKE_PISTON_OUT,
+
+    INTAKE_WHEEL_IN,
+
+    INTAKE_WHEEL_OUT,
+
+    INTAKE_WHEEL_OFF,
+
+    WAIT500,
+    /**
      * If intarg is != 0, will swerve, otherwise will west coast
      */
-    DRIVE_TO;
+    DRIVE_TO, ARM_ELEVATOR_RESET;
 }

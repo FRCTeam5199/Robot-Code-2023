@@ -76,7 +76,7 @@ public class Elevator implements ISubsystem {
 
     @Override
     public void initAuton() {
-
+        elevate.resetEncoder();
     }
 
     @Override

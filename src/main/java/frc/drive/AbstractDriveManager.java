@@ -98,6 +98,8 @@ public abstract class AbstractDriveManager implements ISubsystem {
         return input * robotSettings.MAX_ROTATION * driveRotMult.getDouble(robotSettings.TURN_SCALE);
     }
 
+    public abstract void lockWheels();
+
     public abstract boolean leveling();
 
     /**

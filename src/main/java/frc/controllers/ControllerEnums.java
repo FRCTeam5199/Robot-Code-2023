@@ -82,4 +82,19 @@ public class ControllerEnums {
             return AXIS_VALUE;
         }
     }
+
+    public enum TCannonExtraButtons implements ControllerInterfaces.IDiscreteInput {
+        TILT_TOP(5), TILT_MID(4), TILT_LOW(3),  FIRE(8);
+
+        public final int AXIS_VALUE;
+
+        TCannonExtraButtons(int value) {
+            this.AXIS_VALUE = value;
+        }
+
+        @Override
+        public int getChannel() {
+            return AXIS_VALUE;
+        }
+    }
 }
