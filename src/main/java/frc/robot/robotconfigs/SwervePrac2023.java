@@ -34,9 +34,9 @@ public class SwervePrac2023 extends DefaultConfig{
         WRIST_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         WRIST_MOTOR_ID = 36;
         WRIST_MOTOR_CANBUS = "rio";
-        WRIST_MANUAL = false;
+        WRIST_MANUAL = true;
         ENABLE_WRIST = true;
-        WRISTPID = new PID(0.1 , 0.0001, 0.04);
+        WRISTPID = new PID(0.08 , 0.0001, 0.045);
 
         //Misc
         ENABLE_VISION = true;

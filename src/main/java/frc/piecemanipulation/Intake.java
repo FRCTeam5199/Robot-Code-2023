@@ -111,8 +111,8 @@ public class Intake implements ISubsystem {
         if(!manipulationManager.cubeConeMode) {
             if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 //System.out.println("X is being pressed");
-                intakeRight.moveAtVoltage(12);
-                intakeLeft.moveAtVoltage(-12);
+                intakeRight.moveAtVoltage(6);
+                intakeLeft.moveAtVoltage(-6);
             } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 //System.out.println("Y is being pressed");
                 intakeRight.moveAtVoltage(-12);

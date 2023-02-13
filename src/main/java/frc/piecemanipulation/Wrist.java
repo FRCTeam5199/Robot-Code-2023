@@ -13,7 +13,7 @@ import static frc.robot.Robot.robotSettings;
 
 public class Wrist implements ISubsystem {
     public AbstractMotorController wrist;
-    public BaseController panel, xbox2;
+    public BaseController panel, xbox2, midiTop, midiBot;
 
     public Wrist(){
         addToMetaList();
@@ -39,26 +39,27 @@ public class Wrist implements ISubsystem {
     @Override
     public void updateTeleop() {
         if(robotSettings.ARM_ELEVATOR_MANUAL){
-            if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_3) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtVoltage(-2);
             }
-            else if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_2) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            else if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtVoltage(2);
             }
             else {
                 wrist.moveAtVoltage(0);
             }
         }else {
-            if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_3) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                wrist.moveAtPosition(0);
+            if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                wrist.moveAtPosition(-2);
             }
-            else if (panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_2) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                wrist.moveAtPosition(5);
+            else if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                wrist.moveAtPosition(-40.5);
             }
         }
         //System.out.println(wrist.getRotations());
         if (xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN)
             wrist.resetEncoder();
+        System.out.println(wrist.getRotations());
     }
 
     @Override
@@ -104,15 +105,16 @@ public class Wrist implements ISubsystem {
     public void createMotors(){
         if(robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
             wrist = new TalonMotorController(robotSettings.WRIST_MOTOR_ID, robotSettings.WRIST_MOTOR_CANBUS);
-        if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
+        if(robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
             wrist = new SparkMotorController(robotSettings.WRIST_MOTOR_ID);
-        //arm.setOutPutRange(-.8,.8);
+        //wrist.setCurrentLimit(2,40);
         wrist.setCurrentLimit(40);
         wrist.setBrake(true);
     }
 
     public void createControllers(){
-        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 }

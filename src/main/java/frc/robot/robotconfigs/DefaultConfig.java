@@ -85,7 +85,6 @@ public abstract class DefaultConfig {
     public int WRIST_MOTOR_ID = 0;
     public String WRIST_MOTOR_CANBUS = "rio";
     public boolean WRIST_MANUAL = true;
-    public boolean WRIST_INTAKE = false;
     public PID WRISTPID = EMPTY_PID;
 
 
@@ -165,6 +164,8 @@ public abstract class DefaultConfig {
     public int XBOX_CONTROLLER_USB_SLOT = 0;
     public int XBOX_CONTROLLER_USB_SLOT_2 = 1;
     public int BUTTON_PANEL_USB_SLOT = 2;
+    public int MIDI_CONTROLLER_TOP_ID = 3;
+    public int MIDI_CONTROLLER_BOT_ID = 4;
 
     //Limelight Distance Tracking
     public double CAMERA_HEIGHT = 0; //Inches
