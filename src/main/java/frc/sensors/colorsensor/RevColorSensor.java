@@ -81,6 +81,11 @@ public class RevColorSensor extends ColorSensorV3 implements IColorSensor {
     }
 
     @Override
+    public int getDistance(){
+        return super.getProximity();
+    }
+
+    @Override
     public String getSubsystemName() {
         return "Rev Color Sensor";
     }

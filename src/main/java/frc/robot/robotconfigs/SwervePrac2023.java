@@ -102,6 +102,7 @@ public class SwervePrac2023 extends DefaultConfig{
         TURN_SCALE = 0.7;
         DRIVE_SCALE = 1;
         DRIVE_GEARING = 1/6.75;
+        ENABLE_COLOR_SENSOR = true;
 
         CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
         CAMERA_HEIGHT = 0; //Inches

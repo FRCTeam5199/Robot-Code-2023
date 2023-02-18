@@ -42,6 +42,7 @@ public abstract class DefaultConfig {
     public boolean ENABLE_OVERHEAT_DETECTION = false;
     public boolean ENABLE_CAMERA = false;
     public boolean ENABLE_TOGGLEABLE_RING = false;
+    public boolean ENABLE_COLOR_SENSOR = false;
 
     //Misc
     public boolean ENABLE_VISION = false;

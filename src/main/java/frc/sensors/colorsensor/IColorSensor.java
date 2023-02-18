@@ -24,6 +24,8 @@ public interface IColorSensor extends ISubsystem {
 
     boolean isColor(Color checkAgainst);
 
+    int getDistance();
+
     @Override
     default String getSubsystemName() {
         return "Color Sensor";

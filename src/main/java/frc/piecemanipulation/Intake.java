@@ -1,15 +1,19 @@
 package frc.piecemanipulation;
+import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.I2C;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
+import frc.misc.UserInterface;
 import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 import frc.motors.VictorMotorController;
 import frc.robot.Robot;
+import frc.sensors.colorsensor.RevColorSensor;
 
 import static frc.robot.Robot.*;
 
@@ -17,6 +21,8 @@ import static frc.robot.Robot.*;
 public class Intake implements ISubsystem {
     public AbstractMotorController intakeLeft, intakeRight;
     private BaseController xbox, panel, midiTop, midiBot;
+    private I2C.Port i2cPort;
+    public ColorSensorV3 m_colorSensor;
 
     public Intake() {
         addToMetaList();
@@ -26,6 +32,11 @@ public class Intake implements ISubsystem {
     public void init() {
         createControllers();
         createMotors();
+        if (robotSettings.ENABLE_COLOR_SENSOR){
+            i2cPort = I2C.Port.kMXP;
+            m_colorSensor = new ColorSensorV3(i2cPort);
+        }
+
     }
 
     @Override
@@ -40,18 +51,27 @@ public class Intake implements ISubsystem {
 
     @Override
     public void updateTeleop() {
+        if (robotSettings.INTAKE_MANUAL)
+            manuelDrive();
         updateGeneric();
     }
 
     @Override
     public void updateAuton() {
-
+        updateGeneric();
     }
 
     @Override
     public void updateGeneric() {
-        if (robotSettings.INTAKE_MANUAL)
-            manuelDrive();
+        if (robotSettings.ENABLE_COLOR_SENSOR){
+            UserInterface.smartDashboardPutNumber("proxy cube", m_colorSensor.getProximity());
+            if(m_colorSensor.getProximity() >= 615){
+                if (intakeLeft.getVoltage() >= 12 || intakeRight.getVoltage() >= 12){
+                    intakeLeft.moveAtVoltage(0);
+                    intakeRight.moveAtVoltage(0);
+                }
+            }
+        }
     }
 
     @Override
@@ -118,9 +138,20 @@ public class Intake implements ISubsystem {
                     intakeRight.moveAtVoltage(6);
                     intakeLeft.moveAtVoltage(-6);
                 } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    //System.out.println("Y is being pressed");
-                    intakeRight.moveAtVoltage(-12);
-                    intakeLeft.moveAtVoltage(12);
+                    if(robotSettings.ENABLE_COLOR_SENSOR) {
+                        if (m_colorSensor.getProximity() >= 615) {
+                            intakeLeft.moveAtVoltage(0);
+                            intakeRight.moveAtVoltage(0);
+                        }else {
+                            //System.out.println("Y is being pressed");
+                            intakeRight.moveAtVoltage(-12);
+                            intakeLeft.moveAtVoltage(12);
+                        }
+                    }else {
+                        //System.out.println("Y is being pressed");
+                        intakeRight.moveAtVoltage(-12);
+                        intakeLeft.moveAtVoltage(12);
+                    }
                 } else {
                     intakeRight.moveAtVoltage(0);
                     intakeLeft.moveAtVoltage(0);
@@ -143,9 +174,20 @@ public class Intake implements ISubsystem {
                 intakeRight.moveAtVoltage(6);
                 intakeLeft.moveAtVoltage(-6);
             } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                //System.out.println("Y is being pressed");
-                intakeRight.moveAtVoltage(-12);
-                intakeLeft.moveAtVoltage(12);
+                if(robotSettings.ENABLE_COLOR_SENSOR) {
+                    if (m_colorSensor.getProximity() >= 615) {
+                            intakeLeft.moveAtVoltage(0);
+                            intakeRight.moveAtVoltage(0);
+                    }else {
+                        //System.out.println("Y is being pressed");
+                        intakeRight.moveAtVoltage(-12);
+                        intakeLeft.moveAtVoltage(12);
+                    }
+                }else {
+                    //System.out.println("Y is being pressed");
+                    intakeRight.moveAtVoltage(-12);
+                    intakeLeft.moveAtVoltage(12);
+                }
             } else {
                 intakeRight.moveAtVoltage(0);
                 intakeLeft.moveAtVoltage(0);
@@ -175,6 +217,8 @@ public class Intake implements ISubsystem {
                 Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
             }
         }
+
+
 
     }
     public void intakeIn(){

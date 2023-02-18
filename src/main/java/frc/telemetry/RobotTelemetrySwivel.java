@@ -24,7 +24,7 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
      * module states} in order to maintin track of current pos
      */
     private SwerveDriveOdometry odometer;
-
+    private double aprilAvg;
     protected RobotTelemetrySwivel(AbstractDriveManager driver) {
         super(driver);
         if (!(driver instanceof DriveManagerSwerve))
@@ -33,6 +33,7 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
 
     @Override
     public void init() {
+        aprilAvg = 0;
         super.init();
         if (imu != null) {
             resetSwerveOdometryandCreate();
@@ -48,10 +49,22 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
               //nothing
             }else {
                 try {
-                    Translation2d translation2dft = new Translation2d(-54 + (apriltagpos.getFirst().getX() * 3.28),  (apriltagpos.getFirst().getY() * 3.28));
+
+                    double AprilX = -54 + (apriltagpos.getFirst().getX() * 3.28);
+                    double AprilY = apriltagpos.getFirst().getY() * 3.28;
+                    UserInterface.smartDashboardPutNumber("Always April field Y", AprilY);
+                    if(AprilX <= -16 && AprilX  >= -32 ){
+                        AprilY = swerveRobotPose.getEstimatedPosition().getY();
+                    }
+                    if(aprilAvg == 0){
+                        aprilAvg = AprilY;
+                    }else{
+                        aprilAvg = aprilAvg *.9 + AprilY*(1.0/10);
+                    }
+                    Translation2d translation2dft = new Translation2d(AprilX, aprilAvg);
                     Pose2d poseinft = new Pose2d(translation2dft, apriltagpos.getFirst().getRotation());
                     UserInterface.smartDashboardPutNumber("April Field X", translation2dft.getX());
-                    UserInterface.smartDashboardPutNumber("April Field Y", translation2dft.getY());
+                    UserInterface.smartDashboardPutNumber("Sometimes April Field Y", translation2dft.getY());
                     UserInterface.smartDashboardPutNumber("apriltag get second", apriltagpos.getSecond());
                     double timernow = Timer.getFPGATimestamp() - apriltagpos.getSecond();
                     UserInterface.smartDashboardPutNumber("timer now", timernow);

@@ -19,6 +19,10 @@ import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
 import frc.piecemanipulation.*;
 import frc.sensors.camera.IVision;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
+
+import com.revrobotics.ColorSensorV3;
 
 import java.io.File;
 import java.util.ArrayList;
