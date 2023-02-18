@@ -157,7 +157,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     private void driveSwerve() {
         forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (-1);
-        if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE) {
             visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             if(visionCamera.hasValidTarget()) {
                 //System.out.println("AIMING");
@@ -175,7 +175,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
 
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE){
             forwards = -leveling.calculate(guidance.imu.relativeRoll());
             leftwards = guidance.imu.relativePitch() * -.01;
         }
@@ -316,7 +316,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void drivePure(double forward, double sideways, double omega) {
-        driveMPS(forward, sideways, omega);
+        driveMPS(forward, sideways, adjustedRotation(omega));
     }
 
     @Override
@@ -599,7 +599,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         System.out.println("rot: " + adjustedRotation((guidance.imu.relativeYaw() - leveling_auto) * -.05));
         drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
 
-        return Math.abs(guidance.imu.relativeRoll()) <= 0.5;
+        return Math.abs(guidance.imu.relativeRoll()) <= 2;
     }
 }
 

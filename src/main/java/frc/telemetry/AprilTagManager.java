@@ -50,7 +50,7 @@ public class AprilTagManager implements ISubsystem {
     Translation2d wheels = new Translation2d(10.5, 12.5);
 
 
-    static final Transform3d campos1 = new Transform3d(new Translation3d(18*(0.0254), -2*(0.0254), 0), new Rotation3d(0, 0, 0));
+    static final Transform3d campos1 = new Transform3d(new Translation3d(16*(0.0254), -1*(0.0254), 0), new Rotation3d(0, 0.262, 0));
     static final Transform3d campos2 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     static final Transform3d campos3 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     static final Transform3d campos4 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));

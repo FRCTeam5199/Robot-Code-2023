@@ -98,6 +98,9 @@ public class AutonManager extends AbstractAutonManager {
                 case WAIT500:
                     specialActionComplete = timer.advanceIfElapsed(.5);
                     break;
+                case WAIT100:
+                    specialActionComplete = timer.advanceIfElapsed(.1);
+                    break;
                 case AUTO_LEVEL:
                     System.out.println("TRYINginging");
                     specialActionComplete = drivingChild.leveling();
@@ -115,13 +118,13 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeLeft.moveAtVoltage(-12);
-                    Robot.intake.intakeRight.moveAtVoltage(12);
+                    Robot.intake.intakeRight.moveAtVoltage(6);
+                    Robot.intake.intakeLeft.moveAtVoltage(-6);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OUT:
-                    Robot.intake.intakeLeft.moveAtVoltage(12);
                     Robot.intake.intakeRight.moveAtVoltage(-12);
+                    Robot.intake.intakeLeft.moveAtVoltage(12);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OFF:
@@ -143,7 +146,8 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = timer.advanceIfElapsed(.5);
                     break;
                 case ARM_ELEVATOR_UP:
-                    specialActionComplete2 = Robot.manipulationManager.goTo(.6,0);
+                    Robot.elevator.elevate.moveAtPosition(2.2);
+                    specialActionComplete2 = timer.advanceIfElapsed(.1);
                     System.out.println("tring to move Elevator");
                     break;
                 case ARM_ELEVATOR_GO_TO:
@@ -160,6 +164,29 @@ public class AutonManager extends AbstractAutonManager {
                 case ARM_ELEVATOR_RESET:
                     specialActionComplete2 = Robot.manipulationManager.goTo(0,0);
                     System.out.println("tring to move Elevator");
+                    break;
+                case INTAKE_PISTON_IN:
+                    Robot.intake.intakeIn();
+                    specialActionComplete2 = true;
+                    break;
+                case INTAKE_PISTON_OUT:
+                    Robot.intake.intakeOut();
+                    specialActionComplete2 = true;
+                    break;
+                case INTAKE_WHEEL_IN:
+                    Robot.intake.intakeRight.moveAtVoltage(6);
+                    Robot.intake.intakeLeft.moveAtVoltage(-6);
+                    specialActionComplete2 = true;
+                    break;
+                case INTAKE_WHEEL_OUT:
+                    Robot.intake.intakeRight.moveAtVoltage(-12);
+                    Robot.intake.intakeLeft.moveAtVoltage(12);
+                    specialActionComplete2 = true;
+                    break;
+                case INTAKE_WHEEL_OFF:
+                    Robot.intake.intakeLeft.moveAtVoltage(0);
+                    Robot.intake.intakeRight.moveAtVoltage(-0);
+                    specialActionComplete2 = true;
                     break;
                 case NONE:
                     //litterally do nothing
@@ -225,7 +252,7 @@ public class AutonManager extends AbstractAutonManager {
                 UserInterface.smartDashboardPutNumber("roation stick input", ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()));
                 UserInterface.smartDashboardPutNumber("X direction stick input", robotSettings.AUTO_SPEED * speed * calcX);
                 UserInterface.smartDashboardPutNumber("Y direction stick input", robotSettings.AUTO_SPEED * speed * calcY);
-                drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, -ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()));
+                drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, (drivingChild.guidance.imu.relativeYaw() - autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG) * -.05/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
             } else {
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;
                 double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).Y;

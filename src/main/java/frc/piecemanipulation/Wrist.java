@@ -1,5 +1,6 @@
 package frc.piecemanipulation;
 
+import com.revrobotics.CANSparkMaxLowLevel;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
@@ -39,20 +40,20 @@ public class Wrist implements ISubsystem {
     @Override
     public void updateTeleop() {
         if(robotSettings.ARM_ELEVATOR_MANUAL){
-            if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            if (midiTop.get(ControllerEnums.MidiController.R3C7) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtVoltage(-2);
             }
-            else if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            else if (midiTop.get(ControllerEnums.MidiController.R2C8) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtVoltage(2);
             }
             else {
                 wrist.moveAtVoltage(0);
             }
         }else {
-            if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            if (midiTop.get(ControllerEnums.MidiController.R2C7) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtPosition(-2);
             }
-            else if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            else if (midiTop.get(ControllerEnums.MidiController.R2C8) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtPosition(-40.5);
             }
         }
@@ -106,7 +107,7 @@ public class Wrist implements ISubsystem {
         if(robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
             wrist = new TalonMotorController(robotSettings.WRIST_MOTOR_ID, robotSettings.WRIST_MOTOR_CANBUS);
         if(robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            wrist = new SparkMotorController(robotSettings.WRIST_MOTOR_ID);
+            wrist = new SparkMotorController(robotSettings.WRIST_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushed);
         //wrist.setCurrentLimit(2,40);
         wrist.setCurrentLimit(40);
         wrist.setBrake(true);

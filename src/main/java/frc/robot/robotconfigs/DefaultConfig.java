@@ -28,6 +28,7 @@ public abstract class DefaultConfig {
     public boolean DEBUG = false;
     public String AUTON_COMPLETE_NOISE = "";
     public boolean autonComplete = false;
+    public boolean BRANDONISNOTHERE = false;
     //Subsystems
     public boolean ENABLE_APRILTAG = false;
     public boolean ENABLE_DRIVE = false;

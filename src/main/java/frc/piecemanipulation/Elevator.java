@@ -71,7 +71,7 @@ public class Elevator implements ISubsystem {
 
     @Override
     public void initTeleop() {
-        elevate.resetEncoder();
+        //elevate.resetEncoder();
     }
 
     @Override

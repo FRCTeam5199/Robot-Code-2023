@@ -46,6 +46,7 @@ public enum AutonSpecialActions {
     INTAKE_WHEEL_OFF,
 
     WAIT500,
+    WAIT100,
     /**
      * If intarg is != 0, will swerve, otherwise will west coast
      */

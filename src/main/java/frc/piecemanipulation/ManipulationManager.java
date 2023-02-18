@@ -14,8 +14,9 @@ import static frc.robot.Robot.robotSettings;
 public class ManipulationManager implements ISubsystem {
     public BaseController panel, xbox2, midiTop, midiBot;
     public double armGoal = 0;
-    public double elevateGoal = 0.6;
+    public double elevateGoal = 2.2;
     public boolean cubeConeMode = true; // true =  Cone, false  = Cube
+    public boolean spikeUp = false;
 
     public ManipulationManager(){
         addToMetaList();
@@ -51,51 +52,57 @@ public class ManipulationManager implements ISubsystem {
         }
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             robotSettings.ARM_ELEVATOR_MANUAL = false;
+            Robot.intake.intakeIn();
         }
 
 
         if(!robotSettings.ARM_ELEVATOR_MANUAL) {
-            //spike pickup
             if (midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                elevateGoal = -3;
-                armGoal = -50;
+                elevateGoal = -11;
+                armGoal = -62;
             }
             if (midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                elevateGoal = -45;
-                armGoal = -145;
+                elevateGoal = -44;
+                armGoal = -133;
             }
-//            if (TCannon.get(ControllerEnums.TCannonExtraButtons.TILT_LOW) == DefaultControllerEnums.ButtonStatus.DOWN){
-//                elevateGoal = -6.5;
-//                armGoal = -18.5;
-//            }
+            if (midiTop.get(ControllerEnums.MidiController.R4C4) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                Robot.elevator.moveElevator(2.2);
+                armGoal = 0;
+            }
+            //spike
+            if (midiTop.get(ControllerEnums.MidiController.R2C3) == DefaultControllerEnums.ButtonStatus.DOWN){
+                elevateGoal = -8.42;
+                armGoal = -15.8;
+                spikeUp = true;
+            }
 
             if(!cubeConeMode) {
 
                 if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -2;
-                    armGoal = -232;
+                    elevateGoal = -1;
+                    armGoal = -240;
                 }
                 if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -3;
-                    armGoal = -244;
+                    elevateGoal = -2;
+                    armGoal = -254;
                 }
                 if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = 0;
-                    armGoal = -280;
+                    armGoal = -290;
                 }
             }
             if(cubeConeMode) {
                 if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -2;
-                    armGoal = -218;
+                    elevateGoal = -3;
+                    armGoal = -226;
                 }
                 if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
-                    armGoal = -201;
+                    armGoal = -206;
                 }
                 if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -0;
-                    armGoal = -280;
+                    armGoal = -290;
                 }
 
             }
@@ -105,14 +112,34 @@ public class ManipulationManager implements ISubsystem {
             } else if (checkArmPassover()) {
                 Robot.elevator.moveElevator(-44);
             } else {
-                Robot.elevator.moveElevator(elevateGoal);
+                if ((spikeUp)){
+                    Robot.elevator.moveElevator(0);
+                    if (Math.abs(-15.8 - Robot.arm.arm.getRotations()) <= .2) {
+                        Robot.elevator.moveElevator(elevateGoal);
+                        if (Math.abs(-8.42 - Robot.elevator.elevate.getRotations()) <= .2) {
+                            Robot.intake.intakeIn();
+                            spikeUp = false;
+                        }
+                    }
+                }else {
+                    Robot.elevator.moveElevator(elevateGoal);
+                }
             }
+
             if(robotSettings.ENABLE_WRIST){
                 //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
-                if(arm.arm.getRotations() >= -115){
-                    Robot.wrist.wrist.moveAtPosition(-2);
+                if(Robot.arm.arm.getRotations() >= -123){
+                    if(Robot.wrist.wrist.getRotations() >= 0 && Robot.wrist.wrist.getRotations() <= 4000){
+                        Robot.wrist.wrist.moveAtVoltage(0);
+                    }else{
+                        Robot.wrist.wrist.moveAtVoltage(-6);
+                    }
                 }else {
-                    Robot.wrist.wrist.moveAtPosition(-42.5);
+                    if(Robot.wrist.wrist.getRotations() <= 4011 && Robot.wrist.wrist.getRotations() >= 10){
+                        Robot.wrist.wrist.moveAtVoltage(0);
+                    }else{
+                        Robot.wrist.wrist.moveAtVoltage(6);
+                    }
                 }
             }
         }
@@ -166,14 +193,14 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-95 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -190){
+        if (-67.5 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -185){
             return true;
         }
         return false;
     }
 
     public boolean checkArmCollision(){
-        if(Robot.arm.arm.getRotations() >= 0 || Robot.arm.arm.getRotations() <= -300){
+        if(Robot.arm.arm.getRotations() >= -10 || Robot.arm.arm.getRotations() <= -300){
            return true;
         }
         return false;
@@ -188,7 +215,7 @@ public class ManipulationManager implements ISubsystem {
 
         if (checkArmCollision()) {
         } else if (checkArmPassover()) {
-            Robot.elevator.moveElevator(-50);
+            Robot.elevator.moveElevator(-44);
         } else {
             Robot.elevator.moveElevator(elevator);
             System.out.println("tring to move to: " + elevator);
@@ -197,10 +224,18 @@ public class ManipulationManager implements ISubsystem {
 
         if(robotSettings.ENABLE_WRIST){
             //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
-            if(Robot.arm.arm.getRotations() >= -115){
-                Robot.wrist.wrist.moveAtPosition(-2);
+            if(Robot.arm.arm.getRotations() >= -123){
+                if(Robot.wrist.wrist.getRotations() >= 0 && Robot.wrist.wrist.getRotations() <= 4000){
+                    Robot.wrist.wrist.moveAtVoltage(0);
+                }else{
+                    Robot.wrist.wrist.moveAtVoltage(-6);
+                }
             }else {
-                Robot.wrist.wrist.moveAtPosition(-42.5);
+                if(Robot.wrist.wrist.getRotations() <= 4011 && Robot.wrist.wrist.getRotations() >= 10){
+                    Robot.wrist.wrist.moveAtVoltage(0);
+                }else{
+                    Robot.wrist.wrist.moveAtVoltage(6);
+                }
             }
         }
 

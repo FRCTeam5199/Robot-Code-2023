@@ -1,5 +1,6 @@
 package frc.piecemanipulation;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
@@ -15,7 +16,7 @@ import static frc.robot.Robot.*;
 
 public class Intake implements ISubsystem {
     public AbstractMotorController intakeLeft, intakeRight;
-    private BaseController xbox, panel;
+    private BaseController xbox, panel, midiTop, midiBot;
 
     public Intake() {
         addToMetaList();
@@ -98,17 +99,45 @@ public class Intake implements ISubsystem {
         }
         intakeLeft.setCurrentLimit(20);
         intakeRight.setCurrentLimit(20);
-        intakeRight.setBrake(false);
-        intakeLeft.setBrake(false);
+        intakeRight.setBrake(true);
+        intakeLeft.setBrake(true);
     }
 
     public void createControllers(){
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public void manuelDrive(){
-        if(!manipulationManager.cubeConeMode) {
+        if(!robotSettings.BRANDONISNOTHERE) {
+            if (!manipulationManager.cubeConeMode) {
+                if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    //System.out.println("X is being pressed");
+                    intakeRight.moveAtVoltage(6);
+                    intakeLeft.moveAtVoltage(-6);
+                } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    //System.out.println("Y is being pressed");
+                    intakeRight.moveAtVoltage(-12);
+                    intakeLeft.moveAtVoltage(12);
+                } else {
+                    intakeRight.moveAtVoltage(0);
+                    intakeLeft.moveAtVoltage(0);
+                }
+            }
+            if (manipulationManager.cubeConeMode) {
+                //System.out.println(elevate.getRotations());
+                intakeRight.moveAtVoltage(0);
+                intakeLeft.moveAtVoltage(0);
+                if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+                }
+                if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                }
+            }
+        }else{
             if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 //System.out.println("X is being pressed");
                 intakeRight.moveAtVoltage(6);
@@ -121,26 +150,32 @@ public class Intake implements ISubsystem {
                 intakeRight.moveAtVoltage(0);
                 intakeLeft.moveAtVoltage(0);
             }
-        }
-        if(manipulationManager.cubeConeMode){
-            //System.out.println(elevate.getRotations());
-            intakeRight.moveAtVoltage(0);
-            intakeLeft.moveAtVoltage(0);
-            if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
             }
-            if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
             }
         }
-        /*
-        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
-            Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+        if(!robotSettings.ARM_ELEVATOR_MANUAL){
+            if(midiTop.get(ControllerEnums.MidiController.R2C4) == DefaultControllerEnums.ButtonStatus.DOWN){
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+            }
+            if(midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN){
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+            }
+            if(midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+            }
+        }else {
+            if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+            }
+            if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+            }
         }
-        if(panel.get(ControllerEnums.ButtonPanelButtons2022.LOW_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-        }
-        */
+
     }
     public void intakeIn(){
         Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
