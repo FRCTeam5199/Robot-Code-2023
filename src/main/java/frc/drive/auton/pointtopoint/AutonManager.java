@@ -118,8 +118,8 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(6);
-                    Robot.intake.intakeLeft.moveAtVoltage(-6);
+                    Robot.intake.intakeRight.moveAtVoltage(4);
+                    Robot.intake.intakeLeft.moveAtVoltage(-4);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OUT:
@@ -174,8 +174,8 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(6);
-                    Robot.intake.intakeLeft.moveAtVoltage(-6);
+                    Robot.intake.intakeRight.moveAtVoltage(4);
+                    Robot.intake.intakeLeft.moveAtVoltage(-4);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_OUT:

@@ -57,7 +57,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private PIDController limeLightPid, leveling;
     private BaseController xbox;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
-    private double leveling_auto = 0;
+    private double leveling_auto_roll = 0, Leveling_auto_Pitch = 0;
+    boolean brokeHigh = false, fallLow = false;
 
     public DriveManagerSwerve() {
         super();
@@ -176,11 +177,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         }
 
         if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE){
-            forwards = -leveling.calculate(guidance.imu.relativeRoll());
-            leftwards = guidance.imu.relativePitch() * -.01;
+            leveling();
+        }else {
+            driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
         }
-        //System.out.println(forwards);
-        driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
 
     }
 
@@ -297,6 +297,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void driveMPS(double xMeters, double yMeters, double rotation) { // after here
+        UserInterface.smartDashboardPutNumber("xMeters ",xMeters);
+        UserInterface.smartDashboardPutNumber("yMeters ",yMeters);
+        UserInterface.smartDashboardPutNumber("rotation ",rotation);
+        UserInterface.smartDashboardPutNumber("tot magitude climb", Math.sqrt((Math.pow(guidance.imu.relativeRoll(),2) + Math.pow(guidance.imu.relativePitch(),2))));
         ChassisSpeeds speeds;
         //System.out.println("xmeters: + " + xMeters + "ymeters: " + yMeters + "rotation + " + rotation);
         //x+ m/s forwards, y+ m/s left, omega+ rad/sec ccw
@@ -585,21 +589,43 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
     @Override
     public void lockWheels() {
-        driveMPS(0.0, 0, 0.01);
+        driveMPS(0.0, 0, 0.02);
     }
     @Override
     public boolean leveling(){
-        if(leveling_auto == 0){
-            leveling_auto = guidance.imu.relativeRoll();
+        if(leveling_auto_roll == 0 && Leveling_auto_Pitch == 0){
+            leveling_auto_roll = guidance.imu.relativeRoll();
+            Leveling_auto_Pitch = guidance.imu.relativeRoll();
         }
 
-        forwards = -leveling.calculate(guidance.imu.relativeRoll());
-        System.out.println("ROLL: " + guidance.imu.absoluteRoll());
-        System.out.println("forwards: " + forwards);
-        System.out.println("rot: " + adjustedRotation((guidance.imu.relativeYaw() - leveling_auto) * -.05));
-        drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+        double totalMagnetude = Math.sqrt((Math.pow(guidance.imu.relativeRoll(),2) + Math.pow(guidance.imu.relativePitch(),2)));
+        forwards = -leveling.calculate(totalMagnetude);
 
-        return Math.abs(guidance.imu.relativeRoll()) <= 2;
+        if(guidance.imu.relativeRoll() < 0)
+            forwards *= -1;
+
+        if(totalMagnetude > 12 ){
+            brokeHigh = true;
+        }
+        if (brokeHigh && totalMagnetude < 9){
+            fallLow = true;
+            lockWheels();
+        }else {
+            if(forwards < -2D/12)
+                forwards = -2D/12;
+            if(forwards > 2D/12)
+                forwards = 2D/12;
+
+        }
+
+        if(Math.abs(guidance.imu.relativeRoll()) <= 6){
+            fallLow = false;
+            brokeHigh = false;
+            forwards = 0;
+            return true;
+        }
+        drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+        return false;
     }
 }
 

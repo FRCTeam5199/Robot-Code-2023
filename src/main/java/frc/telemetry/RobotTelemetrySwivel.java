@@ -53,9 +53,9 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
                     double AprilX = -54 + (apriltagpos.getFirst().getX() * 3.28);
                     double AprilY = apriltagpos.getFirst().getY() * 3.28;
                     UserInterface.smartDashboardPutNumber("Always April field Y", AprilY);
-                    if(AprilX <= -16 && AprilX  >= -32 ){
+                   /*  if(AprilX <= -16 && AprilX  >= -32 ){
                         AprilY = swerveRobotPose.getEstimatedPosition().getY();
-                    }
+                    } */
                     if(aprilAvg == 0){
                         aprilAvg = AprilY;
                     }else{

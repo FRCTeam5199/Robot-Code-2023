@@ -24,7 +24,6 @@ import edu.wpi.first.math.*;
 import frc.telemetry.RobotTelemetrySwivel;
 
 import org.photonvision.RobotPoseEstimator;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.sensors.camera.GoalPhoton;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -48,6 +47,7 @@ public class AprilTagManager implements ISubsystem {
     ArrayList<SwerveModulePosition> swervearray;
 
     Translation2d wheels = new Translation2d(10.5, 12.5);
+    Pose2d lastPose = new Pose2d(new Translation2d(0,0),new Rotation2d(0));
 
 
     static final Transform3d campos1 = new Transform3d(new Translation3d(22*(0.0254), 1*(0.0254), 0), new Rotation3d(0, 0.262, 0));
@@ -136,6 +136,7 @@ public class AprilTagManager implements ISubsystem {
         poseStrategy = RobotPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY;
         robotPoseEstimator = new RobotPoseEstimator(fieldLayout, poseStrategy, cams);
 
+
     }
 
 
@@ -169,7 +170,7 @@ public class AprilTagManager implements ISubsystem {
 
     }
     public Pair<Pose2d, Double> getEstimatedGlobalPose() {
-        robotPoseEstimator.setReferencePose(new Pose2d());
+        robotPoseEstimator.setReferencePose(lastPose);
 
         double currentTime = getFPGATimestamp();
         Optional<Pair<Pose3d, Double>> result = robotPoseEstimator.update();
@@ -177,10 +178,10 @@ public class AprilTagManager implements ISubsystem {
         if (result.isEmpty()) {
             return new Pair<Pose2d, Double>(new Pose2d(-2,-2,new Rotation2d(0)), 0.0);
         } else {
-            return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
+            //return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
 
-
-            //return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), 0.0);
+            lastPose = result.get().getFirst().toPose2d();
+            return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), 0.0);
         }
     }
 

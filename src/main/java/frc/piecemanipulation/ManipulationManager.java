@@ -193,7 +193,7 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-67.5 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -185){
+        if (-67.5 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -170){
             return true;
         }
         return false;
