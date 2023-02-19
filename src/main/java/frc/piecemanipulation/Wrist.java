@@ -25,6 +25,7 @@ public class Wrist implements ISubsystem {
         createControllers();
         createMotors();
         wrist.setPid(robotSettings.WRISTPID);
+        wrist.setCurrentLimit(10);
     }
 
     @Override
