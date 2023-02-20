@@ -70,8 +70,8 @@ public class AprilTagManager implements ISubsystem {
     AprilTagFieldLayout fieldLayout;
     ArrayList<Pair<PhotonCamera, Transform3d>> cams;
     ArrayList<PhotonCamera> cameras;
-    RobotPoseEstimator.PoseStrategy poseStrategy;
-    RobotPoseEstimator robotPoseEstimator;
+    PhotonPoseEstimator.PoseStrategy poseStrategy;
+    PhotonPoseEstimator robotPoseEstimator;
     SwerveDriveKinematics swervekin;
 
 
@@ -136,8 +136,8 @@ public class AprilTagManager implements ISubsystem {
 
         swervekin = ((DriveManagerSwerve)driver).getKinematics();
 
-        poseStrategy = RobotPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY;
-        robotPoseEstimator = new RobotPoseEstimator(fieldLayout, poseStrategy, cams);
+        poseStrategy = PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY;
+        robotPoseEstimator = new PhotonPoseEstimator(fieldLayout, poseStrategy, cams.get(0).getFirst(), cams.get(0).getSecond());
 
 
 
@@ -177,15 +177,15 @@ public class AprilTagManager implements ISubsystem {
         robotPoseEstimator.setReferencePose(lastPose);
 
         double currentTime = getFPGATimestamp();
-        Optional<Pair<Pose3d, Double>> result = robotPoseEstimator.update();
+        Optional<EstimatedRobotPose> result = robotPoseEstimator.update();
 
         if (result.isEmpty()) {
             return new Pair<Pose2d, Double>(new Pose2d(-2,-2,new Rotation2d(0)), 0.0);
         } else {
             //return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
 
-            lastPose = result.get().getFirst().toPose2d();
-            return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), 0.0);
+            lastPose = result.get().estimatedPose.toPose2d();
+            return new Pair<Pose2d, Double>(lastPose, 0.0);
         }
     }
 

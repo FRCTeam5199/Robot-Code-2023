@@ -1,6 +1,7 @@
 package frc.drive;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.slack.api.model.User;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -737,11 +738,16 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         }
 
         if(scoreRowInt != -1 && scoreColumnInt != -1) {
-            TAPX = pickUpArray[scoreColumnInt][scoreRowInt];
-            TAPY = pickUpArray[scoreColumnInt][3];
-            TAPRotation = pickUpArray[scoreColumnInt][4];
-            TAPSpeed = pickUpArray[scoreColumnInt][5];
+            TAPX = scoringArray[scoreColumnInt][scoreRowInt];
+            TAPY = scoringArray[scoreColumnInt][3];
+            TAPRotation = scoringArray[scoreColumnInt][4];
+            TAPSpeed = scoringArray[scoreColumnInt][5];
         }
+
+        UserInterface.smartDashboardPutNumber("TAP X" , TAPX);
+        UserInterface.smartDashboardPutNumber("TAP Y" , TAPY);
+        UserInterface.smartDashboardPutNumber("TAP ROTATION" , TAPRotation);
+        UserInterface.smartDashboardPutNumber("TAP SPEED" , TAPSpeed);
 
     }
 }
