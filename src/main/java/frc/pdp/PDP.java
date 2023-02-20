@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.misc.*;
+import frc.robot.Robot;
 import frc.selfdiagnostics.BrownoutIssue;
 import frc.selfdiagnostics.UndervoltageIssue;
 
@@ -63,6 +64,11 @@ public class PDP implements ISubsystem {
             BrownoutIssue.handleIssue(this, RobotController.getBatteryVoltage() < BatteryMinVoltage && RobotController.getBatteryVoltage() > 0);
             UndervoltageIssue.handleIssue(this, RobotController.getBatteryVoltage() >= BatteryMinVoltage && RobotController.getBatteryVoltage() <= (BatteryMinVoltage + 2));
         }
+        UserInterface.smartDashboardPutNumber("Wrist Motor Current", Robot.wrist.wrist.getCurrent());
+        UserInterface.smartDashboardPutNumber("Left Intake Motor Current", Robot.intake.intakeLeft.getCurrent());
+        UserInterface.smartDashboardPutNumber("Right Intake Motor Current", Robot.intake.intakeRight.getCurrent());
+        UserInterface.smartDashboardPutNumber("Elevator Motor Current", Robot.elevator.elevate.getCurrent());
+        UserInterface.smartDashboardPutNumber("Arm Motor Current", Robot.arm.arm.getCurrent());
     }
 
     public void setToggleable(boolean on) {

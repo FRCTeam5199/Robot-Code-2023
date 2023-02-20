@@ -45,6 +45,7 @@ public enum AutonSpecialActions {
 
     INTAKE_WHEEL_OFF,
 
+    WAIT1000,
     WAIT500,
     WAIT100,
     /**

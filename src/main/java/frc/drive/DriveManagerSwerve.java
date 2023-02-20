@@ -9,16 +9,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
-import frc.misc.InitializationFailureException;
-import frc.misc.PID;
-import frc.misc.SubsystemStatus;
-import frc.misc.UserInterface;
+import frc.misc.*;
 import frc.motors.SwerveMotorController;
 import frc.selfdiagnostics.MotorDisconnectedIssue;
 import frc.sensors.camera.IVision;
 
+import java.sql.Driver;
 import java.util.Objects;
 
 import static frc.robot.Robot.robotSettings;
@@ -55,10 +55,13 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
     private PIDController FRpid, BRpid, BLpid, FLpid;
     private PIDController limeLightPid, leveling;
-    private BaseController xbox;
+    private BaseController xbox, midiTop, midiBot;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
     private double leveling_auto_roll = 0, Leveling_auto_Pitch = 0;
     boolean brokeHigh = false, fallLow = false;
+    private PIDController X_PID;
+    private PIDController Y_PID;
+    private double TAPX = 0, TAPY = 0, TAPRotation= 0, TAPSpeed = 0;
 
     public DriveManagerSwerve() {
         super();
@@ -67,6 +70,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void init() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         createPIDControllers(new PID(0.01, 0.0, 0.0));
         createDriveMotors();
         setDrivingPIDS(new PID(0.0002, 0, 0.0001, 0.03));
@@ -75,6 +80,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         setKin();
         limeLightPid = new PIDController(robotSettings.limeLightPid.P, robotSettings.limeLightPid.I, robotSettings.limeLightPid.D);
         leveling =  new PIDController(robotSettings.leveling.P, robotSettings.leveling.I, robotSettings.leveling.D);
+        X_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
+        Y_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
+
 
         if (robotSettings.ENABLE_VISION) {
             visionCamera = IVision.manufactureGoalCamera(robotSettings.GOAL_CAMERA_TYPE);
@@ -104,10 +112,25 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void updateTeleop() {
         updateGeneric();
-        driveSwerve();
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN){
+
+
+
+
+            TAP(TAPX,TAPY,TAPRotation,TAPSpeed);
+        }else {
+            driveSwerve();
+        }
+
         if (xbox.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            guidance.imu.resetOdometry();
-            startHeading = guidance.imu.relativeYaw();
+            guidance.setSwerveOdometryCurrent(guidance.fieldX(), guidance.fieldY());
+        }
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            if(DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                startHeading = 180;
+            }else{
+                startHeading = 0;
+            }
         }
     }
 
@@ -309,7 +332,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         } else if (dorifto()) {
             speeds = new ChassisSpeeds(xMeters, 0, rotation);
         } else {
-            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xMeters, yMeters, rotation, Rotation2d.fromDegrees(-guidance.imu.relativeYaw()));
+            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xMeters, yMeters, rotation, Rotation2d.fromDegrees(-guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()));
         }
         driveWithChassisSpeeds(speeds);
     }
@@ -365,6 +388,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         UserInterface.smartDashboardPutNumber("DriverBR position", Math.toRadians(BRcoder.getAbsolutePosition()));
         UserInterface.smartDashboardPutNumber("Field X", guidance.fieldX());
         UserInterface.smartDashboardPutNumber("Field Y", guidance.fieldY());
+        UserInterface.smartDashboardPutNumber("DriverFL current", driverFL.driver.getCurrent());
+        UserInterface.smartDashboardPutNumber("DriverFR current", driverFR.driver.getCurrent());
+        UserInterface.smartDashboardPutNumber("DriverBL current", driverBL.driver.getCurrent());
+        UserInterface.smartDashboardPutNumber("DriverBR current", driverBR.driver.getCurrent());
+        UserInterface.smartDashboardPutNumber("SteeringFL current", driverFL.steering.getCurrent());
+        UserInterface.smartDashboardPutNumber("SteeringFR current", driverFR.steering.getCurrent());
+        UserInterface.smartDashboardPutNumber("SteeringBL current", driverBL.steering.getCurrent());
+        UserInterface.smartDashboardPutNumber("SteeringBR current", driverBR.steering.getCurrent());
         MotorDisconnectedIssue.handleIssue(this, driverFL.driver);
         MotorDisconnectedIssue.handleIssue(this, driverFL.steering);
         MotorDisconnectedIssue.handleIssue(this, driverBL.driver);
@@ -626,6 +657,92 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         }
         drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
         return false;
+    }
+    /**
+        TAP Teleop Attack Point
+        named this to piss off everyone :P
+    */
+    public void TAP(double targetX, double targetY, double targetRotaion, double speed){
+
+        double x = targetX - guidance.fieldX();
+        double y = targetY - guidance.fieldY();
+
+        double calcX = X_PID.calculate(x);
+        double calcY = Y_PID.calculate(y);
+
+        double rotation = 0;
+        double signNeeded = 1;
+        double at = guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees();
+        double goal = targetRotaion;
+
+        rotation = UtilFunctions.mathematicalMod((goal - at) + 180, 360) - 180;
+        drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .08);
+    }
+
+    public void TAPUpdate(){
+        int scoreColumnInt = -1;
+        int scoreRowInt = -1;
+        double[][] scoringArray;
+        double[][] pickUpArray;
+        if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
+            scoringArray = robotSettings.blue2DScoringArray;
+            pickUpArray = robotSettings.blue2DPickUpArray;
+        }else{
+            scoringArray = robotSettings.red2DScoringArray;
+            pickUpArray = robotSettings.red2DPickUpArray;
+        }
+        if(midiBot.get(ControllerEnums.MidiController.R1C8) == DefaultControllerEnums.ButtonStatus.DOWN){
+            TAPX= pickUpArray[2][0];
+            TAPY= pickUpArray[2][1];
+            TAPRotation= pickUpArray[2][2];
+            TAPSpeed= pickUpArray[2][3];
+        }
+        if(midiBot.get(ControllerEnums.MidiController.R1C6) == DefaultControllerEnums.ButtonStatus.DOWN){
+            TAPX= pickUpArray[0][0];
+            TAPY= pickUpArray[0][1];
+            TAPRotation= pickUpArray[0][2];
+            TAPSpeed= pickUpArray[0][3];
+        }
+        if(midiBot.get(ControllerEnums.MidiController.R1C7) == DefaultControllerEnums.ButtonStatus.DOWN){
+            TAPX= pickUpArray[1][0];
+            TAPY= pickUpArray[1][1];
+            TAPRotation= pickUpArray[1][2];
+            TAPSpeed= pickUpArray[1][3];
+        }
+
+        ControllerEnums.MidiController[] columnButtons = new ControllerEnums.MidiController[]{
+                ControllerEnums.MidiController.R2C6,
+                ControllerEnums.MidiController.R2C7,
+                ControllerEnums.MidiController.R2C8,
+                ControllerEnums.MidiController.R3C6,
+                ControllerEnums.MidiController.R3C7,
+                ControllerEnums.MidiController.R3C8,
+                ControllerEnums.MidiController.R4C6,
+                ControllerEnums.MidiController.R4C7,
+                ControllerEnums.MidiController.R4C8,
+        };
+        for (int i = 0; i < columnButtons.length; i++) {
+            if(midiBot.get(columnButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
+                scoreColumnInt = i;
+        }
+
+        ControllerEnums.MidiController[] rowButtons = new ControllerEnums.MidiController[]{
+                ControllerEnums.MidiController.R1C1,
+                ControllerEnums.MidiController.R2C1,
+                ControllerEnums.MidiController.R3C1,
+        };
+        for (int i = 0; i < rowButtons.length; i++) {
+            if(midiTop.get(rowButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
+                scoreRowInt = i;
+        }
+
+        if(scoreRowInt != -1 && scoreColumnInt != -1) {
+            TAPX = pickUpArray[scoreColumnInt][scoreRowInt];
+            TAPY = pickUpArray[scoreColumnInt][3];
+            TAPRotation = pickUpArray[scoreColumnInt][4];
+            TAPSpeed = pickUpArray[scoreColumnInt][5];
+        }
+
     }
 }
 

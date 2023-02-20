@@ -20,6 +20,7 @@ import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
 import frc.robot.Robot;
 import org.photonvision.*;
+import org.photonvision.PhotonTargetSortMode;
 import edu.wpi.first.math.*;
 import frc.telemetry.RobotTelemetrySwivel;
 
@@ -83,6 +84,7 @@ public class AprilTagManager implements ISubsystem {
 
     @Override
     public void init() {
+
         final AprilTag tag1 = new AprilTag(1, new Pose3d(610.77*(0.0254), 42.19*0.0254, 18.228*(0.0254), new Rotation3d(0, 0, 180)));
         final AprilTag tag2 = new AprilTag(2, new Pose3d(610.77*(0.0254), 108.19*(0.0254), 18.22*(0.0254), new Rotation3d(0, 0, 180)));
         final AprilTag tag3 = new AprilTag(3, new Pose3d(610.77*(0.0254), 147.19*(0.0254), 18.22*(0.0254), new Rotation3d(0, 0, 180)));
@@ -133,8 +135,10 @@ public class AprilTagManager implements ISubsystem {
 
 
         swervekin = ((DriveManagerSwerve)driver).getKinematics();
+
         poseStrategy = RobotPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY;
         robotPoseEstimator = new RobotPoseEstimator(fieldLayout, poseStrategy, cams);
+
 
 
     }

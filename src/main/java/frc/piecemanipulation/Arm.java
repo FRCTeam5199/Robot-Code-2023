@@ -7,6 +7,7 @@ import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
 import frc.misc.PID;
 import frc.misc.SubsystemStatus;
+import frc.misc.UserInterface;
 import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
@@ -163,7 +164,7 @@ public class Arm implements ISubsystem {
 
     public void moveArm(double position){
         arm.moveAtPosition(position);
-
+        UserInterface.smartDashboardPutNumber("Arm Goal Position" , position);
     }
 
 

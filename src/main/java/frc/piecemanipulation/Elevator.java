@@ -152,6 +152,6 @@ public class Elevator implements ISubsystem {
 
     public void moveElevator(double position){
         elevate.moveAtPosition(position);
-        UserInterface.smartDashboardPutNumber("trying to go to: ", position);
+        UserInterface.smartDashboardPutNumber("Elevator goal position:", position);
     }
 }

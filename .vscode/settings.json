@@ -15,5 +15,6 @@
     "**/*~": true
 
   },
-  "typescript.reportStyleChecksAsWarnings": false
+  "typescript.reportStyleChecksAsWarnings": false,
+  "java.compile.nullAnalysis.mode": "automatic"
 }

@@ -1,0 +1,172 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="trying to turn to" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1255" y="429"/>
+	</widget>
+	<widget field="alliance" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1109" y="302"/>
+	</widget>
+	<widget field="swerve robot pose yaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="887" y="432"/>
+	</widget>
+	<widget field="Elevator goal position:" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="49"/>
+	</widget>
+	<widget field="Arm Goal Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1225" y="469"/>
+	</widget>
+	<widget field="Arm Motor Current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="266" y="635"/>
+	</widget>
+	<widget field="Elevator Motor Current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="251" y="615"/>
+	</widget>
+	<widget field="Right Intake Motor Current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="452" y="642"/>
+	</widget>
+	<widget field="Left Intake Motor Current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="450" y="622"/>
+	</widget>
+	<widget field="Wrist Motor Current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="262" y="657"/>
+	</widget>
+	<widget field="SteeringBR current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="270" y="102"/>
+	</widget>
+	<widget field="SteeringBL current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="11" y="747"/>
+	</widget>
+	<widget field="SteeringFR current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="271" y="61"/>
+	</widget>
+	<widget field="SteeringFL current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="271" y="82"/>
+	</widget>
+	<widget field="DriverBR current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="446" y="60"/>
+	</widget>
+	<widget field="DriverBL current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="447" y="102"/>
+	</widget>
+	<widget field="DriverFR current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="447" y="123"/>
+	</widget>
+	<widget field="DriverFL current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="447" y="81"/>
+	</widget>
+	<widget field="inTolerance" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1069" y="468"/>
+		<height>19</height>
+	</widget>
+	<widget field="angle tolerance" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="897" y="467"/>
+	</widget>
+	<widget field="Y direction stick input" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="340"/>
+	</widget>
+	<widget field="X direction stick input" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="320"/>
+	</widget>
+	<widget field="roation stick input" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="300"/>
+	</widget>
+	<widget field="change in angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1084" y="430"/>
+	</widget>
+	<widget field="Current Position" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="964" y="575"/>
+		<width>155</width>
+	</widget>
+	<widget field="rotOffset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="240"/>
+	</widget>
+	<widget field="Location" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1124" y="574"/>
+	</widget>
+	<widget field="Auton Stage" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="200"/>
+	</widget>
+	<widget field="Apriltag Estimate Y Pose: " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="180"/>
+	</widget>
+	<widget field="Apriltag Estimate X Pose: " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="160"/>
+	</widget>
+	<widget field="timer now" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="140"/>
+	</widget>
+	<widget field="apriltag get second" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="120"/>
+	</widget>
+	<widget field="April Field Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="17" y="267"/>
+		<width>105</width>
+	</widget>
+	<widget field="April Field X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="80"/>
+	</widget>
+	<widget field="AbsYaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1132" y="200"/>
+	</widget>
+	<widget field="RelYaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="-13" y="403"/>
+	</widget>
+	<widget field="Field Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1144" y="98"/>
+	</widget>
+	<widget field="Field X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1015" y="98"/>
+	</widget>
+	<widget field="DriverBL position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="615" y="74"/>
+	</widget>
+	<widget field="DriverFL position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="633" y="118"/>
+		<width>136</width>
+		<height>19</height>
+	</widget>
+	<widget field="DriverFL Absoluto positon" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="803" y="104"/>
+	</widget>
+	<widget field="rotation " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="813" y="356"/>
+	</widget>
+	<widget field="DriverBL Absoluto positon" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="807" y="81"/>
+		<height>19</height>
+	</widget>
+	<widget field="DriverFR position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="613" y="97"/>
+	</widget>
+	<widget field="DriverBR position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="615" y="56"/>
+		<width>159</width>
+	</widget>
+	<widget field="xMeters " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="265" y="487"/>
+	</widget>
+	<widget field="proxy cube" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1136" y="169"/>
+	</widget>
+	<widget field="DriverFR Absoluto positon" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="808" y="54"/>
+	</widget>
+	<widget field="DriverBR Absoluto positon" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="796" y="125"/>
+	</widget>
+	<widget field="yMeters " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="671" y="356"/>
+	</widget>
+	<widget field="tot magitude climb" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="162" y="397"/>
+	</widget>
+	<widget field="Sometimes April Field Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1145" y="121"/>
+	</widget>
+	<widget field="Always April field Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1143" y="140"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>

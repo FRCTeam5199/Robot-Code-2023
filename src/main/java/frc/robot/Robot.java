@@ -1,8 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.drive.AbstractDriveManager;
 import frc.drive.DriveManagerStandard;
@@ -19,7 +17,6 @@ import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
 import frc.piecemanipulation.*;
 import frc.sensors.camera.IVision;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 
 import com.revrobotics.ColorSensorV3;
@@ -213,6 +210,9 @@ public class Robot extends TimedRobot {
             deleteFolder(Filesystem.getDeployDirectory());
             throw new RuntimeException("Deleted deploy dir contents");
         }
+
+        UserInterface.smartDashboardPutString("alliance", DriverStation.getAlliance().toString());
+
         driver.updateGeneric();
     /*
         for (AbstractMotorController motor : AbstractMotorController.motorList) {

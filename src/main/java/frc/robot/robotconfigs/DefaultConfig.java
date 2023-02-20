@@ -189,6 +189,80 @@ public abstract class DefaultConfig {
             return "";
         }
     }
+    /**
+     the row is the position of the field -1
+     column one is TargetXHigh
+     column two is TargetXMid
+     column three is TargetXLow
+     column four is TargetY
+     column five is TargetRotation
+     column six is Speed
+     */
+    public double[][] red2DScoringArray = new double[][]{
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0}
+    };
+
+    /**
+     the row is the position of the field -1
+     column one is TargetX
+     column two is TargetY
+     column three is TargetRotation
+     column four is Speed
+     row one is LeftHumanPLayer
+     row two is RightHumanPLayer
+     row three is Spike
+     */
+
+    public double[][] red2DPickUpArray = new double[][]{
+            {0,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+    };
+    /**
+     the row is the position of the field -1
+     column one is TargetX
+     column two is TargetY
+     column three is TargetRotation
+     column four is Speed
+     */
+    public double[][] blue2DScoringArray = new double[][]{
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0},
+            {0,0,0,0,0,0}
+    };
+
+    /**
+     the row is the position of the field -1
+     column one is TargetX
+     column two is TargetY
+     column three is TargetRotation
+     column four is Speed
+     row one is LeftHumanPLayer
+     row two is RightHumanPLayer
+     row three is Spike
+     */
+
+    public double[][] blue2DPickUpArray = new double[][]{
+            {0,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+    };
+
+
 
     /**
      * Prints the enabled toggles for the loaded settings
