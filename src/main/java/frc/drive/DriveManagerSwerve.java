@@ -73,7 +73,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
-        createPIDControllers(new PID(0.01, 0.0, 0.0));
+        createPIDControllers(new PID(0.0111, 0.0, 0.0));
         createDriveMotors();
         setDrivingPIDS(new PID(0.0002, 0, 0.0001, 0.03));
         setCANCoder();
@@ -81,8 +81,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         setKin();
         limeLightPid = new PIDController(robotSettings.limeLightPid.P, robotSettings.limeLightPid.I, robotSettings.limeLightPid.D);
         leveling =  new PIDController(robotSettings.leveling.P, robotSettings.leveling.I, robotSettings.leveling.D);
-        X_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
-        Y_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
+        X_PID = new PIDController(robotSettings.TELE_XYPID.P , robotSettings.TELE_XYPID.I, robotSettings.TELE_XYPID.D);
+        Y_PID = new PIDController(robotSettings.TELE_XYPID.P , robotSettings.TELE_XYPID.I, robotSettings.TELE_XYPID.D);
 
 
         if (robotSettings.ENABLE_VISION) {
@@ -113,11 +113,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void updateTeleop() {
         updateGeneric();
+        TAPUpdate();
         if(xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN){
-
-
-
-
             TAP(TAPX,TAPY,TAPRotation,TAPSpeed);
         }else {
             driveSwerve();
@@ -151,6 +148,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public void initTeleop() {
         setupSteeringEncoders();
         resetSteeringEncoders();
+        //setSteeringContinuous(FLcoder.getAbsolutePosition(), FRcoder.getAbsolutePosition(),BLcoder.getAbsolutePosition(),BRcoder.getAbsolutePosition());
         useLocalOrientation = false;
         guidance.imu.resetOdometry();
     }
@@ -158,6 +156,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     @Override
     public void initAuton() {
         setKin();
+       //setSteeringContinuous(FLcoder.getAbsolutePosition(), FRcoder.getAbsolutePosition(),BLcoder.getAbsolutePosition(),BRcoder.getAbsolutePosition());
     }
 
     @Override
@@ -196,8 +195,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
             rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
             startHeading = guidance.imu.relativeYaw();
-        } else {
-            rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
+
+        } else if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) <= 0.1 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X)) <= 0.1 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) <= 0.1) {
+            rotation = 0;
+            startHeading = guidance.imu.relativeYaw();
+       // }else if(xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN){
+        //    rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)*(-1.6);
+        }else{
+            rotation = (guidance.imu.relativeYaw() - startHeading) * .05;
         }
 
         if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE){
@@ -227,10 +232,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private void setSteeringContinuous(double FL, double FR, double BL, double BR) {
         // try removing off set
         // try forcing Fl,FR,BL,BR 0
-        FLpid.setSetpoint(-FL);
-        FRpid.setSetpoint(-FR);
-        BRpid.setSetpoint(-BR);
-        BLpid.setSetpoint(-BL);
+        UserInterface.smartDashboardPutNumber("front left turn gaol", Math.toRadians(FL));
+        UserInterface.smartDashboardPutNumber("front Right turn gaol", Math.toRadians(FR));
+        UserInterface.smartDashboardPutNumber("Back left turn gaol", Math.toRadians(BL));
+        UserInterface.smartDashboardPutNumber("Back right turn gaol", Math.toRadians(BR));
+        FLpid.setSetpoint(FL);
+        FRpid.setSetpoint(FR);
+        BRpid.setSetpoint(BR);
+        BLpid.setSetpoint(BL);
         //System.out.println(driverFL.steering.getRotations());
         //System.out.println("setpoint no offset: " + FR);
         //System.out.println("Absolute Position/F current positiion FL: " + FLcoder.getAbsolutePosition());
@@ -351,6 +360,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
         moduleStates = kinematics.toSwerveModuleStates(speeds);
+
         //System.out.println("notice me");
         if (xbox.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) { // ignore for now
             moduleStates = kinematics.toSwerveModuleStates(speeds, frontRightLocation);
@@ -362,19 +372,29 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             moduleStates = kinematics.toSwerveModuleStates(speeds, new Translation2d(offset, 0));
         }
 
-        // Front left module state
-        SwerveModuleState frontLeft = moduleStates[0], frontRight = moduleStates[1], backLeft = moduleStates[2], backRight = moduleStates[3];
 
+
+        // Front left module state
+        SwerveModuleState
+                frontLeft  = SwerveModuleState.optimize(moduleStates[1], new Rotation2d(Math.toRadians(FLcoder.getAbsolutePosition()))),
+                frontRight = SwerveModuleState.optimize(moduleStates[0], new Rotation2d(Math.toRadians(FRcoder.getAbsolutePosition()))),
+                backLeft   = SwerveModuleState.optimize(moduleStates[3], new Rotation2d(Math.toRadians(BLcoder.getAbsolutePosition()))),
+                backRight  = SwerveModuleState.optimize(moduleStates[2], new Rotation2d(Math.toRadians(BRcoder.getAbsolutePosition())));
         //try continuous here
 
         //System.out.println("FieldX: " + -guidance.fieldX());
         //System.out.println("FieldY: " + -guidance.fieldY());
 
-        setSteeringContinuous(frontLeft.angle.getDegrees(), frontRight.angle.getDegrees(), backLeft.angle.getDegrees(), backRight.angle.getDegrees()); // <-- maybe here
+//        if(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) == 0 && xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) == 0 && xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) == 0) {
+//            setDrive(0, 0, 0, 0); // before here
+//        }else {
+            setSteeringContinuous(frontLeft.angle.getDegrees(), frontRight.angle.getDegrees(), backLeft.angle.getDegrees(), backRight.angle.getDegrees()); // <-- maybe here
+
+            setDrive(frontLeft.speedMetersPerSecond, frontRight.speedMetersPerSecond, backLeft.speedMetersPerSecond, backRight.speedMetersPerSecond);
+        //}
         if (DEBUG) {
             //System.out.printf("%4f %4f %4f %4f \n", frontLeft.speedMetersPerSecond, frontRight.speedMetersPerSecond, backLeft.speedMetersPerSecond, backRight.speedMetersPerSecond);
         }
-        setDrive(frontLeft.speedMetersPerSecond, frontRight.speedMetersPerSecond, backLeft.speedMetersPerSecond, backRight.speedMetersPerSecond); // before here
     }
 
     @Override
@@ -498,7 +518,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
         BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
         BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));
-
     }
 
     public void createPIDControllers(PID steeringPID) {
@@ -692,19 +711,20 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             scoringArray = robotSettings.red2DScoringArray;
             pickUpArray = robotSettings.red2DPickUpArray;
         }
-        if(midiBot.get(ControllerEnums.MidiController.R1C8) == DefaultControllerEnums.ButtonStatus.DOWN){
+        //SPIKE
+        if(midiBot.get(ControllerEnums.MidiController.R2C4) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[2][0];
             TAPY= pickUpArray[2][1];
             TAPRotation= pickUpArray[2][2];
             TAPSpeed= pickUpArray[2][3];
         }
-        if(midiBot.get(ControllerEnums.MidiController.R1C6) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(midiBot.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[0][0];
             TAPY= pickUpArray[0][1];
             TAPRotation= pickUpArray[0][2];
             TAPSpeed= pickUpArray[0][3];
         }
-        if(midiBot.get(ControllerEnums.MidiController.R1C7) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(midiBot.get(ControllerEnums.MidiController.R1C4) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[1][0];
             TAPY= pickUpArray[1][1];
             TAPRotation= pickUpArray[1][2];

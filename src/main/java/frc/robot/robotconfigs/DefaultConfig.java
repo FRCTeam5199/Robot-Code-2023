@@ -132,6 +132,7 @@ public abstract class DefaultConfig {
     public PID SHOOTER_PID = EMPTY_PID;
     public PID HEADING_PID = EMPTY_PID;
     public PID AUTO_XYPID = EMPTY_PID;
+    public PID TELE_XYPID = EMPTY_PID;
     public PID TELEOP_AIMING_PID = EMPTY_PID;
     public PID AUTON_AIMING_PID = EMPTY_PID;
     public PID BACKSPIN_PID = EMPTY_PID;
@@ -199,15 +200,15 @@ public abstract class DefaultConfig {
      column six is Speed
      */
     public double[][] red2DScoringArray = new double[][]{
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0}
+            {-5.74 ,-6.9 ,-6.9 ,15.9  ,0 ,0.5},
+            {-6.5  ,-7.8 ,-6.9 ,14.3  ,0 ,0.5},
+            {-5.74 ,-6.9 ,-6.9 ,12.4  ,0 ,0.5},
+            {-5.74 ,-6.9 ,-6.9 ,10.6  ,0 ,0.5},
+            {-6.8  ,-7.8 ,-6.9 ,9.0   ,0 ,0.5},
+            {-5.74 ,-6.9 ,-6.9 ,6.9   ,0 ,0.5},
+            {-5.74 ,-6.9 ,-6.9 ,4.9   ,0 ,0.5},
+            {-6.8  ,-7.8 ,-6.9 ,3.48  ,0 ,0.5},
+            {-5.74 ,-6.9 ,-6.9 ,1.4   ,0 ,0.5}
     };
 
     /**
@@ -222,8 +223,8 @@ public abstract class DefaultConfig {
      */
 
     public double[][] red2DPickUpArray = new double[][]{
-            {0,0,0,0},
-            {0,0,0,0},
+            {-50 ,20  ,0 ,.5},
+            {-49.75 ,25  ,0 ,.5},
             {0,0,0,0}
     };
     /**
@@ -234,15 +235,15 @@ public abstract class DefaultConfig {
      column four is Speed
      */
     public double[][] blue2DScoringArray = new double[][]{
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0},
-            {0,0,0,0,0,0}
+            {-54+5.74 ,-54+6.9 ,-54+6.9 ,15.9  ,180 ,0.5},
+            {-54+6.5  ,-54+7.8 ,-54+6.9 ,14.3  ,180 ,0.5},
+            {-54+5.74 ,-54+6.9 ,-54+6.9 ,12.4  ,180 ,0.5},
+            {-54+5.74 ,-54+6.9 ,-54+6.9 ,10.6  ,180 ,0.5},
+            {-54+6.8  ,-54+7.8 ,-54+6.9 ,9.0   ,180 ,0.5},
+            {-54+5.74 ,-54+6.9 ,-54+6.9 ,6.9   ,180 ,0.5},
+            {-54+5.74 ,-54+6.9 ,-54+6.9 ,4.9   ,180 ,0.5},
+            {-54+6.8  ,-54+7.8 ,-54+6.9 ,3.48  ,180 ,0.5},
+            {-54+5.74 ,-54+6.9 ,-54+6.9 ,1.4   ,180 ,0.5}
     };
 
     /**
@@ -257,8 +258,8 @@ public abstract class DefaultConfig {
      */
 
     public double[][] blue2DPickUpArray = new double[][]{
-            {0,0,0,0},
-            {0,0,0,0},
+            {-54 + 49.75 ,20  ,Math.PI ,.5},
+            {-54 + 49.75 ,25  ,Math.PI ,.5},
             {0,0,0,0}
     };
 

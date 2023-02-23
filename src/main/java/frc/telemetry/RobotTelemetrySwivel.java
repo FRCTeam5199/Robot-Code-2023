@@ -55,20 +55,34 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
                     double AprilX = -54 + (apriltagpos.getFirst().getX() * 3.28);
                     double AprilY = apriltagpos.getFirst().getY() * 3.28;
                     UserInterface.smartDashboardPutNumber("Always April field Y", AprilY);
-                   /*  if(AprilX <= -16 && AprilX  >= -32 ){
-                        AprilY = swerveRobotPose.getEstimatedPosition().getY();
-                    } */
-                    if(aprilAvg == 0){
-                        aprilAvg = AprilY;
-                    }else{
-                        aprilAvg = aprilAvg *.9 + AprilY*(1.0/10);
-                    }
-                    Translation2d translation2dft = new Translation2d(AprilX, aprilAvg);
+                    Translation2d translation2dft = new Translation2d(AprilX, AprilY);
                     Pose2d poseinft = new Pose2d(translation2dft, apriltagpos.getFirst().getRotation());
                     UserInterface.smartDashboardPutNumber("April Field X", translation2dft.getX());
                     UserInterface.smartDashboardPutNumber("Sometimes April Field Y", translation2dft.getY());
                     UserInterface.smartDashboardPutNumber("apriltag get second", apriltagpos.getSecond());
                     double timernow = Timer.getFPGATimestamp() - apriltagpos.getSecond();
+                    UserInterface.smartDashboardPutNumber("timer now", timernow);
+                    swerveRobotPose.addVisionMeasurement(poseinft, timernow);
+                }catch (Exception e){
+                    System.out.println(e);
+                }
+            }
+
+            Pair<Pose2d, Double> apriltagpos2 = tagManager.getEstimatedGlobalPose2();
+            if(apriltagpos2.getFirst().getX() == -2 && apriltagpos2.getFirst().getY() == -2) {
+                //nothing
+            }else {
+                try {
+
+                    double AprilX = -54 + (apriltagpos2.getFirst().getX() * 3.28);
+                    double AprilY = apriltagpos2.getFirst().getY() * 3.28;
+                    UserInterface.smartDashboardPutNumber("Always April field Y", AprilY);
+                    Translation2d translation2dft = new Translation2d(AprilX, AprilY);
+                    Pose2d poseinft = new Pose2d(translation2dft, apriltagpos2.getFirst().getRotation());
+                    UserInterface.smartDashboardPutNumber("April Field X", translation2dft.getX());
+                    UserInterface.smartDashboardPutNumber("Sometimes April Field Y", translation2dft.getY());
+                    UserInterface.smartDashboardPutNumber("apriltag get second", apriltagpos2.getSecond());
+                    double timernow = Timer.getFPGATimestamp() - apriltagpos2.getSecond();
                     UserInterface.smartDashboardPutNumber("timer now", timernow);
                     swerveRobotPose.addVisionMeasurement(poseinft, timernow);
                 }catch (Exception e){

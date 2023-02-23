@@ -49,10 +49,11 @@ public class AprilTagManager implements ISubsystem {
 
     Translation2d wheels = new Translation2d(10.5, 12.5);
     Pose2d lastPose = new Pose2d(new Translation2d(0,0),new Rotation2d(0));
+    Pose2d lastPose2 = new Pose2d(new Translation2d(0,0),new Rotation2d(0));
 
 
-    static final Transform3d campos1 = new Transform3d(new Translation3d(22*(0.0254), 1*(0.0254), 0), new Rotation3d(0, 0.262, 0));
-    static final Transform3d campos2 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    static final Transform3d campos1 = new Transform3d(new Translation3d(16*(0.0254), 4*(0.0254), 0), new Rotation3d(0, 0.262, 0));
+    static final Transform3d camposBack = new Transform3d(new Translation3d(-5.5*(0.0254), -3*(0.0254), 0), new Rotation3d(0, 0, Math.PI));
     static final Transform3d campos3 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     static final Transform3d campos4 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
@@ -71,7 +72,7 @@ public class AprilTagManager implements ISubsystem {
     ArrayList<Pair<PhotonCamera, Transform3d>> cams;
     ArrayList<PhotonCamera> cameras;
     PhotonPoseEstimator.PoseStrategy poseStrategy;
-    PhotonPoseEstimator robotPoseEstimator;
+    PhotonPoseEstimator robotPoseEstimator, robotPoseEstimator2;
     SwerveDriveKinematics swervekin;
 
 
@@ -104,8 +105,8 @@ public class AprilTagManager implements ISubsystem {
         ApriList.add(tag8);
 
         photonCamera1 = new PhotonCamera("Global_Shutter_Camera");
+            photonCamera2 = new PhotonCamera("HD_USB_Camera");
         if(Robot.robotSettings.FOUR_CAMERA) {
-            photonCamera2 = new PhotonCamera("back");
             photonCamera3 = new PhotonCamera("left");
             photonCamera4 = new PhotonCamera("right");
         }
@@ -117,8 +118,8 @@ public class AprilTagManager implements ISubsystem {
 
         cams = new ArrayList<Pair<PhotonCamera, Transform3d>>();
         cams.add(new Pair<>(photonCamera1, campos1));
+            cams.add(new Pair<>(photonCamera2, camposBack));
         if(Robot.robotSettings.FOUR_CAMERA) {
-            cams.add(new Pair<>(photonCamera2, campos2));
             cams.add(new Pair<>(photonCamera3, campos3));
             cams.add(new Pair<>(photonCamera4, campos4));
         }
@@ -136,11 +137,11 @@ public class AprilTagManager implements ISubsystem {
 
         swervekin = ((DriveManagerSwerve)driver).getKinematics();
 
-        poseStrategy = PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY;
+        poseStrategy = PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE;
         robotPoseEstimator = new PhotonPoseEstimator(fieldLayout, poseStrategy, cams.get(0).getFirst(), cams.get(0).getSecond());
+        robotPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
 
-
-
+        robotPoseEstimator2 = new PhotonPoseEstimator(fieldLayout, poseStrategy, cams.get(1).getFirst(), cams.get(1).getSecond());
     }
 
 
@@ -186,6 +187,22 @@ public class AprilTagManager implements ISubsystem {
 
             lastPose = result.get().estimatedPose.toPose2d();
             return new Pair<Pose2d, Double>(lastPose, 0.0);
+        }
+    }
+
+    public Pair<Pose2d, Double> getEstimatedGlobalPose2() {
+        robotPoseEstimator2.setReferencePose(lastPose2);
+
+        double currentTime = getFPGATimestamp();
+        Optional<EstimatedRobotPose> result = robotPoseEstimator2.update();
+
+        if (result.isEmpty()) {
+            return new Pair<Pose2d, Double>(new Pose2d(-2,-2,new Rotation2d(0)), 0.0);
+        } else {
+            //return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
+
+            lastPose2 = result.get().estimatedPose.toPose2d();
+            return new Pair<Pose2d, Double>(lastPose2, 0.0);
         }
     }
 

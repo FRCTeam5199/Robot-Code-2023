@@ -2,6 +2,7 @@ package frc.piecemanipulation;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Timer;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
@@ -15,6 +16,8 @@ import frc.motors.VictorMotorController;
 import frc.robot.Robot;
 import frc.sensors.colorsensor.RevColorSensor;
 
+import java.sql.Time;
+
 import static frc.robot.Robot.*;
 
 
@@ -23,6 +26,7 @@ public class Intake implements ISubsystem {
     private BaseController xbox, panel, midiTop, midiBot;
     private I2C.Port i2cPort;
     public ColorSensorV3 m_colorSensor;
+    public Timer closeTimer;
 
     public Intake() {
         addToMetaList();
@@ -36,7 +40,9 @@ public class Intake implements ISubsystem {
             i2cPort = I2C.Port.kMXP;
             m_colorSensor = new ColorSensorV3(i2cPort);
         }
-
+        closeTimer = new Timer();
+        closeTimer.reset();
+        closeTimer.start();
     }
 
     @Override
@@ -139,7 +145,7 @@ public class Intake implements ISubsystem {
                     intakeLeft.moveAtVoltage(-6);
                 } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     if(robotSettings.ENABLE_COLOR_SENSOR) {
-                        if (m_colorSensor.getProximity() >= 615) {
+                        if (m_colorSensor.getProximity() >= 400) {
                             intakeLeft.moveAtVoltage(0);
                             intakeRight.moveAtVoltage(0);
                         }else {
@@ -163,9 +169,17 @@ public class Intake implements ISubsystem {
                 intakeLeft.moveAtVoltage(0);
                 if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+                    closeTimer.reset();
                 }
                 if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                    closeTimer.reset();
+                }
+                if (robotSettings.ENABLE_COLOR_SENSOR){
+                    if (m_colorSensor.getProximity() >= 150 && closeTimer.get() >= .5) {
+                        Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                        closeTimer.reset();
+                    }
                 }
             }
         }else{
@@ -194,9 +208,17 @@ public class Intake implements ISubsystem {
             }
             if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+                closeTimer.reset();
             }
             if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                closeTimer.reset();
+            }
+            if (closeTimer.hasElapsed(.5)){
+                if (m_colorSensor.getProximity() >= 1024) {
+                    Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+                    closeTimer.reset();
+                }
             }
         }
         if(!robotSettings.ARM_ELEVATOR_MANUAL){
