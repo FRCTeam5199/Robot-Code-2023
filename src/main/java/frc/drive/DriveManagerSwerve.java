@@ -180,7 +180,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     private void driveSwerve() {
-        forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (-1);
+        forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (1);
         if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE) {
             visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             if(visionCamera.hasValidTarget()) {
@@ -189,7 +189,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             }
         } else {
             visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
-            leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (1);
+            leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (-1);
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
         if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
@@ -202,7 +202,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
        // }else if(xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN){
         //    rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)*(-1.6);
         }else{
-            rotation = (guidance.imu.relativeYaw() - startHeading) * .05;
+            rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
 
         if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE){
@@ -236,10 +236,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         UserInterface.smartDashboardPutNumber("front Right turn gaol", Math.toRadians(FR));
         UserInterface.smartDashboardPutNumber("Back left turn gaol", Math.toRadians(BL));
         UserInterface.smartDashboardPutNumber("Back right turn gaol", Math.toRadians(BR));
-        FLpid.setSetpoint(FL);
-        FRpid.setSetpoint(FR);
-        BRpid.setSetpoint(BR);
-        BLpid.setSetpoint(BL);
+        FLpid.setSetpoint(-FL);
+        FRpid.setSetpoint(-FR);
+        BRpid.setSetpoint(-BR);
+        BLpid.setSetpoint(-BL);
         //System.out.println(driverFL.steering.getRotations());
         //System.out.println("setpoint no offset: " + FR);
         //System.out.println("Absolute Position/F current positiion FL: " + FLcoder.getAbsolutePosition());
@@ -375,11 +375,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
 
         // Front left module state
-        SwerveModuleState
-                frontLeft  = SwerveModuleState.optimize(moduleStates[1], new Rotation2d(Math.toRadians(FLcoder.getAbsolutePosition()))),
-                frontRight = SwerveModuleState.optimize(moduleStates[0], new Rotation2d(Math.toRadians(FRcoder.getAbsolutePosition()))),
-                backLeft   = SwerveModuleState.optimize(moduleStates[3], new Rotation2d(Math.toRadians(BLcoder.getAbsolutePosition()))),
-                backRight  = SwerveModuleState.optimize(moduleStates[2], new Rotation2d(Math.toRadians(BRcoder.getAbsolutePosition())));
+        SwerveModuleState frontLeft = moduleStates[0], frontRight = moduleStates[1], backLeft = moduleStates[2], backRight = moduleStates[3];
         //try continuous here
 
         //System.out.println("FieldX: " + -guidance.fieldX());
