@@ -159,7 +159,8 @@ public abstract class DefaultConfig {
 
     public int IMU_ID = 22; //pigeon
     //leds
-    public int LED_STRAND_LENGTH = 60;
+    public boolean ENABLE_LEDS = true;
+    public int LED_STRAND_LENGTH = 26;
     public int LED_STRAND_PORT_ID = 9;
     //pdp
     public int PDP_ID = 0;
@@ -266,6 +267,7 @@ public abstract class DefaultConfig {
 
 
     /**
+     *
      * Prints the enabled toggles for the loaded settings
      */
     public void printToggles() {
