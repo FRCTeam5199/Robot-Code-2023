@@ -139,7 +139,6 @@ public abstract class DefaultConfig {
     public double XBOX_CONTROLLER_DEADZONE = 0.07;
     public double AUTON_TOLERANCE = 0.2;
     public double AUTO_SPEED = 3;
-    public String AUTO_ALLIANCE = "Blue";
     public double AUTO_ROTATION_SPEED = 1;
     public String GOAL_CAM_NAME = "GoalCamera";
     public String BALL_CAM_NAME = "BallCamera";

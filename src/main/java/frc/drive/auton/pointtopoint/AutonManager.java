@@ -10,7 +10,6 @@ import frc.drive.auton.Point;
 import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
 import frc.robot.Robot;
-import frc.misc.LEDs;
 
 import static frc.robot.Robot.autonManager;
 import static frc.robot.Robot.robotSettings;
@@ -41,18 +40,6 @@ public class AutonManager extends AbstractAutonManager {
     @Override
     public void init() {
         super.initAuton();
-        LEDs led = new LEDs();
-        try {
-            if(robotSettings.AUTO_ALLIANCE.toLowerCase().equals("blue")) {
-                led.blue();
-            }
-            if(robotSettings.AUTO_ALLIANCE.toLowerCase().equals("red")) {
-                led.red();    
-            }
-        } catch (Exception e) {
-            System.out.println("REDs LED not working: most likely bc ENABLE_LEDS is false");
-        }
-        
     }
 
     @Override
