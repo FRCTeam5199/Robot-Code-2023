@@ -148,6 +148,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public void initTeleop() {
         setupSteeringEncoders();
         resetSteeringEncoders();
+        setBrake(true);
         //setSteeringContinuous(FLcoder.getAbsolutePosition(), FRcoder.getAbsolutePosition(),BLcoder.getAbsolutePosition(),BRcoder.getAbsolutePosition());
         useLocalOrientation = false;
         guidance.imu.resetOdometry();
@@ -155,6 +156,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void initAuton() {
+        setBrake(true);
         setKin();
        //setSteeringContinuous(FLcoder.getAbsolutePosition(), FRcoder.getAbsolutePosition(),BLcoder.getAbsolutePosition(),BRcoder.getAbsolutePosition());
     }
@@ -196,9 +198,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
             startHeading = guidance.imu.relativeYaw();
 
-        } else if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) <= 0.1 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X)) <= 0.1 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) <= 0.1) {
+        } else if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) <= 0.15 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X)) <= 0.15 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) <= 0.15) {
             rotation = 0;
-            startHeading = guidance.imu.relativeYaw();
+            //startHeading = guidance.imu.relativeYaw();
        // }else if(xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN){
         //    rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)*(-1.6);
         }else{

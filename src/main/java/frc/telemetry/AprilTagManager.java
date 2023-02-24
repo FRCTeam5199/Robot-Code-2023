@@ -137,7 +137,7 @@ public class AprilTagManager implements ISubsystem {
 
         swervekin = ((DriveManagerSwerve)driver).getKinematics();
 
-        poseStrategy = PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE;
+        poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP;
         robotPoseEstimator = new PhotonPoseEstimator(fieldLayout, poseStrategy, cams.get(0).getFirst(), cams.get(0).getSecond());
         robotPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
 

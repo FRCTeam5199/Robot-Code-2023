@@ -86,10 +86,13 @@ public enum AutonRoutines {
             new AutonWaypoint(INTAKE_PISTON_OUT),
             new AutonWaypoint(INTAKE_WHEEL_OUT),
             //new AutonWaypoint(new Point(-17, 14.2), .5, DRIVE_TO, 1,  ARM_ELEVATOR_GO_TO, -35,-33),,
-            new AutonWaypoint(new Point(-22, 14.3), .20, DRIVE_TO, 1, ARM_ELEVATOR_GO_TO, -35,-33),
-            new AutonWaypoint(new Point(-6, 14.4), .5, DRIVE_TO, 1,  ARM_ELEVATOR_GO_TO, -1,-240),
+            new AutonWaypoint(new Point(-19, 14.6), .3, DRIVE_TO, 1, ARM_ELEVATOR_GO_TO, -37,-33),
+            new AutonWaypoint(new Point(-22.2, 14.6), .20, DRIVE_TO, 1, ARM_ELEVATOR_GO_TO, -37,-33),
+            new AutonWaypoint(INTAKE_WHEEL_OFF),
+            new AutonWaypoint(new Point(-20, 15.2), .20, DRIVE_TO, 1, ARM_ELEVATOR_GO_TO, -35,-33),
+            new AutonWaypoint(new Point(-6.3, 14.5), .4, DRIVE_TO, 1,  ARM_ELEVATOR_GO_TO, -1,-240),
             new AutonWaypoint(INTAKE_WHEEL_IN),
-            new AutonWaypoint(new Point(-13.15, 8.5), .4, DRIVE_TO, 1,  ARM_ELEVATOR_GO_TO, -44,-140),
+            new AutonWaypoint(new Point(-13.15, 8.5), .5, DRIVE_TO, 1,  ARM_ELEVATOR_GO_TO, -44,-140),
             new AutonWaypoint(AUTO_LEVEL),
             new AutonWaypoint(LOCK_WHEELS)
 
