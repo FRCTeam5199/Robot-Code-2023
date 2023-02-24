@@ -52,7 +52,7 @@ public class ManipulationManager implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN)
             changeCubeCone(true);
             //ledenum(rgby);
             try{
@@ -60,8 +60,7 @@ public class ManipulationManager implements ISubsystem {
             }catch(IOError e){
                 System.out.println("Yellow LED not working: most likely bc ENABLE_LEDS is false");
             }
-        }
-        if (panel.get(ControllerEnums.ButtonPanelButtons2022.LOW_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if (panel.get(ControllerEnums.ButtonPanelButtons2022.LOW_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN)
             changeCubeCone(false);
             //ledenum(rgbp);
             try{
@@ -69,7 +68,7 @@ public class ManipulationManager implements ISubsystem {
             }catch(IOError e){
                 System.out.println("Purple LED not working: most likely bc ENABLE_LEDS is false");
             }
-        }   
+
 
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             robotSettings.ARM_ELEVATOR_MANUAL = true;
