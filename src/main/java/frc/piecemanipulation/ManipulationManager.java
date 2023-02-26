@@ -249,7 +249,7 @@ public class ManipulationManager implements ISubsystem {
 
         if(robotSettings.ENABLE_WRIST){
             //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
-            if(Robot.arm.arm.getRotations() >= -123){
+            if(Robot.arm.arm.getRotations() >= -130){
                 if(Robot.wrist.wrist.getRotations() >= 0 && Robot.wrist.wrist.getRotations() <= 4000){
                     Robot.wrist.wrist.moveAtVoltage(0);
                 }else{

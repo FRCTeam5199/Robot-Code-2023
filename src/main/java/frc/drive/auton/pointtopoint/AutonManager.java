@@ -34,8 +34,8 @@ public class AutonManager extends AbstractAutonManager {
         drivingChild = driveManager;
         autonPath = routine;
         ROT_PID = new PIDController(robotSettings.HEADING_PID.P, robotSettings.HEADING_PID.I, robotSettings.HEADING_PID.D);
-        X_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
-        Y_PID = new PIDController(robotSettings.AUTO_XYPID.P , robotSettings.AUTO_XYPID.I, robotSettings.AUTO_XYPID.D);
+        X_PID = new PIDController(robotSettings.AUTO_XPID.P , robotSettings.AUTO_XPID.I, robotSettings.AUTO_XPID.D);
+        Y_PID = new PIDController(robotSettings.AUTO_YPID.P , robotSettings.AUTO_YPID.I, robotSettings.AUTO_YPID.D);
         init();
     }
 
@@ -141,8 +141,8 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(4);
-                    Robot.intake.intakeLeft.moveAtVoltage(-4);
+                    Robot.intake.intakeRight.moveAtVoltage(6);
+                    Robot.intake.intakeLeft.moveAtVoltage(-6);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OUT:
@@ -197,8 +197,8 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(4);
-                    Robot.intake.intakeLeft.moveAtVoltage(-4);
+                    Robot.intake.intakeRight.moveAtVoltage(6);
+                    Robot.intake.intakeLeft.moveAtVoltage(-6);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_OUT:
@@ -249,9 +249,9 @@ public class AutonManager extends AbstractAutonManager {
         UserInterface.smartDashboardPutString("Location", point.toString());
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
         boolean angleTolerance = Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) <= (robotSettings.AUTON_TOLERANCE *5.0);
-        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE, point);
+        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 2.2, point);
         if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 1) {
-            inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 5, point);
+            inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
         }
         UserInterface.smartDashboardPutNumber("how far from correct the angle is", Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()));
         UserInterface.smartDashboardPutBoolean("angle tolerance", angleTolerance);
@@ -285,9 +285,9 @@ public class AutonManager extends AbstractAutonManager {
                 rotation = UtilFunctions.mathematicalMod((goal - at) + 180, 360) - 180;
 
                 if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-                    drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .065);
+                    drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .0675);
                 }else {
-                    drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .065/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
+                    drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .0675/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
                 }
             } else {
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;

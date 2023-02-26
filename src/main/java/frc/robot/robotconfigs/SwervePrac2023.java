@@ -7,11 +7,8 @@ import frc.drive.AbstractDriveManager;
 import frc.drive.auton.AutonType;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController;
-import frc.piecemanipulation.Intake;
 import frc.sensors.camera.IVision;
 import frc.telemetry.imu.AbstractIMU;
-
-import static frc.misc.PID.EMPTY_PID;
 
 public class SwervePrac2023 extends DefaultConfig{
 
@@ -93,7 +90,8 @@ public class SwervePrac2023 extends DefaultConfig{
 
         DRIVEBASE_PID = new PID(0.0000001, 0, 0.0001);
         HEADING_PID = new PID(.31, 0.0, 0.0);
-        AUTO_XYPID = new PID(1.15, 0.11, 0.001);
+        AUTO_XPID = new PID(1.15, 0.11, 0.001);
+        AUTO_YPID = new PID(1.17, 0.11, 0.001);
         TELE_XYPID = new PID(1.22, 0.11, 0.01);
         DRIVEBASE_DISTANCE_BETWEEN_WHEELS = 0.435991;
         MAX_SPEED = 16; //max speed in fps - REAL IS 10(for 4in wheels)

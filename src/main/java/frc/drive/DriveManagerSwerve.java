@@ -660,10 +660,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             fallLow = true;
             lockWheels();
         }else {
-            if(forwards < -2D/12)
-                forwards = -2D/12;
-            if(forwards > 2D/12)
-                forwards = 2D/12;
+            if(forwards < -1.92D/12)
+                forwards = -1.92D/12;
+            if(forwards > 1.92D/12)
+                forwards = 1.92D/12;
 
         }
 

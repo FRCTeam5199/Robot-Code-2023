@@ -72,7 +72,7 @@ public class Intake implements ISubsystem {
         if (robotSettings.ENABLE_COLOR_SENSOR){
             UserInterface.smartDashboardPutNumber("proxy cube", m_colorSensor.getProximity());
             if(m_colorSensor.getProximity() >= 615){
-                if (intakeLeft.getVoltage() >= 12 || intakeRight.getVoltage() >= 12){
+                if (intakeLeft.getVoltage() >= 10 || intakeRight.getVoltage() >= 10){
                     intakeLeft.moveAtVoltage(0);
                     intakeRight.moveAtVoltage(0);
                 }

@@ -131,7 +131,8 @@ public abstract class DefaultConfig {
     public PID DRIVEBASE_PID = EMPTY_PID;
     public PID SHOOTER_PID = EMPTY_PID;
     public PID HEADING_PID = EMPTY_PID;
-    public PID AUTO_XYPID = EMPTY_PID;
+    public PID AUTO_XPID = EMPTY_PID;
+    public PID AUTO_YPID = EMPTY_PID;
     public PID TELE_XYPID = EMPTY_PID;
     public PID TELEOP_AIMING_PID = EMPTY_PID;
     public PID AUTON_AIMING_PID = EMPTY_PID;
