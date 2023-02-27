@@ -3,6 +3,7 @@ package frc.piecemanipulation;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
+import frc.controllers.basecontrollers.DefaultControllerEnums.ButtonStatus;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 import frc.robot.Robot;
@@ -12,7 +13,7 @@ import static frc.robot.Robot.robotSettings;
 
 
 public class ManipulationManager implements ISubsystem {
-    public BaseController panel, xbox2, midiTop, midiBot;
+    public BaseController panel1, panel2, xbox2, midiTop, midiBot;
     public double armGoal = 0;
     public double elevateGoal = 2.2;
     public boolean cubeConeMode = true; // true =  Cone, false  = Cube
@@ -41,19 +42,25 @@ public class ManipulationManager implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if(midiTop.get(ControllerEnums.MidiController.R1C5) == DefaultControllerEnums.ButtonStatus.DOWN)
+        /*if(midiTop.get(ControllerEnums.MidiController.R1C5) == DefaultControllerEnums.ButtonStatus.DOWN)
             changeCubeCone(true);
         if (midiTop.get(ControllerEnums.MidiController.R1C6) == DefaultControllerEnums.ButtonStatus.DOWN)
             changeCubeCone(false);
-
-
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+        */
+        if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == ButtonStatus.DOWN){
+            changeCubeCone(true);
+        }
+        if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Cube) == ButtonStatus.DOWN){
+            changeCubeCone(false);
+        }
+        //will allow later this is just for quick fix
+        /*if(xbox2.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             robotSettings.ARM_ELEVATOR_MANUAL = true;
         }
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             robotSettings.ARM_ELEVATOR_MANUAL = false;
             Robot.intake.intakeIn();
-        }
+        }*/
 
 
         if(!robotSettings.ARM_ELEVATOR_MANUAL) {
@@ -61,6 +68,7 @@ public class ManipulationManager implements ISubsystem {
                 elevateGoal = -11;
                 armGoal = -62;
             }
+            
             if (midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 elevateGoal = -44;
                 armGoal = -133;
@@ -186,7 +194,8 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public void enableControllers() {
-        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);

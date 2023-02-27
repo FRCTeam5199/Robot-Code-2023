@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.I2C;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
+import frc.controllers.basecontrollers.DefaultControllerEnums.ButtonStatus;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
@@ -20,7 +21,7 @@ import static frc.robot.Robot.*;
 
 public class Intake implements ISubsystem {
     public AbstractMotorController intakeLeft, intakeRight;
-    private BaseController xbox, panel, midiTop, midiBot;
+    private BaseController xbox, panel1, panel2, midiTop, midiBot;
     private I2C.Port i2cPort;
     public ColorSensorV3 m_colorSensor;
 
@@ -125,7 +126,8 @@ public class Intake implements ISubsystem {
 
     public void createControllers(){
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
@@ -200,22 +202,35 @@ public class Intake implements ISubsystem {
             }
         }
         if(!robotSettings.ARM_ELEVATOR_MANUAL){
-            if(midiTop.get(ControllerEnums.MidiController.R2C4) == DefaultControllerEnums.ButtonStatus.DOWN){
-                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-            }
-            if(midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN){
-                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-            }
-            if(midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-            }
+            //if (){
+                /*if(midiTop.get(ControllerEnums.MidiController.R2C4) == DefaultControllerEnums.ButtonStatus.DOWN){
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+                }
+                if(midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN){
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+                }
+                if(midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+                }*/
+            //}else if(){
+                if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == ButtonStatus.DOWN){
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+                }
+                if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) == ButtonStatus.DOWN){
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+                }
+                if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == ButtonStatus.DOWN){
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+                }
+
+            //}
         }else {
-            if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            /*if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
             }
             if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-            }
+            }*/
         }
 
 

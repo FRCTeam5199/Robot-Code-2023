@@ -16,7 +16,7 @@ import static frc.robot.Robot.robotSettings;
 
 public class Elevator implements ISubsystem {
     public AbstractMotorController elevate;
-    public BaseController xbox, xbox2, panel, midiTop, midiBot;
+    public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Elevator(){
         addToMetaList();
@@ -97,7 +97,8 @@ public class Elevator implements ISubsystem {
     public void createControllers(){
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
@@ -121,7 +122,7 @@ public class Elevator implements ISubsystem {
     }
 
     public void manuelDrive(){
-        if(midiTop.get(ControllerEnums.MidiController.R1C7) == DefaultControllerEnums.ButtonStatus.DOWN){
+        /*if(midiTop.get(ControllerEnums.MidiController.R1C7) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
             elevate.moveAtVoltage(5);
         }else if(midiTop.get(ControllerEnums.MidiController.R2C7) == DefaultControllerEnums.ButtonStatus.DOWN){
@@ -130,7 +131,7 @@ public class Elevator implements ISubsystem {
         }else{
             elevate.moveAtVoltage(0);
         }
-        System.out.println("Elevator Position: " + elevate.getRotations());
+        System.out.println("Elevator Position: " + elevate.getRotations());*/
     }
 
     public void positionDrive(){

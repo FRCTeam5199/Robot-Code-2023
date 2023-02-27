@@ -106,7 +106,7 @@ public abstract class DefaultConfig {
     public double ARM_GEARING = 1.0/9;
     public double ARM_SPROCKET_DIAMETER = 2D;
     public String ARM_MOTOR_CANBUS = "rio";
-    public boolean ARM_ELEVATOR_MANUAL = true;
+    public boolean ARM_ELEVATOR_MANUAL = false;
     public boolean ARM_MANUAL = true;
     public boolean ENABLE_ARM = true;
     public boolean ENABLE_WRIST = true;
@@ -165,9 +165,11 @@ public abstract class DefaultConfig {
 
     public int XBOX_CONTROLLER_USB_SLOT = 0;
     public int XBOX_CONTROLLER_USB_SLOT_2 = 1;
-    public int BUTTON_PANEL_USB_SLOT = 2;
+    public int BUTTON_PANEL_USB_SLOT1 = 2;
+    public int BUTTON_PANEL_USB_SLOT2= 3;
     public int MIDI_CONTROLLER_TOP_ID = 3;
     public int MIDI_CONTROLLER_BOT_ID = 4;
+    public String PANEL_OR_MIDI = "23panel"; //either "23panel" or "midi" and kinda self explanitory
 
     //Limelight Distance Tracking
     public double CAMERA_HEIGHT = 0; //Inches

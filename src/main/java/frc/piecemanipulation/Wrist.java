@@ -14,7 +14,7 @@ import static frc.robot.Robot.robotSettings;
 
 public class Wrist implements ISubsystem {
     public AbstractMotorController wrist;
-    public BaseController panel, xbox2, midiTop, midiBot;
+    public BaseController panel1, panel2, xbox2, midiTop, midiBot;
 
     public Wrist(){
         addToMetaList();
@@ -39,7 +39,7 @@ public class Wrist implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if(robotSettings.ARM_ELEVATOR_MANUAL){
+        /*if(robotSettings.ARM_ELEVATOR_MANUAL){
             if (midiTop.get(ControllerEnums.MidiController.R3C7) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtVoltage(-2);
             }
@@ -56,7 +56,7 @@ public class Wrist implements ISubsystem {
             else if (midiTop.get(ControllerEnums.MidiController.R2C8) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 wrist.moveAtPosition(-40.5);
             }
-        }
+        }*/
         //System.out.println(wrist.getRotations());
         if (xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN)
             wrist.resetEncoder();
@@ -117,5 +117,7 @@ public class Wrist implements ISubsystem {
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 }

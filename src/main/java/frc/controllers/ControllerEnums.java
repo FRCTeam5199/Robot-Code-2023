@@ -103,10 +103,44 @@ public class ControllerEnums {
         R2C1(9), R2C2(10), R2C3(11),  R2C4(12), R2C5(13), R2C6(14), R2C7(15),  R2C8(16),
         R3C1(17), R3C2(18), R3C3(19),  R3C4(20), R3C5(21), R3C6(22), R3C7(23),  R3C8(24),
         R4C1(25), R4C2(26), R4C3(27),  R4C4(28), R4C5(29), R4C6(30), R4C7(31),  R4C8(32);
-
+    
         public final int AXIS_VALUE;
 
         MidiController(int value) {
+            this.AXIS_VALUE = value;
+        }
+
+        @Override
+        public int getChannel() {
+            return AXIS_VALUE;
+        }
+    }
+    public enum ButtonPanelButtonsPlacement2023 implements ControllerInterfaces.IDiscreteInput{
+        //left to right and u can relable them later
+        T1(10), T2(12), T3(11), T4(7), T5(8), T6(9),
+        T7(3), T8(4), T9(5), GTStation2(2), SpikePickU(13);  
+        
+        public final int AXIS_VALUE;
+
+        ButtonPanelButtonsPlacement2023(int value) {
+            this.AXIS_VALUE = value;
+        }
+
+        @Override
+        public int getChannel() {
+            return AXIS_VALUE;
+        }
+    }
+
+    //needs to be in 
+    public enum ButtonPanelButtonsElse2023 implements ControllerInterfaces.IDiscreteInput{
+        Cone(11), Cube(12), Climb(7), GTStation1(10), 
+        SpikeD(8), SpikeU(9), GTShute(2), High(4), 
+        Mid(6), Low(5), Stable(13), Floor(3);
+
+        public final int AXIS_VALUE;
+
+        ButtonPanelButtonsElse2023(int value) {
             this.AXIS_VALUE = value;
         }
 
