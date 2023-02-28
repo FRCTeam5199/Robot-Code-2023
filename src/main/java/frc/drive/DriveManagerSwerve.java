@@ -724,19 +724,64 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             scoringArray = robotSettings.red2DScoringArray;
             pickUpArray = robotSettings.red2DPickUpArray;
         }
-        //SPIKE
+        switch (robotSettings.DRIVE_STYLE){
+            case STANDARD_2023:{
+                //SPIKE
+        if(midiBot.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == DefaultControllerEnums.ButtonStatus.DOWN){
+            TAPX= pickUpArray[2][0];
+            TAPY= pickUpArray[2][1];
+            TAPRotation= pickUpArray[2][2];
+            TAPSpeed= pickUpArray[2][3];
+        }
+        //gts1
+        if(midiBot.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN){
+            TAPX= pickUpArray[0][0];
+            TAPY= pickUpArray[0][1];
+            TAPRotation= pickUpArray[0][2];
+            TAPSpeed= pickUpArray[0][3];
+        }
+        //gts2
+        if(midiBot.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation2) == DefaultControllerEnums.ButtonStatus.DOWN){
+            TAPX= pickUpArray[1][0];
+            TAPY= pickUpArray[1][1];
+            TAPRotation= pickUpArray[1][2];
+            TAPSpeed= pickUpArray[1][3];
+        }
+
+        ControllerEnums.ButtonPanelButtonsPlacement2023[] columnButtons = new ControllerEnums.ButtonPanelButtonsPlacement2023[]{
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T1,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T2,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T3,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T4,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T5,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T6,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T7,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T8,
+                ControllerEnums.ButtonPanelButtonsPlacement2023.T9,
+        };
+
+        for (int i = 0; i < columnButtons.length; i++) {
+            if(midiBot.get(columnButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
+                scoreColumnInt = i;
+        }
+                break;
+            }
+            case MIDI:{
+                //SPIKE
         if(midiBot.get(ControllerEnums.MidiController.R2C4) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[2][0];
             TAPY= pickUpArray[2][1];
             TAPRotation= pickUpArray[2][2];
             TAPSpeed= pickUpArray[2][3];
         }
+        //gts1
         if(midiBot.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[0][0];
             TAPY= pickUpArray[0][1];
             TAPRotation= pickUpArray[0][2];
             TAPSpeed= pickUpArray[0][3];
         }
+        //gts2
         if(midiBot.get(ControllerEnums.MidiController.R1C4) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[1][0];
             TAPY= pickUpArray[1][1];
@@ -768,6 +813,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         for (int i = 0; i < rowButtons.length; i++) {
             if(midiTop.get(rowButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
                 scoreRowInt = i;
+        }
+                break;
+            }
         }
 
         if(scoreRowInt != -1 && scoreColumnInt != -1) {

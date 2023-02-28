@@ -80,7 +80,7 @@ public class SwerveComp2023 extends DefaultConfig{
 
         // 61:15 52:28 15:1
         //UI Styles
-        DRIVE_STYLE = AbstractDriveManager.DriveControlStyles.STANDARD;
+        DRIVE_STYLE = AbstractDriveManager.DriveControlStyles.STANDARD_2023;
         DRIVE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.TALON_FX;
         IMU_TYPE = AbstractIMU.SupportedIMU.PIGEON;
         DRIVE_BASE = AbstractDriveManager.DriveBases.SWIVEL;

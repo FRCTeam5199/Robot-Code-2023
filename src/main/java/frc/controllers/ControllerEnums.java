@@ -118,7 +118,7 @@ public class ControllerEnums {
     public enum ButtonPanelButtonsPlacement2023 implements ControllerInterfaces.IDiscreteInput{
         //left to right and u can relable them later
         T1(10), T2(12), T3(11), T4(7), T5(8), T6(9),
-        T7(3), T8(4), T9(5), GTStation2(2), SpikePickU(13);  
+        T7(3), T8(4), T9(5), SpikePickU(13), Stable(2);  
         
         public final int AXIS_VALUE;
 
@@ -134,9 +134,9 @@ public class ControllerEnums {
 
     //needs to be in 
     public enum ButtonPanelButtonsElse2023 implements ControllerInterfaces.IDiscreteInput{
-        Cone(11), Cube(12), Climb(7), GTStation1(10), 
+        Cone(11), Cube(12), Climb(7), GTStation1(10), GTStation2(13), 
         SpikeD(8), SpikeU(9), GTShute(2), High(4), 
-        Mid(6), Low(5), Stable(13), Floor(3);
+        Mid(6), Low(5), Floor(3);
 
         public final int AXIS_VALUE;
 

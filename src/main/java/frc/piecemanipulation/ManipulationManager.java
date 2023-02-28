@@ -94,7 +94,7 @@ public class ManipulationManager implements ISubsystem {
                     armGoal = -62;
                 }
                 //stable
-                if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                if (panel.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
                     armGoal = -133;
                 }
