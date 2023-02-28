@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.*;
 import frc.drive.auton.AutonType;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController.SupportedMotors;
+import frc.piecemanipulation.ManipulationManager.ManipulationControlStyles;
 import frc.sensors.camera.IVision;
 
 import java.io.File;
@@ -67,7 +68,9 @@ public abstract class DefaultConfig {
     public IVision.SupportedVision BALL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;
 
     //UI Styles
-    public DriveControlStyles DRIVE_STYLE = DriveControlStyles.STANDARD;
+    public DriveControlStyles DRIVE_STYLE = DriveControlStyles.STANDARD_2023;
+    public ManipulationControlStyles MANIPULATION_STYLE = ManipulationControlStyles.STANDARD_2023;
+
 
     //Motor Types
     public SupportedMotors DRIVE_MOTOR_TYPE = SupportedMotors.TALON_FX;
@@ -158,8 +161,9 @@ public abstract class DefaultConfig {
 
     public int IMU_ID = 22; //pigeon
     //leds
-    public int LED_STRAND_LENGTH = 60;
+    public int LED_STRAND_LENGTH = 26;
     public int LED_STRAND_PORT_ID = 9;
+    public boolean ENABLE_LEDS = true;
     //pdp
     public int PDP_ID = 0;
 
@@ -169,7 +173,6 @@ public abstract class DefaultConfig {
     public int BUTTON_PANEL_USB_SLOT2= 3;
     public int MIDI_CONTROLLER_TOP_ID = 3;
     public int MIDI_CONTROLLER_BOT_ID = 4;
-    public String PANEL_OR_MIDI = "23panel"; //either "23panel" or "midi" and kinda self explanitory
 
     //Limelight Distance Tracking
     public double CAMERA_HEIGHT = 0; //Inches

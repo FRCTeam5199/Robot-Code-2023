@@ -30,6 +30,24 @@ public class LEDs {
         ledConfig.setData(ledBuffer);
     }
 
+    //makes the length of the led yellow
+    public void yellow() {
+        for(var i = 0; i < ledBuffer.getLength(); i++) {
+            ledBuffer.setRGB(i, 255, 255, 0);
+        }
+        ledConfig.setData(ledBuffer);
+        ledConfig.start();
+    }
+
+    //makes the length of the led purple
+    public void purple() {
+        for(var i = 0; i < ledBuffer.getLength(); i++) {
+            ledBuffer.setRGB(i, 138, 43, 226);
+        }
+        ledConfig.setData(ledBuffer);
+        ledConfig.start();
+    }
+
     public enum LEDEnums {
         //Really basic, set the background
         SOLID_COLOR_RGB((RGB) -> {

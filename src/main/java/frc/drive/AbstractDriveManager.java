@@ -116,7 +116,7 @@ public abstract class AbstractDriveManager implements ISubsystem {
      * @author jojo2357
      */
     public enum DriveControlStyles {
-        STANDARD;
+        STANDARD_2023, MIDI;
 
         private static SendableChooser<DriveControlStyles> myChooser;
 
