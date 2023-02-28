@@ -249,7 +249,7 @@ public class AutonManager extends AbstractAutonManager {
         UserInterface.smartDashboardPutString("Location", point.toString());
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
         boolean angleTolerance = Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) <= (robotSettings.AUTON_TOLERANCE *5.0);
-        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 2.2, point);
+        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 2.5, point);
         if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 1) {
             inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
         }

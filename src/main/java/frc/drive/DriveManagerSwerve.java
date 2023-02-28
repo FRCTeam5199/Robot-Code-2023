@@ -122,6 +122,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         if (xbox.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
             guidance.setSwerveOdometryCurrent(guidance.fieldX(), guidance.fieldY());
+            guidance.resetOdometry();
         }
         if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             if(DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
@@ -207,10 +208,20 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
 
+        if(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_TRIGGER) >= 0.5){
+            forwards *= .25;
+            leftwards *= .25;
+            rotation *= .25;
+        }
+
         if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE){
             leveling();
         }else {
-            driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                driveMPS(adjustedDrive(-forwards), adjustedDrive(-leftwards), adjustedRotation(rotation));
+            }else {
+                driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
+            }
         }
 
     }
@@ -220,7 +231,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     private boolean dorifto() {
-        return xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_TRIGGER) > 0.1;
+        return false;
     }
 
     /**
@@ -673,7 +684,11 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             forwards = 0;
             return true;
         }
-        drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+        if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
+            drivePure(-adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+        }else {
+            drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+        }
         return false;
     }
     /**
