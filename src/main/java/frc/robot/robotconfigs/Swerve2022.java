@@ -14,7 +14,7 @@ public class Swerve2022 extends DefaultConfig {
 
     public Swerve2022() {
         ENABLE_SHOOTER = false;
-        ENABLE_DRIVE = true;
+        ENABLE_DRIVE = false;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
 

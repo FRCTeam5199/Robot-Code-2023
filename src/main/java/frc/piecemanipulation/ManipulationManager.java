@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 
 public class ManipulationManager implements ISubsystem {
-    public BaseController panel, xbox2, midiTop, midiBot;
+    public BaseController panel1, panel2, xbox2, midiTop, midiBot;
     public static LEDs leds;
     public double armGoal = 0;
     public double elevateGoal = 2.2;
@@ -69,7 +69,7 @@ public class ManipulationManager implements ISubsystem {
         switch (robotSettings.MANIPULATION_STYLE) {
             case STANDARD_2023:{
 
-            if(panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == ButtonStatus.DOWN){
+            if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == ButtonStatus.DOWN){
                 changeCubeCone(true);
                 try{
                     leds.yellow();
@@ -78,7 +78,7 @@ public class ManipulationManager implements ISubsystem {
                     }
                 }
             }
-            if(panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Cube) == ButtonStatus.DOWN){
+            if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cube) == ButtonStatus.DOWN){
                 changeCubeCone(false);
                 try{
                     leds.purple();
@@ -89,22 +89,22 @@ public class ManipulationManager implements ISubsystem {
 
             if(!robotSettings.ARM_ELEVATOR_MANUAL) {
                 //HumanPlayerStation
-                if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -11;
                     armGoal = -62;
                 }
                 //stable
-                if (panel.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
                     armGoal = -133;
                 }
                 //floor
-                if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
                     armGoal = -133;
                 }
                 //climb
-                if(panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
                     armGoal = -133;
                 }
@@ -114,7 +114,7 @@ public class ManipulationManager implements ISubsystem {
                 //    armGoal = 0;
                 //}
                 //pick up off of spike
-                if (panel.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN){
+                if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN){
                     elevateGoal = -8.42;
                     armGoal = -15.8;
                     spikeUp = true;
@@ -122,34 +122,34 @@ public class ManipulationManager implements ISubsystem {
     
                 if(!cubeConeMode) {
                     //place high
-                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -1;
                         armGoal = -240;
                     }
                     //place mid
-                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -2;
                         armGoal = -254;
                     }
                     //place low
-                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = 0;
                         armGoal = -290;
                     }
                 }
                 if(cubeConeMode) {
                     //place high
-                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -3;
                         armGoal = -226;
                     }
                     //place mid
-                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -44;
                         armGoal = -206;
                     }
                     //place low
-                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -0;
                         armGoal = -290;
                     }
@@ -311,7 +311,8 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public void enableControllers() {
-        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);

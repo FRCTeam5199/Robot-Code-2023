@@ -228,29 +228,27 @@ public class Intake implements ISubsystem {
                 case MIDI: {
                     if(midiTop.get(ControllerEnums.MidiController.R2C4) == DefaultControllerEnums.ButtonStatus.DOWN){
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-                        break;
                     }
                     if(midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN){
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-                        break;
                     }
                     if(midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-                        break;
                     }
+                    break;
                 }  
                 case STANDARD_2023:{
-                    if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == ButtonStatus.DOWN){
+                    if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == ButtonStatus.DOWN){
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
                     }
-                    if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) == ButtonStatus.DOWN){
+                    if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) == ButtonStatus.DOWN){
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-                        break;
                     }
-                    if(panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == ButtonStatus.DOWN){
+                    if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == ButtonStatus.DOWN){
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
                         break;
                     }
+                    break;
                 }
             }
             //}
@@ -263,13 +261,15 @@ public class Intake implements ISubsystem {
                     if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
                     }
+                    break;
                 }
                 case STANDARD_2023:{
-                    if (midiTop.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.MidiController.R2C5) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
                     }
-                    if (midiTop.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(ControllerEnums.MidiController.R2C6) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+                        break;
                     }
                 }
             }

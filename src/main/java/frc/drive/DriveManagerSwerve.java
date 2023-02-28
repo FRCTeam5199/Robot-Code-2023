@@ -56,7 +56,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
     private PIDController FRpid, BRpid, BLpid, FLpid;
     private PIDController limeLightPid, leveling;
-    private BaseController xbox, midiTop, midiBot;
+    private BaseController xbox, midiTop, midiBot, panel1, panel2;
     private CANCoder FRcoder, BRcoder, BLcoder, FLcoder;
     private double leveling_auto_roll = 0, Leveling_auto_Pitch = 0;
     boolean brokeHigh = false, fallLow = false;
@@ -73,6 +73,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
         createPIDControllers(new PID(0.0111, 0.0, 0.0));
         createDriveMotors();
         setDrivingPIDS(new PID(0.0002, 0, 0.0001, 0.03));
@@ -727,21 +729,21 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         switch (robotSettings.DRIVE_STYLE){
             case STANDARD_2023:{
                 //SPIKE
-        if(midiBot.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[2][0];
             TAPY= pickUpArray[2][1];
             TAPRotation= pickUpArray[2][2];
             TAPSpeed= pickUpArray[2][3];
         }
         //gts1
-        if(midiBot.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[0][0];
             TAPY= pickUpArray[0][1];
             TAPRotation= pickUpArray[0][2];
             TAPSpeed= pickUpArray[0][3];
         }
         //gts2
-        if(midiBot.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation2) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation2) == DefaultControllerEnums.ButtonStatus.DOWN){
             TAPX= pickUpArray[1][0];
             TAPY= pickUpArray[1][1];
             TAPRotation= pickUpArray[1][2];
@@ -761,7 +763,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         };
 
         for (int i = 0; i < columnButtons.length; i++) {
-            if(midiBot.get(columnButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
+            if(panel2.get(columnButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
                 scoreColumnInt = i;
         }
                 break;

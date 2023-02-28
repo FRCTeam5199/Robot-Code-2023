@@ -14,10 +14,10 @@ public class SwervePrac2023 extends DefaultConfig{
 
     public SwervePrac2023(){
         ENABLE_SHOOTER = false;
-        ENABLE_DRIVE = true;
+        ENABLE_DRIVE = false;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
-        ENABLE_APRILTAG = true;
+        ENABLE_APRILTAG = false;
         ENABLE_PIECE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
 
@@ -31,7 +31,7 @@ public class SwervePrac2023 extends DefaultConfig{
         WRIST_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         WRIST_MOTOR_ID = 36;
         WRIST_MOTOR_CANBUS = "rio";
-        WRIST_MANUAL = true;
+        WRIST_MANUAL = false;
         ENABLE_WRIST = true;
         WRISTPID = new PID(0.08 , 0.0001, 0.045);
 
@@ -84,6 +84,7 @@ public class SwervePrac2023 extends DefaultConfig{
         DRIVE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.TALON_FX;
         IMU_TYPE = AbstractIMU.SupportedIMU.PIGEON;
         DRIVE_BASE = AbstractDriveManager.DriveBases.SWIVEL;
+        MANIPULATION_STYLE = MANIPULATION_STYLE.STANDARD_2023;
 
 
         AUTON_TYPE = AutonType.POINT_TO_POINT;

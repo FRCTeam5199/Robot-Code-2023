@@ -14,10 +14,10 @@ public class SwerveComp2023 extends DefaultConfig{
 
     public SwerveComp2023(){
         ENABLE_SHOOTER = false;
-        ENABLE_DRIVE = true;
+        ENABLE_DRIVE = false;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
-        ENABLE_APRILTAG = true;
+        ENABLE_APRILTAG = false;
         ENABLE_PIECE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
 
