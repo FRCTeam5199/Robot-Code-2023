@@ -51,7 +51,7 @@ public class SwervePrac2023 extends DefaultConfig{
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ELEVATOR_SPROCKET_DIAMETER = 2D;
         ELEVATORPID =  new PID(.3, 0.0, 0.0);
-        ARM_ELEVATOR_MANUAL = true;
+        ARM_ELEVATOR_MANUAL = false;
 
         //ARM
          ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -80,7 +80,7 @@ public class SwervePrac2023 extends DefaultConfig{
 
         // 61:15 52:28 15:1
         //UI Styles
-        DRIVE_STYLE = AbstractDriveManager.DriveControlStyles.STANDARD;
+        DRIVE_STYLE = AbstractDriveManager.DriveControlStyles.STANDARD_2023;
         DRIVE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.TALON_FX;
         IMU_TYPE = AbstractIMU.SupportedIMU.PIGEON;
         DRIVE_BASE = AbstractDriveManager.DriveBases.SWIVEL;

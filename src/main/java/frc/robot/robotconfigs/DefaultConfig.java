@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.*;
 import frc.drive.auton.AutonType;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController.SupportedMotors;
+import frc.piecemanipulation.ManipulationManager.ManipulationControlStyles;
 import frc.sensors.camera.IVision;
 
 import java.io.File;
@@ -67,7 +68,9 @@ public abstract class DefaultConfig {
     public IVision.SupportedVision BALL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;
 
     //UI Styles
-    public DriveControlStyles DRIVE_STYLE = DriveControlStyles.STANDARD;
+    public DriveControlStyles DRIVE_STYLE = DriveControlStyles.STANDARD_2023;
+    public ManipulationControlStyles MANIPULATION_STYLE = ManipulationControlStyles.STANDARD_2023;
+
 
     //Motor Types
     public SupportedMotors DRIVE_MOTOR_TYPE = SupportedMotors.TALON_FX;
@@ -106,7 +109,7 @@ public abstract class DefaultConfig {
     public double ARM_GEARING = 1.0/9;
     public double ARM_SPROCKET_DIAMETER = 2D;
     public String ARM_MOTOR_CANBUS = "rio";
-    public boolean ARM_ELEVATOR_MANUAL = true;
+    public boolean ARM_ELEVATOR_MANUAL = false;
     public boolean ARM_MANUAL = true;
     public boolean ENABLE_ARM = true;
     public boolean ENABLE_WRIST = true;
@@ -168,7 +171,8 @@ public abstract class DefaultConfig {
 
     public int XBOX_CONTROLLER_USB_SLOT = 0;
     public int XBOX_CONTROLLER_USB_SLOT_2 = 1;
-    public int BUTTON_PANEL_USB_SLOT = 2;
+    public int BUTTON_PANEL_USB_SLOT1 = 2;
+    public int BUTTON_PANEL_USB_SLOT2= 3;
     public int MIDI_CONTROLLER_TOP_ID = 3;
     public int MIDI_CONTROLLER_BOT_ID = 4;
 

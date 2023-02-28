@@ -3,17 +3,22 @@ package frc.piecemanipulation;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
+import frc.controllers.basecontrollers.DefaultControllerEnums.ButtonStatus;
 import frc.misc.ISubsystem;
 import frc.misc.LEDs;
 import frc.misc.SubsystemStatus;
 import frc.misc.LEDs.LEDEnums;
 import frc.robot.Robot;
-
+import java.io.IOError;
+import java.io.IOException;
 import static frc.robot.Robot.arm;
 import static frc.robot.Robot.robotSettings;
 
 import java.io.IOError;
 import java.io.IOException;
+import java.util.Objects;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 
 public class ManipulationManager implements ISubsystem {
@@ -53,25 +58,6 @@ public class ManipulationManager implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if(midiTop.get(ControllerEnums.MidiController.R1C5) == DefaultControllerEnums.ButtonStatus.DOWN){
-            changeCubeCone(true);
-            //ledenum(rgby);
-            try{
-            leds.yellow();
-            }catch(IOError e){
-                System.out.println("Yellow LED not working: most likely bc ENABLE_LEDS is false");
-            }
-        }
-        if (midiTop.get(ControllerEnums.MidiController.R1C6) == DefaultControllerEnums.ButtonStatus.DOWN){
-            changeCubeCone(false);
-            //ledenum(rgbp);
-            try{
-            leds.purple();
-            }catch(IOError e){
-                System.out.println("Purple LED not working: most likely bc ENABLE_LEDS is false");
-            }
-        }   
-
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
             robotSettings.ARM_ELEVATOR_MANUAL = true;
         }
@@ -80,21 +66,124 @@ public class ManipulationManager implements ISubsystem {
             Robot.intake.intakeIn();
         }
 
+        switch (robotSettings.MANIPULATION_STYLE) {
+            case STANDARD_2023:{
+
+            if(panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == ButtonStatus.DOWN){
+                changeCubeCone(true);
+                try{
+                    leds.yellow();
+                    }catch(IOError e){
+                        System.out.println("Yellow LED not working: most likely bc ENABLE_LEDS is false");
+                    }
+                }
+            }
+            if(panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Cube) == ButtonStatus.DOWN){
+                changeCubeCone(false);
+                try{
+                    leds.purple();
+                    }catch(IOError e){
+                        System.out.println("Purple LED not working: most likely bc ENABLE_LEDS is false");
+                    }
+            }
+
+            if(!robotSettings.ARM_ELEVATOR_MANUAL) {
+                //HumanPlayerStation
+                if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    elevateGoal = -11;
+                    armGoal = -62;
+                }
+                //stable
+                if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    elevateGoal = -44;
+                    armGoal = -133;
+                }
+                //floor
+                if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    elevateGoal = -44;
+                    armGoal = -133;
+                }
+                //climb
+                if(panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    elevateGoal = -44;
+                    armGoal = -133;
+                }
+                //lift arm out of starting NOT USED ON PANEL RN
+                //if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                //    Robot.elevator.moveElevator(2.2);
+                //    armGoal = 0;
+                //}
+                //pick up off of spike
+                if (panel.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN){
+                    elevateGoal = -8.42;
+                    armGoal = -15.8;
+                    spikeUp = true;
+                }
+    
+                if(!cubeConeMode) {
+                    //place high
+                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -1;
+                        armGoal = -240;
+                    }
+                    //place mid
+                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -2;
+                        armGoal = -254;
+                    }
+                    //place low
+                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = 0;
+                        armGoal = -290;
+                    }
+                }
+                if(cubeConeMode) {
+                    //place high
+                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -3;
+                        armGoal = -226;
+                    }
+                    //place mid
+                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -44;
+                        armGoal = -206;
+                    }
+                    //place low
+                    if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -0;
+                        armGoal = -290;
+                    }
+    
+                }
+
+            break;
+            }
+            
+
+            case MIDI:{
+
+        if(midiTop.get(ControllerEnums.MidiController.R1C5) == DefaultControllerEnums.ButtonStatus.DOWN)
+            changeCubeCone(true);
+        if (midiTop.get(ControllerEnums.MidiController.R1C6) == DefaultControllerEnums.ButtonStatus.DOWN)
+            changeCubeCone(false);
 
         if(!robotSettings.ARM_ELEVATOR_MANUAL) {
+            //HumanPlayerStation
             if (midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 elevateGoal = -11;
                 armGoal = -62;
             }
+            //stable
             if (midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 elevateGoal = -44;
                 armGoal = -133;
             }
+            //lift arm out of starting 
             if (midiTop.get(ControllerEnums.MidiController.R4C4) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 Robot.elevator.moveElevator(2.2);
                 armGoal = 0;
             }
-            //spike
+            //pick up off of spike
             if (midiTop.get(ControllerEnums.MidiController.R2C3) == DefaultControllerEnums.ButtonStatus.DOWN){
                 elevateGoal = -8.42;
                 armGoal = -15.8;
@@ -102,35 +191,45 @@ public class ManipulationManager implements ISubsystem {
             }
 
             if(!cubeConeMode) {
-
+                //place high
                 if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -1;
                     armGoal = -240;
                 }
+                //place mid
                 if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -2;
                     armGoal = -254;
                 }
+                //place low
                 if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = 0;
                     armGoal = -290;
                 }
             }
             if(cubeConeMode) {
+                //place high
                 if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -3;
                     armGoal = -226;
                 }
+                //place mid
                 if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
                     armGoal = -206;
                 }
+                //place low
                 if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -0;
                     armGoal = -290;
                 }
 
             }
+
+            break;
+            }
+        }
+        
             Robot.arm.moveArm(armGoal);
 
             if (checkArmCollision()) {
@@ -168,7 +267,8 @@ public class ManipulationManager implements ISubsystem {
                 }
             }
         }
-    }
+        }
+    
 
     @Override
     public void updateAuton() {
@@ -211,7 +311,7 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public void enableControllers() {
-        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
@@ -267,11 +367,27 @@ public class ManipulationManager implements ISubsystem {
         return false;
     }
 
+
     public void changeCubeCone(boolean cubeCone){
         cubeConeMode = cubeCone;
     }
 
     public static void ledenum(int rgbl[]){
         LEDEnums rgbEnums = LEDEnums.SOLID_COLOR_RGB;
+    }
+    
+    public enum ManipulationControlStyles {
+        STANDARD_2023, MIDI;
+
+        private static SendableChooser<ManipulationControlStyles> myChooser;
+
+        public static SendableChooser<ManipulationControlStyles> getSendableChooser() {
+            return Objects.requireNonNullElseGet(myChooser, () -> {
+                myChooser = new SendableChooser<>();
+                for (ManipulationControlStyles style : ManipulationControlStyles.values())
+                    myChooser.addOption(style.name(), style);
+                return myChooser;
+            });
+        }
     }
 }

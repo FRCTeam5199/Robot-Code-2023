@@ -99,7 +99,7 @@ public class DriveManagerStandard extends AbstractDriveManager {
         driveRPM.setDouble(leaderL.getSpeed() + leaderR.getSpeed() / 2);
         double avgSpeedInFPS = Math.abs((leaderL.getSpeed() + leaderR.getSpeed()) / 2);
         UserInterface.DRIVE_SPEED.getEntry().setDouble(avgSpeedInFPS);
-        if (Objects.requireNonNull(robotSettings.DRIVE_STYLE) == DriveControlStyles.STANDARD) {
+        if (Objects.requireNonNull(robotSettings.DRIVE_STYLE) == DriveControlStyles.STANDARD_2023) {
             double invertedDrive = robotSettings.DRIVE_INVERT_LEFT ? -1 : 1;
             double dynamic_gear_R = controller.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN ? 0.25 : 1;
             double dynamic_gear_L = controller.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN ? 0.25 : 1;
@@ -331,7 +331,7 @@ public class DriveManagerStandard extends AbstractDriveManager {
      */
     private void initMisc() throws UnsupportedOperationException {
         // System.out.println("THE XBOX CONTROLLER IS ON " + robotSettings.XBOX_CONTROLLER_USB_SLOT);
-        if (Objects.requireNonNull(robotSettings.DRIVE_STYLE) == DriveControlStyles.STANDARD) {
+        if (Objects.requireNonNull(robotSettings.DRIVE_STYLE) == DriveControlStyles.STANDARD_2023) {
             controller = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         } else {
             throw new UnsupportedOperationException("There is no UI configuration for " + robotSettings.DRIVE_STYLE.name() + " to control the drivetrain. Please implement me");

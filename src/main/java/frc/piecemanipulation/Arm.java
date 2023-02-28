@@ -17,7 +17,7 @@ import static frc.robot.Robot.robotSettings;
 
 public class Arm implements ISubsystem {
     public AbstractMotorController arm;
-    public BaseController xbox, xbox2, panel, midiTop, midiBot;
+    public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Arm(){
         addToMetaList();
@@ -100,7 +100,8 @@ public class Arm implements ISubsystem {
     public void createControllers(){
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        panel = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
@@ -125,7 +126,7 @@ public class Arm implements ISubsystem {
     }
 
     public void manuelDrive(){
-        if(midiTop.get(ControllerEnums.MidiController.R1C8) == DefaultControllerEnums.ButtonStatus.DOWN){
+        /*if(midiTop.get(ControllerEnums.MidiController.R1C8) == DefaultControllerEnums.ButtonStatus.DOWN){
             //System.out.println("X is being pressed");
             arm.moveAtVoltage(10);
         }else if(midiTop.get(ControllerEnums.MidiController.R2C8) == DefaultControllerEnums.ButtonStatus.DOWN){
@@ -134,8 +135,9 @@ public class Arm implements ISubsystem {
         }else{
             arm.moveAtVoltage(0);
         }
-        System.out.println("ARM POSTITION: " + arm.getRotations());
+        System.out.println("ARM POSTITION: " + arm.getRotations());*/
         //System.out.println("Manual Enabled");
+
     }
     public void PositionDrive(){
        /* if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
