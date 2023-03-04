@@ -132,6 +132,9 @@ public class AutonManager extends AbstractAutonManager {
                     drivingChild.lockWheels();
                     specialActionComplete = false;
                     break;
+                case ARM_ELEVATOR_SHIFT_WEIGHT:
+                    specialActionComplete = Robot.manipulationManager.goTo(-44,-170);
+                    break;
                 case INTAKE_PISTON_IN:
                     Robot.intake.intakeIn();
                     specialActionComplete = true;
@@ -172,6 +175,9 @@ public class AutonManager extends AbstractAutonManager {
                     Robot.elevator.elevate.moveAtPosition(2.2);
                     specialActionComplete2 = timer.advanceIfElapsed(.1);
                     System.out.println("tring to move Elevator");
+                    break;
+                case ARM_ELEVATOR_SHIFT_WEIGHT:
+                    specialActionComplete2 = Robot.manipulationManager.goTo(-44,-160);
                     break;
                 case ARM_ELEVATOR_GO_TO:
                     specialActionComplete2 = Robot.manipulationManager.goTo(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG2,autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG3);
@@ -298,7 +304,9 @@ public class AutonManager extends AbstractAutonManager {
             }
         } else {
             if (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION != AutonSpecialActions.AUTO_LEVEL) {
-                if (permitSwiveling) {
+                if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.ARM_ELEVATOR_SHIFT_WEIGHT){
+                    drivingChild.lockWheels();
+                } else if (permitSwiveling) {
                     drivingChild.drivePure(0, 0, 0);
                 } else {
 

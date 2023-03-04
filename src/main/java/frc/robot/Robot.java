@@ -13,6 +13,7 @@ import frc.motors.AbstractMotorController;
 import frc.pdp.PDP;
 import frc.robot.robotconfigs.DefaultConfig;
 import frc.robot.robotconfigs.Swerve2022;
+import frc.robot.robotconfigs.SwerveComp2023;
 import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
 import frc.piecemanipulation.*;
@@ -149,11 +150,14 @@ public class Robot extends TimedRobot {
             case "2023-Prac":
                 robotSettings = new SwervePrac2023();
                 break;
+            case "2023-Comp":
+                robotSettings = new SwerveComp2023();
+                break;
             default:
                 //preferences.putString("hostname", "2021-Comp");
                 //settingsFile = new CompetitionRobot2021();
                 //break;
-                robotSettings = new SwervePrac2023();
+                robotSettings = new SwerveComp2023();
                 //throw new IllegalStateException("You need to ID this robot.");
         }
     }

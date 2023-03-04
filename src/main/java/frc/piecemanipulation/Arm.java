@@ -122,20 +122,15 @@ public class Arm implements ISubsystem {
 
 
     public void resetArmEncoder(){
-        arm.resetEncoder();
+       // arm.resetEncoder();
     }
 
     public void manuelDrive(){
-        /*if(midiTop.get(ControllerEnums.MidiController.R1C8) == DefaultControllerEnums.ButtonStatus.DOWN){
-            //System.out.println("X is being pressed");
-            arm.moveAtVoltage(10);
-        }else if(midiTop.get(ControllerEnums.MidiController.R2C8) == DefaultControllerEnums.ButtonStatus.DOWN){
-            //System.out.println("Y is being pressed");
-            arm.moveAtVoltage(-10);
-        }else{
+        if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
+            arm.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
+        }else {
             arm.moveAtVoltage(0);
         }
-        System.out.println("ARM POSTITION: " + arm.getRotations());*/
         //System.out.println("Manual Enabled");
 
     }

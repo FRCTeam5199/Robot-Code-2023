@@ -67,17 +67,16 @@ public class ManipulationManager implements ISubsystem {
         }
 
         switch (robotSettings.MANIPULATION_STYLE) {
-            case STANDARD_2023:{
+            case STANDARD_2023: {
 
-            if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == ButtonStatus.DOWN){
-                changeCubeCone(true);
-                try{
-                    leds.yellow();
-                    }catch(IOError e){
+                if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == ButtonStatus.DOWN) {
+                    changeCubeCone(true);
+                    try {
+                        leds.yellow();
+                    } catch (IOError e) {
                         System.out.println("Yellow LED not working: most likely bc ENABLE_LEDS is false");
                     }
                 }
-            }
             if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cube) == ButtonStatus.DOWN){
                 changeCubeCone(false);
                 try{
@@ -90,21 +89,21 @@ public class ManipulationManager implements ISubsystem {
             if(!robotSettings.ARM_ELEVATOR_MANUAL) {
                 //HumanPlayerStation
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -11;
-                    armGoal = -62;
+                    elevateGoal = -6;
+                    armGoal = -54.5;
                 }
                 //stable
                 if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -44;
-                    armGoal = -133;
+                    elevateGoal = -45;
+                    armGoal = -135;
                 }
                 //floor
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -44;
-                    armGoal = -133;
+                    elevateGoal = -37;
+                    armGoal = -30;
                 }
                 //climb
-                if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
                     armGoal = -133;
                 }
@@ -114,129 +113,128 @@ public class ManipulationManager implements ISubsystem {
                 //    armGoal = 0;
                 //}
                 //pick up off of spike
-                if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN){
+                if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -8.42;
                     armGoal = -15.8;
                     spikeUp = true;
                 }
-    
-                if(!cubeConeMode) {
+
+                if (!cubeConeMode) {
                     //place high
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                        elevateGoal = -1;
-                        armGoal = -240;
+                        elevateGoal = -10;
+                        armGoal = -217;
                     }
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                        elevateGoal = -2;
-                        armGoal = -254;
+                        elevateGoal = -5;
+                        armGoal = -240;
                     }
                     //place low
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = 0;
-                        armGoal = -290;
+                        armGoal = -270;
                     }
                 }
-                if(cubeConeMode) {
+                if (cubeConeMode) {
                     //place high
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                        elevateGoal = -3;
-                        armGoal = -226;
+                        elevateGoal = -1;
+                        armGoal = -212;
                     }
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                        elevateGoal = -44;
-                        armGoal = -206;
+                        elevateGoal = -45;
+                        armGoal = -200;
                     }
                     //place low
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -0;
-                        armGoal = -290;
+                        armGoal = -270;
                     }
-    
-                }
 
+                }
+            }
             break;
             }
             
 
-            case MIDI:{
+            case MIDI: {
 
-        if(midiTop.get(ControllerEnums.MidiController.R1C5) == DefaultControllerEnums.ButtonStatus.DOWN)
-            changeCubeCone(true);
-        if (midiTop.get(ControllerEnums.MidiController.R1C6) == DefaultControllerEnums.ButtonStatus.DOWN)
-            changeCubeCone(false);
+                if (midiTop.get(ControllerEnums.MidiController.R1C5) == DefaultControllerEnums.ButtonStatus.DOWN)
+                    changeCubeCone(true);
+                if (midiTop.get(ControllerEnums.MidiController.R1C6) == DefaultControllerEnums.ButtonStatus.DOWN)
+                    changeCubeCone(false);
 
-        if(!robotSettings.ARM_ELEVATOR_MANUAL) {
-            //HumanPlayerStation
-            if (midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                elevateGoal = -11;
-                armGoal = -62;
-            }
-            //stable
-            if (midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                elevateGoal = -44;
-                armGoal = -133;
-            }
-            //lift arm out of starting 
-            if (midiTop.get(ControllerEnums.MidiController.R4C4) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                Robot.elevator.moveElevator(2.2);
-                armGoal = 0;
-            }
-            //pick up off of spike
-            if (midiTop.get(ControllerEnums.MidiController.R2C3) == DefaultControllerEnums.ButtonStatus.DOWN){
-                elevateGoal = -8.42;
-                armGoal = -15.8;
-                spikeUp = true;
-            }
+                if (!robotSettings.ARM_ELEVATOR_MANUAL) {
+                    //HumanPlayerStation
+                    if (midiTop.get(ControllerEnums.MidiController.R1C3) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -11;
+                        armGoal = -62;
+                    }
+                    //stable
+                    if (midiTop.get(ControllerEnums.MidiController.R1C2) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -44;
+                        armGoal = -133;
+                    }
+                    //lift arm out of starting
+                    if (midiTop.get(ControllerEnums.MidiController.R4C4) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        Robot.elevator.moveElevator(2.2);
+                        armGoal = 0;
+                    }
+                    //pick up off of spike
+                    if (midiTop.get(ControllerEnums.MidiController.R2C3) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        elevateGoal = -8.42;
+                        armGoal = -15.8;
+                        spikeUp = true;
+                    }
 
-            if(!cubeConeMode) {
-                //place high
-                if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -1;
-                    armGoal = -240;
-                }
-                //place mid
-                if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -2;
-                    armGoal = -254;
-                }
-                //place low
-                if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = 0;
-                    armGoal = -290;
-                }
-            }
-            if(cubeConeMode) {
-                //place high
-                if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -3;
-                    armGoal = -226;
-                }
-                //place mid
-                if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -44;
-                    armGoal = -206;
-                }
-                //place low
-                if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -0;
-                    armGoal = -290;
-                }
+                    if (!cubeConeMode) {
+                        //place high
+                        if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                            elevateGoal = -1;
+                            armGoal = -240;
+                        }
+                        //place mid
+                        if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                            elevateGoal = -2;
+                            armGoal = -254;
+                        }
+                        //place low
+                        if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                            elevateGoal = 0;
+                            armGoal = -290;
+                        }
+                    }
+                    if (cubeConeMode) {
+                        //place high
+                        if (midiTop.get(ControllerEnums.MidiController.R1C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                            elevateGoal = -3;
+                            armGoal = -226;
+                        }
+                        //place mid
+                        if (midiTop.get(ControllerEnums.MidiController.R2C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                            elevateGoal = -44;
+                            armGoal = -206;
+                        }
+                        //place low
+                        if (midiTop.get(ControllerEnums.MidiController.R3C1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                            elevateGoal = -0;
+                            armGoal = -290;
+                        }
 
-            }
-
-            break;
+                    }
+                }
+                break;
             }
         }
-        
+        if(!robotSettings.ARM_ELEVATOR_MANUAL) {
             Robot.arm.moveArm(armGoal);
 
             if (checkArmCollision()) {
             } else if (checkArmPassover()) {
-                Robot.elevator.moveElevator(-44);
             } else {
-                if ((spikeUp)){
+                if ((spikeUp)) {
                     Robot.elevator.moveElevator(0);
                     if (Math.abs(-15.8 - Robot.arm.arm.getRotations()) <= .2) {
                         Robot.elevator.moveElevator(elevateGoal);
@@ -245,10 +243,11 @@ public class ManipulationManager implements ISubsystem {
                             spikeUp = false;
                         }
                     }
-                }else {
+                } else {
                     Robot.elevator.moveElevator(elevateGoal);
                 }
             }
+        }
 
             if(robotSettings.ENABLE_WRIST){
                 //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
@@ -266,7 +265,6 @@ public class ManipulationManager implements ISubsystem {
                     }
                 }
             }
-        }
         }
     
 
@@ -319,14 +317,18 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-67.5 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -170){
+        if (-85 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -170){
+            Robot.elevator.moveElevator(-44);
+            return true;
+        }else if(-70 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -185){
+            Robot.elevator.moveElevator(-22);
             return true;
         }
         return false;
     }
 
     public boolean checkArmCollision(){
-        if(Robot.arm.arm.getRotations() >= -10 || Robot.arm.arm.getRotations() <= -300){
+        if(Robot.arm.arm.getRotations() >= 10 || Robot.arm.arm.getRotations() <= -300){
            return true;
         }
         return false;
@@ -341,7 +343,6 @@ public class ManipulationManager implements ISubsystem {
 
         if (checkArmCollision()) {
         } else if (checkArmPassover()) {
-            Robot.elevator.moveElevator(-44);
         } else {
             Robot.elevator.moveElevator(elevator);
             System.out.println("tring to move to: " + elevator);
@@ -350,7 +351,7 @@ public class ManipulationManager implements ISubsystem {
 
         if(robotSettings.ENABLE_WRIST){
             //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
-            if(Robot.arm.arm.getRotations() >= -130){
+            if(Robot.arm.arm.getRotations() >= -125){
                 if(Robot.wrist.wrist.getRotations() >= 0 && Robot.wrist.wrist.getRotations() <= 4000){
                     Robot.wrist.wrist.moveAtVoltage(0);
                 }else{

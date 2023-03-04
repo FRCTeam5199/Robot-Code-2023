@@ -67,7 +67,7 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
                     System.out.println(e);
                 }
             }
-
+/*
             Pair<Pose2d, Double> apriltagpos2 = tagManager.getEstimatedGlobalPose2();
             if(apriltagpos2.getFirst().getX() == -2 && apriltagpos2.getFirst().getY() == -2) {
                 //nothing
@@ -89,6 +89,8 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
                     System.out.println(e);
                 }
             }
+
+ */
         }
         if (robotSettings.ENABLE_IMU) {
             if (driver instanceof DriveManagerSwerve)

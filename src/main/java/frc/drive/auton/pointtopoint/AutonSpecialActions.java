@@ -27,6 +27,7 @@ public enum AutonSpecialActions {
         Dousnt use the Intarf
      */
     ARM_ELEVATOR_UP,
+    ARM_ELEVATOR_SHIFT_WEIGHT,
     ARM_ELEVATOR_DOWN,
     CUBE_TOP,
     /**

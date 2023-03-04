@@ -60,7 +60,7 @@ public class Elevator implements ISubsystem {
                positionDrive();
         }
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
-            resetElevateEncoder();
+            //resetElevateEncoder();
         }
     }
 
@@ -122,16 +122,12 @@ public class Elevator implements ISubsystem {
     }
 
     public void manuelDrive(){
-        /*if(midiTop.get(ControllerEnums.MidiController.R1C7) == DefaultControllerEnums.ButtonStatus.DOWN){
-            //System.out.println("X is being pressed");
-            elevate.moveAtVoltage(5);
-        }else if(midiTop.get(ControllerEnums.MidiController.R2C7) == DefaultControllerEnums.ButtonStatus.DOWN){
-            //System.out.println("Y is being pressed");
-            elevate.moveAtVoltage(-5);
-        }else{
+        if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) >= .1){
+            elevate.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * -6);
+        }else {
             elevate.moveAtVoltage(0);
         }
-        System.out.println("Elevator Position: " + elevate.getRotations());*/
+        System.out.println("Elevator Position: " + elevate.getRotations());
     }
 
     public void positionDrive(){

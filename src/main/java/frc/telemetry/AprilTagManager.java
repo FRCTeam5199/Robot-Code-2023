@@ -52,7 +52,7 @@ public class AprilTagManager implements ISubsystem {
     Pose2d lastPose2 = new Pose2d(new Translation2d(0,0),new Rotation2d(0));
 
 
-    static final Transform3d campos1 = new Transform3d(new Translation3d(16*(0.0254), 4*(0.0254), 0), new Rotation3d(0, 0.262, 0));
+    static final Transform3d campos1 = new Transform3d(new Translation3d(18*(0.0254), 4*(0.0254), 0), new Rotation3d(0, 0.262, 0));
     static final Transform3d camposBack = new Transform3d(new Translation3d(-5.5*(0.0254), -3*(0.0254), 0), new Rotation3d(0, 0, Math.PI));
     static final Transform3d campos3 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     static final Transform3d campos4 = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
@@ -105,7 +105,7 @@ public class AprilTagManager implements ISubsystem {
         ApriList.add(tag8);
 
         photonCamera1 = new PhotonCamera("Global_Shutter_Camera");
-            photonCamera2 = new PhotonCamera("HD_USB_Camera");
+            //photonCamera2 = new PhotonCamera("HD_USB_Camera");
         if(Robot.robotSettings.FOUR_CAMERA) {
             photonCamera3 = new PhotonCamera("left");
             photonCamera4 = new PhotonCamera("right");
@@ -118,7 +118,7 @@ public class AprilTagManager implements ISubsystem {
 
         cams = new ArrayList<Pair<PhotonCamera, Transform3d>>();
         cams.add(new Pair<>(photonCamera1, campos1));
-            cams.add(new Pair<>(photonCamera2, camposBack));
+            //cams.add(new Pair<>(photonCamera2, camposBack));
         if(Robot.robotSettings.FOUR_CAMERA) {
             cams.add(new Pair<>(photonCamera3, campos3));
             cams.add(new Pair<>(photonCamera4, campos4));
@@ -141,7 +141,7 @@ public class AprilTagManager implements ISubsystem {
         robotPoseEstimator = new PhotonPoseEstimator(fieldLayout, poseStrategy, cams.get(0).getFirst(), cams.get(0).getSecond());
         robotPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
 
-        robotPoseEstimator2 = new PhotonPoseEstimator(fieldLayout, poseStrategy, cams.get(1).getFirst(), cams.get(1).getSecond());
+        //robotPoseEstimator2 = new PhotonPoseEstimator(fieldLayout, poseStrategy, cams.get(1).getFirst(), cams.get(1).getSecond());
     }
 
 

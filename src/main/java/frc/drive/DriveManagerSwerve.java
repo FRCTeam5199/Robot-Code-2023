@@ -521,10 +521,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     public void setCANCoder() {
-        FLcoder = new CANCoder(11);
-        FRcoder = new CANCoder(12);
-        BRcoder = new CANCoder(13);
-        BLcoder = new CANCoder(14);
+        FLcoder = new CANCoder(11, robotSettings.DRIVE_MOTOR_CANBUS);
+        FRcoder = new CANCoder(12, robotSettings.DRIVE_MOTOR_CANBUS);
+        BRcoder = new CANCoder(13, robotSettings.DRIVE_MOTOR_CANBUS);
+        BLcoder = new CANCoder(14, robotSettings.DRIVE_MOTOR_CANBUS);
         FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
         FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
         BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
@@ -669,14 +669,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if(totalMagnetude > 12 ){
             brokeHigh = true;
         }
-        if (brokeHigh && totalMagnetude < 9){
+        if (brokeHigh && totalMagnetude < 10){
             fallLow = true;
             lockWheels();
         }else {
-            if(forwards < -1.92D/12)
-                forwards = -1.92D/12;
-            if(forwards > 1.92D/12)
-                forwards = 1.92D/12;
+            if(forwards < -1.89D/12)
+                forwards = -1.89D/12;
+            if(forwards > 1.89D/12)
+                forwards = 1.89D/12;
 
         }
 

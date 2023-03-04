@@ -7,6 +7,7 @@ import frc.drive.AbstractDriveManager;
 import frc.drive.auton.AutonType;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController;
+import frc.piecemanipulation.ManipulationManager;
 import frc.sensors.camera.IVision;
 import frc.telemetry.imu.AbstractIMU;
 
@@ -14,10 +15,10 @@ public class SwerveComp2023 extends DefaultConfig{
 
     public SwerveComp2023(){
         ENABLE_SHOOTER = false;
-        ENABLE_DRIVE = false;
+        ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
-        ENABLE_APRILTAG = false;
+        ENABLE_APRILTAG = true;
         ENABLE_PIECE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
 
@@ -25,7 +26,7 @@ public class SwerveComp2023 extends DefaultConfig{
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
-
+        MANIPULATION_STYLE = ManipulationManager.ManipulationControlStyles.STANDARD_2023;
 
         //Wrist
         WRIST_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -51,7 +52,7 @@ public class SwerveComp2023 extends DefaultConfig{
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ELEVATOR_SPROCKET_DIAMETER = 2D;
         ELEVATORPID =  new PID(.3, 0.0, 0.0);
-        ARM_ELEVATOR_MANUAL = true;
+        ARM_ELEVATOR_MANUAL = false;
 
         //ARM
         ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -72,10 +73,10 @@ public class SwerveComp2023 extends DefaultConfig{
 
         PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
         PCM_ID = 50;
-        INTAKE_IN_ID = 12;
-        INTAKE_OUT_ID = 2;
-        SPIKE_IN_ID = 1;
-        SPIKE_OUT_ID = 13;
+        INTAKE_IN_ID = 10;
+        INTAKE_OUT_ID = 9;
+        SPIKE_IN_ID = 8;
+        SPIKE_OUT_ID = 11;
 
 
         // 61:15 52:28 15:1
@@ -129,6 +130,8 @@ public class SwerveComp2023 extends DefaultConfig{
         SWERVE_TURN_BR = 6;
         SWERVE_DRIVE_BL = 7;
         SWERVE_TURN_BL = 8;
+        DRIVE_MOTOR_CANBUS = "Canivore1";
+
 
         // Camera Settings
         ONE_CAMERA = true;

@@ -38,7 +38,7 @@ public class Intake implements ISubsystem {
         createControllers();
         createMotors();
         if (robotSettings.ENABLE_COLOR_SENSOR){
-            i2cPort = I2C.Port.kMXP;
+            i2cPort = I2C.Port.kOnboard;
             m_colorSensor = new ColorSensorV3(i2cPort);
         }
         closeTimer = new Timer();
@@ -238,6 +238,12 @@ public class Intake implements ISubsystem {
                     break;
                 }  
                 case STANDARD_2023:{
+                    if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == ButtonStatus.DOWN){
+                        Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+                    }
+                    if(panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == ButtonStatus.DOWN){
+                        Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+                    }
                     if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == ButtonStatus.DOWN){
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
                     }

@@ -7,6 +7,7 @@ import frc.drive.AbstractDriveManager;
 import frc.drive.auton.AutonType;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController;
+import frc.piecemanipulation.ManipulationManager;
 import frc.sensors.camera.IVision;
 import frc.telemetry.imu.AbstractIMU;
 
@@ -70,6 +71,8 @@ public class SwervePrac2023 extends DefaultConfig{
           INTAKE_MANUAL = true;
           ENABLE_INTAKE = true;
 
+            MANIPULATION_STYLE = ManipulationManager.ManipulationControlStyles.STANDARD_2023;
+
           PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
           PCM_ID = 50;
           INTAKE_IN_ID = 12;
@@ -84,7 +87,7 @@ public class SwervePrac2023 extends DefaultConfig{
         DRIVE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.TALON_FX;
         IMU_TYPE = AbstractIMU.SupportedIMU.PIGEON;
         DRIVE_BASE = AbstractDriveManager.DriveBases.SWIVEL;
-        MANIPULATION_STYLE = MANIPULATION_STYLE.STANDARD_2023;
+        MANIPULATION_STYLE = ManipulationManager.ManipulationControlStyles.STANDARD_2023;
 
 
         AUTON_TYPE = AutonType.POINT_TO_POINT;
