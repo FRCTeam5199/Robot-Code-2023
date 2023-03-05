@@ -143,8 +143,8 @@ public class Intake implements ISubsystem {
             if (!manipulationManager.cubeConeMode) {
                 if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     //System.out.println("X is being pressed");
-                    intakeRight.moveAtVoltage(6);
-                    intakeLeft.moveAtVoltage(-6);
+                    intakeRight.moveAtVoltage(3);
+                    intakeLeft.moveAtVoltage(-3);
                 } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     if(robotSettings.ENABLE_COLOR_SENSOR) {
                         if (m_colorSensor.getProximity() >= 400) {

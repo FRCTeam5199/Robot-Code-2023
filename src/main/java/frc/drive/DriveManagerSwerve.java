@@ -47,6 +47,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     double orgDeg = 0;
     double leftwards;
     double motorRot = 0;
+    double firstPressed = 0;
     double currentMotorRot = 0;
     int limelightcounter = 0;
     private Translation2d frontLeftLocation = new Translation2d(-trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701);
@@ -116,9 +117,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public void updateTeleop() {
         updateGeneric();
         TAPUpdate();
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
+            if(firstPressed == 0){
+                firstPressed = guidance.fieldX();
+                TAPX = firstPressed;
+            }
             TAP(TAPX,TAPY,TAPRotation,TAPSpeed);
         }else {
+            firstPressed = 0;
             driveSwerve();
         }
 
@@ -377,15 +383,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         moduleStates = kinematics.toSwerveModuleStates(speeds);
 
         //System.out.println("notice me");
-        if (xbox.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) { // ignore for now
-            moduleStates = kinematics.toSwerveModuleStates(speeds, frontRightLocation);
-        } else if (dorifto()) {
-            double driftOffset = 3;
-            double offset = trackLength / 2 / 39.3701;
-            offset -= speeds.vxMetersPerSecond / driftOffset;
-            //System.out.println("forwards: " + speeds.vxMetersPerSecond);
-            moduleStates = kinematics.toSwerveModuleStates(speeds, new Translation2d(offset, 0));
-        }
 
 
 
@@ -673,10 +670,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             fallLow = true;
             lockWheels();
         }else {
-            if(forwards < -1.89D/12)
-                forwards = -1.89D/12;
-            if(forwards > 1.89D/12)
-                forwards = 1.89D/12;
+            if(forwards < -1.85D/12)
+                forwards = -1.85D/12;
+            if(forwards > 1.85D/12)
+                forwards = 1.85D/12;
 
         }
 
@@ -709,9 +706,21 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         double signNeeded = 1;
         double at = guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees();
         double goal = targetRotaion;
-
+        double xSpeed = robotSettings.AUTO_SPEED * speed * calcX;
+        double ySpeed = robotSettings.AUTO_SPEED * speed * calcY;
         rotation = UtilFunctions.mathematicalMod((goal - at) + 180, 360) - 180;
-        drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .08);
+        if(ySpeed >= 6){
+            ySpeed = 6;
+        }
+        if(ySpeed <= -6){
+            ySpeed = -6;
+        }
+        if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+            xSpeed = -xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y);
+        }else {
+            xSpeed = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y);
+        }
+        drivePure(xSpeed *4, ySpeed, rotation * signNeeded * .06);
     }
 
     public void TAPUpdate(){
@@ -749,23 +758,37 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             TAPRotation= pickUpArray[1][2];
             TAPSpeed= pickUpArray[1][3];
         }
-
-        ControllerEnums.ButtonPanelButtonsPlacement2023[] columnButtons = new ControllerEnums.ButtonPanelButtonsPlacement2023[]{
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T1,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T2,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T3,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T4,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T5,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T6,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T7,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T8,
-                ControllerEnums.ButtonPanelButtonsPlacement2023.T9,
-        };
-
-        for (int i = 0; i < columnButtons.length; i++) {
-            if(panel2.get(columnButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
-                scoreColumnInt = i;
+                ControllerEnums.ButtonPanelButtonsPlacement2023[] columnButtons;
+        if(DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+            columnButtons = new ControllerEnums.ButtonPanelButtonsPlacement2023[]{
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T9,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T8,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T7,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T6,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T5,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T4,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T3,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T2,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T1,
+            };
+        }else{
+            columnButtons = new ControllerEnums.ButtonPanelButtonsPlacement2023[]{
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T1,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T2,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T3,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T4,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T5,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T6,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T7,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T8,
+                    ControllerEnums.ButtonPanelButtonsPlacement2023.T9,
+            };
         }
+
+                for (int i = 0; i < columnButtons.length; i++) {
+                    if(panel1.get(columnButtons[i]) == DefaultControllerEnums.ButtonStatus.DOWN)
+                        scoreColumnInt = i;
+                }
                 break;
             }
             case MIDI:{
@@ -820,8 +843,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             }
         }
 
-        if(scoreRowInt != -1 && scoreColumnInt != -1) {
-            TAPX = scoringArray[scoreColumnInt][scoreRowInt];
+        if(scoreColumnInt != -1) {
+            TAPX = guidance.fieldX();
             TAPY = scoringArray[scoreColumnInt][3];
             TAPRotation = scoringArray[scoreColumnInt][4];
             TAPSpeed = scoringArray[scoreColumnInt][5];

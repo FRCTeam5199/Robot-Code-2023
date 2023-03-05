@@ -89,7 +89,7 @@ public class ManipulationManager implements ISubsystem {
             if(!robotSettings.ARM_ELEVATOR_MANUAL) {
                 //HumanPlayerStation
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -6;
+                    elevateGoal = -8;
                     armGoal = -54.5;
                 }
                 //stable
@@ -114,8 +114,8 @@ public class ManipulationManager implements ISubsystem {
                 //}
                 //pick up off of spike
                 if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -8.42;
-                    armGoal = -15.8;
+                    elevateGoal = 1.7;
+                    armGoal = -15.5;
                     spikeUp = true;
                 }
 
@@ -144,7 +144,7 @@ public class ManipulationManager implements ISubsystem {
                     }
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                        elevateGoal = -45;
+                        elevateGoal = -42;
                         armGoal = -200;
                     }
                     //place low
@@ -235,10 +235,10 @@ public class ManipulationManager implements ISubsystem {
             } else if (checkArmPassover()) {
             } else {
                 if ((spikeUp)) {
-                    Robot.elevator.moveElevator(0);
-                    if (Math.abs(-15.8 - Robot.arm.arm.getRotations()) <= .2) {
-                        Robot.elevator.moveElevator(elevateGoal);
-                        if (Math.abs(-8.42 - Robot.elevator.elevate.getRotations()) <= .2) {
+                    Robot.elevator.moveElevator(elevateGoal);
+                    if (Math.abs(-15.5 - Robot.arm.arm.getRotations()) <= .2) {
+                        elevateGoal = -10.3;
+                        if (Math.abs(-10.3 - Robot.elevator.elevate.getRotations()) <= .2) {
                             Robot.intake.intakeIn();
                             spikeUp = false;
                         }
