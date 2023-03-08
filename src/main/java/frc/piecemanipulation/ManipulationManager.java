@@ -89,7 +89,7 @@ public class ManipulationManager implements ISubsystem {
             if(!robotSettings.ARM_ELEVATOR_MANUAL) {
                 //HumanPlayerStation
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = -8;
+                    elevateGoal = -7;
                     armGoal = -54.5;
                 }
                 //stable
@@ -144,7 +144,7 @@ public class ManipulationManager implements ISubsystem {
                     }
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                        elevateGoal = -42;
+                        elevateGoal = -40;
                         armGoal = -200;
                     }
                     //place low
@@ -258,7 +258,7 @@ public class ManipulationManager implements ISubsystem {
                         Robot.wrist.wrist.moveAtVoltage(-6);
                     }
                 }else {
-                    if(Robot.wrist.wrist.getRotations() <= 4011 && Robot.wrist.wrist.getRotations() >= 10){
+                    if(Robot.wrist.wrist.getRotations() <= 4009 && Robot.wrist.wrist.getRotations() >= 10){
                         Robot.wrist.wrist.moveAtVoltage(0);
                     }else{
                         Robot.wrist.wrist.moveAtVoltage(6);

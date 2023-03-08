@@ -26,8 +26,8 @@ public class LEDs {
 
     public void update() {
         //LEDEnums.CHASE_RGB.runLightFunction(new int[][]{{22, 71, 142}, {0, 0, 0}}); //Robot Dolphins color ig
-        LEDEnums.EYES_DESERVE_TO_BLEED.runLightFunction(null);
-        ledConfig.setData(ledBuffer);
+        //LEDEnums.EYES_DESERVE_TO_BLEED.runLightFunction(null);
+        //ledConfig.setData(ledBuffer);
     }
 
     //makes the length of the led yellow

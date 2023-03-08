@@ -21,7 +21,7 @@ public class SwerveComp2023 extends DefaultConfig{
         ENABLE_APRILTAG = true;
         ENABLE_PIECE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
-
+        ENABLE_LEDS = true;
         ENABLE_SPIKE = true;
 
         DRIVE_INVERT_LEFT = false;
@@ -85,14 +85,16 @@ public class SwerveComp2023 extends DefaultConfig{
         DRIVE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.TALON_FX;
         IMU_TYPE = AbstractIMU.SupportedIMU.PIGEON;
         DRIVE_BASE = AbstractDriveManager.DriveBases.SWIVEL;
+        ENABLE_CAMERA = true;
+        ENABLE_VISION = true;
 
 
         AUTON_TYPE = AutonType.POINT_TO_POINT;
 
         DRIVEBASE_PID = new PID(0.0000001, 0, 0.0001);
-        HEADING_PID = new PID(.31, 0.0, 0.0);
+        HEADING_PID = new PID(.8, 0.0, 0.0);
         AUTO_XPID = new PID(1.15, 0.11, 0.001);
-        AUTO_YPID = new PID(1.17, 0.11, 0.001);
+        AUTO_YPID = new PID(1.3, 0.11, 0.001);
         TELE_XYPID = new PID(2.5, 0.1, 0.0);
         DRIVEBASE_DISTANCE_BETWEEN_WHEELS = 0.435991;
         MAX_SPEED = 16; //max speed in fps - REAL IS 10(for 4in wheels)
@@ -140,9 +142,9 @@ public class SwerveComp2023 extends DefaultConfig{
         // limelight
         ENABLE_VISION = true;
         ENABLE_CAMERA = true;
-        GOAL_CAM_NAME = "GoalCamera";
-        BALL_CAM_NAME = "BallCamera";
-        GOAL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;
+        GOAL_CAM_NAME = "HD_USB_Camera";
+        BALL_CAM_NAME = "Camera";
+        GOAL_CAMERA_TYPE = IVision.SupportedVision.PHOTON;
     }
 
 }

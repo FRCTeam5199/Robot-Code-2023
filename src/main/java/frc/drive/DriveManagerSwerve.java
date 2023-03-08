@@ -191,15 +191,22 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     private void driveSwerve() {
+        if(robotSettings.ENABLE_VISION) {
+            if (visionCamera.hasValidTarget()) {
+                UserInterface.smartDashboardPutNumber("Cube Yaw", visionCamera.getAngle());
+            } else {
+                UserInterface.smartDashboardPutNumber("Cube Yaw", -99999999);
+            }
+        }
         forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (1);
         if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE) {
-            visionCamera.setLedMode(IVision.VisionLEDMode.ON);
+            //visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             if(visionCamera.hasValidTarget()) {
                 //System.out.println("AIMING");
                 leftwards = limeLightPid.calculate(visionCamera.getAngle());
             }
         } else {
-            visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+           // visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
             leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (-1);
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);

@@ -146,7 +146,7 @@ public abstract class DefaultConfig {
     public double AUTON_TOLERANCE = 0.2;
     public double AUTO_SPEED = 3;
     public double AUTO_ROTATION_SPEED = 1;
-    public String GOAL_CAM_NAME = "GoalCamera";
+    public String GOAL_CAM_NAME = "HD_USB_Camera";
     public String BALL_CAM_NAME = "BallCamera";
 
     //Drive Motors
@@ -164,8 +164,8 @@ public abstract class DefaultConfig {
     public int IMU_ID = 22; //pigeon
     //leds
     public boolean ENABLE_LEDS = true;
-    public int LED_STRAND_LENGTH = 26;
-    public int LED_STRAND_PORT_ID = 9;
+    public int LED_STRAND_LENGTH = 34;
+    public int LED_STRAND_PORT_ID = 0;
     //pdp
     public int PDP_ID = 0;
 
@@ -209,7 +209,7 @@ public abstract class DefaultConfig {
             {-7.5 ,-7.5 ,-6.9 ,16.16  ,0 ,0.5},
             {-7.5 ,-7.5 ,-6.9 ,14.475 ,0 ,0.5},
             {-7.5 ,-7.5 ,-6.9 ,12.8   ,0 ,0.5},
-            {-7.5 ,-7.5 ,-6.9 ,11     ,0 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,10.25  ,0 ,0.5},
             {-7.5 ,-7.5 ,-6.9 ,9.0    ,0 ,0.5},
             {-7.5 ,-7.5 ,-6.9 ,7.14   ,0 ,0.5},
             {-7.5 ,-7.5 ,-6.9 ,5.5    ,0 ,0.5},
@@ -241,15 +241,15 @@ public abstract class DefaultConfig {
      column four is Speed
      */
     public double[][] blue2DScoringArray = new double[][]{
-            {-54+7.5 ,-54+6.9 ,-54+6.9 ,16.16  ,180 ,0.5},
-            {-54+7.5,-54+6.9 ,-54+6.9 ,14.475  ,180 ,0.5},
-            {-54+7.5 ,-54+6.9 ,-54+6.9 ,12.8  ,180 ,0.5},
-            {-54+7.5 ,-54+6.9 ,-54+6.9 ,11  ,180 ,0.5},
-            {-54+7.5  ,-54+6.9 ,-54+6.9 ,9.0   ,180 ,0.5},
-            {-54+7.5 ,-54+6.9 ,-54+6.9 ,7.14   ,180 ,0.5},
-            {-54+7.5 ,-54+6.9 ,-54+6.9 ,5.5   ,180 ,0.5},
-            {-54+7.5  ,-54+6.9 ,-54+6.9 ,3.52  ,180 ,0.5},
-            {-54+7.5 ,-54+6.9 ,-54+6.9 ,1.96   ,180 ,0.5}
+            {-7.5 ,-7.5 ,-6.9 ,16.2  ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,14.475 ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,12.8   ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,10.75  ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,9.0    ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,7.6   ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,5.60    ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,3.6   ,180 ,0.5},
+            {-7.5 ,-7.5 ,-6.9 ,2.1   ,180 ,0.5}
     };
 
     /**

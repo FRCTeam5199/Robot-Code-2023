@@ -15,6 +15,8 @@ public enum AutonSpecialActions {
      * Intarg will be the degrees rotation
      */
     ROTATE_ROBOT,
+
+    DRIVE_TO_CUBE,
     /**
         Intarg will not be used
      */

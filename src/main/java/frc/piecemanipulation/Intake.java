@@ -38,7 +38,7 @@ public class Intake implements ISubsystem {
         createControllers();
         createMotors();
         if (robotSettings.ENABLE_COLOR_SENSOR){
-            i2cPort = I2C.Port.kOnboard;
+            i2cPort = I2C.Port.kMXP;
             m_colorSensor = new ColorSensorV3(i2cPort);
         }
         closeTimer = new Timer();

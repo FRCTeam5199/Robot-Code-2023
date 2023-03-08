@@ -181,6 +181,6 @@ public class GoalPhoton implements IVision {
 
     @Override
     public void setLedMode(VisionLEDMode ledMode) {
-        throw new UnsupportedOperationException("Cannot set LED mode " + ledMode.name() + " on " + getSubsystemName());
+        //throw new UnsupportedOperationException("Cannot set LED mode " + ledMode.name() + " on " + getSubsystemName());
     }
 }
