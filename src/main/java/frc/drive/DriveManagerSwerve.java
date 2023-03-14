@@ -229,15 +229,13 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             rotation *= .25;
         }
 
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE){
-            leveling();
-        }else {
+
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
                 driveMPS(adjustedDrive(-forwards), adjustedDrive(-leftwards), adjustedRotation(rotation));
             }else {
                 driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
             }
-        }
+
 
     }
 
@@ -673,14 +671,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if(totalMagnetude > 12 ){
             brokeHigh = true;
         }
-        if (brokeHigh && totalMagnetude < 10){
+        if (brokeHigh && totalMagnetude < 10.3){
             fallLow = true;
             lockWheels();
         }else {
-            if(forwards < -1.85D/12)
-                forwards = -1.85D/12;
-            if(forwards > 1.85D/12)
-                forwards = 1.85D/12;
+            if(forwards < -1.6D/12)
+                forwards = -1.6D/12;
+            if(forwards > 1.6D/12)
+                forwards = 1.6D/12;
 
         }
 

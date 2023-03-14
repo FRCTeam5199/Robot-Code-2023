@@ -138,7 +138,10 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = false;
                     break;
                 case ARM_ELEVATOR_SHIFT_WEIGHT:
-                    specialActionComplete = Robot.manipulationManager.goTo(-44,-170);
+                    if(Math.abs(drivingChild.guidance.imu.relativeRoll()) >= 10) {
+                        specialActionComplete = Robot.manipulationManager.goTo(-44, -165);
+                    }
+                    specialActionComplete = true;
                     break;
                 case INTAKE_PISTON_IN:
                     Robot.intake.intakeIn();
@@ -186,7 +189,7 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = true;
                     break;
                 case ARM_ELEVATOR_SHIFT_WEIGHT:
-                    specialActionComplete2 = Robot.manipulationManager.goTo(-44,-160);
+                    specialActionComplete2 = Robot.manipulationManager.goTo(-44,-165);
                     break;
                 case ARM_ELEVATOR_GO_TO:
                     specialActionComplete2 = Robot.manipulationManager.goTo(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG2,autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG3);
@@ -264,7 +267,7 @@ public class AutonManager extends AbstractAutonManager {
         UserInterface.smartDashboardPutString("Location", point.toString());
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
         boolean angleTolerance = Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) <= (robotSettings.AUTON_TOLERANCE *5.0);
-        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 3.3, point);
+        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4, point);
         if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 1) {
             inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
         }
@@ -283,6 +286,10 @@ public class AutonManager extends AbstractAutonManager {
                 double y;
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X - drivingChild.guidance.fieldX();
                 if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2 == AutonSpecialActions.DRIVE_TO_CUBE){
+                    if(Robot.intake.m_colorSensor.getProximity() >= 615 && Robot.intake.m_colorSensor.getProximity() <= 1024 ){
+                        inTolerance = true;
+                        angleTolerance = true;
+                    }
                     if(visionCamera.getSize() >= 1) {
                         bestAreaCube = true;
                     }
@@ -328,7 +335,7 @@ public class AutonManager extends AbstractAutonManager {
                 if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.ARM_ELEVATOR_SHIFT_WEIGHT){
                     drivingChild.lockWheels();
                 } else if (permitSwiveling) {
-                    drivingChild.drivePure(0, 0, 0);
+                    drivingChild.drivePure(0.02, 0, 0);
                 } else {
 
                     drivingChild.drivePure(0, 0);
@@ -383,8 +390,8 @@ public class AutonManager extends AbstractAutonManager {
         try {
             autonPath = AutonRoutines.myChooser.getSelected();
         }catch (Exception ignored){
-
         }
+
         drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
     }
 

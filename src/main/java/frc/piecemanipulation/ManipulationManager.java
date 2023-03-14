@@ -103,9 +103,9 @@ public class ManipulationManager implements ISubsystem {
                     armGoal = -30;
                 }
                 //climb
-                if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Climb) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
-                    armGoal = -133;
+                    armGoal = -55;
                 }
                 //lift arm out of starting NOT USED ON PANEL RN
                 //if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.) == DefaultControllerEnums.ButtonStatus.DOWN) {
@@ -114,7 +114,7 @@ public class ManipulationManager implements ISubsystem {
                 //}
                 //pick up off of spike
                 if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    elevateGoal = 1.7;
+                    elevateGoal = 0.7;
                     armGoal = -15.5;
                     spikeUp = true;
                 }
@@ -317,11 +317,11 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-85 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -170){
+        if (-70 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -178){
             Robot.elevator.moveElevator(-44);
             return true;
-        }else if(-70 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -185){
-            Robot.elevator.moveElevator(-22);
+        }else if(-60 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -183){
+            Robot.elevator.moveElevator(-30);
             return true;
         }
         return false;

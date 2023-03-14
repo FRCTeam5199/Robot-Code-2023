@@ -178,10 +178,10 @@ public class Intake implements ISubsystem {
                     closeTimer.reset();
                 }
                 if (robotSettings.ENABLE_COLOR_SENSOR){
-                    if (m_colorSensor.getProximity() >= 150 && closeTimer.get() >= .5) {
-                        Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
-                        closeTimer.reset();
-                    }
+                    //if (m_colorSensor.getProximity() >= 150 && closeTimer.get() >= .5) {
+                    //    Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                    //    closeTimer.reset();
+                   // }
                 }
             }
         }else{
@@ -238,6 +238,9 @@ public class Intake implements ISubsystem {
                     break;
                 }  
                 case STANDARD_2023:{
+                    if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == ButtonStatus.DOWN){
+                        pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                    }
                     if(panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == ButtonStatus.DOWN){
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
                     }

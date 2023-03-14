@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
-                    autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.DO_NOTHING, driver);//Trajectories.TEST_PATH, driver);
+                    autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.DO_NOTHING_RED, driver);//Trajectories.TEST_PATH, driver);
                     System.out.println("autoRoutine waypoint");
                     break;
             }
