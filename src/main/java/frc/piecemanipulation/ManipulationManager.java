@@ -92,6 +92,10 @@ public class ManipulationManager implements ISubsystem {
                     elevateGoal = -7;
                     armGoal = -54.5;
                 }
+                if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation2) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    elevateGoal = -7.1;
+                    armGoal = -56;
+                }
                 //stable
                 if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -45;
@@ -128,7 +132,7 @@ public class ManipulationManager implements ISubsystem {
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -5;
-                        armGoal = -240;
+                        armGoal = -235;
                     }
                     //place low
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
@@ -145,7 +149,7 @@ public class ManipulationManager implements ISubsystem {
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -40;
-                        armGoal = -200;
+                        armGoal = -195;
                     }
                     //place low
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
@@ -317,11 +321,11 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-70 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -178){
+        if (-70 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -160){
             Robot.elevator.moveElevator(-44);
             return true;
-        }else if(-60 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -183){
-            Robot.elevator.moveElevator(-30);
+        }else if(-60 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -178){
+            Robot.elevator.moveElevator(-27);
             return true;
         }
         return false;

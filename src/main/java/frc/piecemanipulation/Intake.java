@@ -72,7 +72,7 @@ public class Intake implements ISubsystem {
     public void updateGeneric() {
         if (robotSettings.ENABLE_COLOR_SENSOR){
             UserInterface.smartDashboardPutNumber("proxy cube", m_colorSensor.getProximity());
-            if(m_colorSensor.getProximity() >= 615){
+            if(m_colorSensor.getProximity() >= 350){
                 if (intakeLeft.getVoltage() >= 10 || intakeRight.getVoltage() >= 10){
                     intakeLeft.moveAtVoltage(0);
                     intakeRight.moveAtVoltage(0);
@@ -147,7 +147,7 @@ public class Intake implements ISubsystem {
                     intakeLeft.moveAtVoltage(-3);
                 } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     if(robotSettings.ENABLE_COLOR_SENSOR) {
-                        if (m_colorSensor.getProximity() >= 400) {
+                        if (m_colorSensor.getProximity() >= 350) {
                             intakeLeft.moveAtVoltage(0);
                             intakeRight.moveAtVoltage(0);
                         }else {
@@ -191,7 +191,7 @@ public class Intake implements ISubsystem {
                 intakeLeft.moveAtVoltage(-6);
             } else if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 if(robotSettings.ENABLE_COLOR_SENSOR) {
-                    if (m_colorSensor.getProximity() >= 615) {
+                    if (m_colorSensor.getProximity() >= 500) {
                             intakeLeft.moveAtVoltage(0);
                             intakeRight.moveAtVoltage(0);
                     }else {

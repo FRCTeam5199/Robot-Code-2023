@@ -62,7 +62,7 @@ public class RobotTelemetrySwivel extends AbstractRobotTelemetry {
                     UserInterface.smartDashboardPutNumber("apriltag get second", apriltagpos.getSecond());
                     double timernow = Timer.getFPGATimestamp() - apriltagpos.getSecond();
                     UserInterface.smartDashboardPutNumber("timer now", timernow);
-                    swerveRobotPose.addVisionMeasurement(poseinft, timernow);
+                    swerveRobotPose.addVisionMeasurement(poseinft, apriltagpos.getSecond());
                 }catch (Exception e){
                     System.out.println(e);
                 }

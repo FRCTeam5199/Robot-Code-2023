@@ -2,6 +2,7 @@ package frc.drive;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.slack.api.model.User;
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -211,7 +212,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
         if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
-            rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-1.6);
+            rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-2.25);
             startHeading = guidance.imu.relativeYaw();
 
         } else if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) <= 0.15 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X)) <= 0.15 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) <= 0.15) {
@@ -668,17 +669,17 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if(guidance.imu.relativeRoll() < 0)
             forwards *= -1;
 
-        if(totalMagnetude > 12 ){
+        if(totalMagnetude > 12.1 ){
             brokeHigh = true;
         }
-        if (brokeHigh && totalMagnetude < 10.3){
+        if (brokeHigh && totalMagnetude < 11.9){
             fallLow = true;
             lockWheels();
         }else {
-            if(forwards < -1.6D/12)
-                forwards = -1.6D/12;
-            if(forwards > 1.6D/12)
-                forwards = 1.6D/12;
+            if(forwards < -1.5D/12)
+                forwards = -1.5D/12;
+            if(forwards > 1.5D/12)
+                forwards = 1.5D/12;
 
         }
 

@@ -186,7 +186,7 @@ public class AprilTagManager implements ISubsystem {
             //return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
 
             lastPose = result.get().estimatedPose.toPose2d();
-            return new Pair<Pose2d, Double>(lastPose, 0.0);
+            return new Pair<Pose2d, Double>(lastPose, result.get().timestampSeconds);
         }
     }
 

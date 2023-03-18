@@ -95,7 +95,7 @@ public class SwerveComp2023 extends DefaultConfig{
         HEADING_PID = new PID(.8, 0.0, 0.0);
         AUTO_XPID = new PID(1.15, 0.11, 0.001);
         AUTO_YPID = new PID(1.3, 0.11, 0.001);
-        TELE_XYPID = new PID(2.5, 0.1, 0.0);
+        TELE_XYPID = new PID(2.6, 0.1, 0.0);
         DRIVEBASE_DISTANCE_BETWEEN_WHEELS = 0.435991;
         MAX_SPEED = 16; //max speed in fps - REAL IS 10(for 4in wheels)
         RUMBLE_TOLERANCE_FPS = 8;

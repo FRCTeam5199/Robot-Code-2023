@@ -180,7 +180,7 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = timer.advanceIfElapsed(.5);
                     break;
                 case ARM_ELEVATOR_UP:
-                    Robot.elevator.elevate.moveAtPosition(2.2);
+                    Robot.elevator.elevate.moveAtPosition(2.315);
                     specialActionComplete2 = timer.advanceIfElapsed(.1);
                     System.out.println("tring to move Elevator");
                     break;
@@ -267,7 +267,7 @@ public class AutonManager extends AbstractAutonManager {
         UserInterface.smartDashboardPutString("Location", point.toString());
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
         boolean angleTolerance = Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) <= (robotSettings.AUTON_TOLERANCE *5.0);
-        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4, point);
+        boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
         if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 1) {
             inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
         }
@@ -286,7 +286,7 @@ public class AutonManager extends AbstractAutonManager {
                 double y;
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X - drivingChild.guidance.fieldX();
                 if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2 == AutonSpecialActions.DRIVE_TO_CUBE){
-                    if(Robot.intake.m_colorSensor.getProximity() >= 615 && Robot.intake.m_colorSensor.getProximity() <= 1024 ){
+                    if(Robot.intake.m_colorSensor.getProximity() >= 300 && Robot.intake.m_colorSensor.getProximity() <= 900 ){
                         inTolerance = true;
                         angleTolerance = true;
                     }
@@ -294,7 +294,11 @@ public class AutonManager extends AbstractAutonManager {
                         bestAreaCube = true;
                     }
                     if(visionCamera.hasValidTarget() && bestAreaCube == true){
-                        y =  (visionCamera.getAngle() - 1.5) * 0.1;
+                        if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
+                            y =  -(visionCamera.getAngle() - 2) * 0.1;
+                        }else {
+                            y = (visionCamera.getAngle() - 2) * 0.1;
+                        }
                     }else {
                         y = 0;
                     }
