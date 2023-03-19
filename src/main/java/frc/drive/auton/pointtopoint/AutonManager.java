@@ -271,6 +271,16 @@ public class AutonManager extends AbstractAutonManager {
         if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 1) {
             inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
         }
+        if(autonPath.currentWaypoint == 0){
+            if(timer.advanceIfElapsed(1)){
+                angleTolerance = true;
+                inTolerance = true;
+                drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
+            }
+        }
+        if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 2 || autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 179){
+            return true;
+        }
         UserInterface.smartDashboardPutNumber("how far from correct the angle is", Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()));
         UserInterface.smartDashboardPutBoolean("angle tolerance", angleTolerance);
         UserInterface.smartDashboardPutBoolean("inTolerance", inTolerance);
