@@ -669,31 +669,33 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if(guidance.imu.relativeRoll() < 0)
             forwards *= -1;
 
-        if(totalMagnetude > 12.1 ){
+        if(totalMagnetude > 12.3 ){
             brokeHigh = true;
         }
-        if (brokeHigh && totalMagnetude < 11.9){
+        if (brokeHigh && totalMagnetude < 12.1){
             fallLow = true;
             lockWheels();
         }else {
-            if(forwards < -1.5D/12)
-                forwards = -1.5D/12;
-            if(forwards > 1.5D/12)
-                forwards = 1.5D/12;
+            if(forwards < -1.48D/12)
+                forwards = -1.48D/12;
+            if(forwards > 1.48D/12)
+                forwards = 1.48D/12;
 
         }
 
-        if(Math.abs(guidance.imu.relativeRoll()) <= 6){
+        if(totalMagnetude <= 11){
             fallLow = false;
             brokeHigh = false;
             forwards = 0;
-            return true;
-        }
-        if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-            drivePure(-adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+            lockWheels();
         }else {
-            drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                drivePure(-adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+            } else {
+                drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
+            }
         }
+
         return false;
     }
     /**
@@ -715,11 +717,11 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         double xSpeed = robotSettings.AUTO_SPEED * speed * calcX;
         double ySpeed = robotSettings.AUTO_SPEED * speed * calcY;
         rotation = UtilFunctions.mathematicalMod((goal - at) + 180, 360) - 180;
-        if(ySpeed >= 6){
-            ySpeed = 6;
+        if(ySpeed >= 5.5){
+            ySpeed = 5.5;
         }
-        if(ySpeed <= -6){
-            ySpeed = -6;
+        if(ySpeed <= -5.5){
+            ySpeed = -5.5;
         }
         if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
             xSpeed = -xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y);

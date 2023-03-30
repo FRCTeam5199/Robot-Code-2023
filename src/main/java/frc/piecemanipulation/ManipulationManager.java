@@ -25,6 +25,7 @@ public class ManipulationManager implements ISubsystem {
     public BaseController panel1, panel2, xbox2, midiTop, midiBot;
     public static LEDs leds;
     public double armGoal = 0;
+    public double slippageOffSet = 0;
     public double elevateGoal = 2.2;
     public boolean cubeConeMode = true; // true =  Cone, false  = Cube
     public boolean spikeUp = false;
@@ -65,6 +66,12 @@ public class ManipulationManager implements ISubsystem {
             robotSettings.ARM_ELEVATOR_MANUAL = false;
             Robot.intake.intakeIn();
         }
+        if(xbox2.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            slippageOffSet = slippageOffSet - 0.2;
+        }
+        if(xbox2.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            slippageOffSet = slippageOffSet + 0.2;
+        }
 
         switch (robotSettings.MANIPULATION_STYLE) {
             case STANDARD_2023: {
@@ -90,26 +97,26 @@ public class ManipulationManager implements ISubsystem {
                 //HumanPlayerStation
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -7;
-                    armGoal = -54.5;
+                    armGoal = -54.5 + slippageOffSet;
                 }
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation2) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -4;
-                    armGoal = -57;
+                    armGoal = -57+ slippageOffSet;
                 }
                 //stable
                 if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -45;
-                    armGoal = -135;
+                    armGoal = -135+ slippageOffSet;
                 }
                 //floor
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -37;
-                    armGoal = -30;
+                    armGoal = -30+ slippageOffSet;
                 }
                 //climb
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Climb) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = -44;
-                    armGoal = -55;
+                    armGoal = -55+ slippageOffSet;
                 }
                 //lift arm out of starting NOT USED ON PANEL RN
                 //if (panel.get(ControllerEnums.ButtonPanelButtonsElse2023.) == DefaultControllerEnums.ButtonStatus.DOWN) {
@@ -119,7 +126,7 @@ public class ManipulationManager implements ISubsystem {
                 //pick up off of spike
                 if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     elevateGoal = 0.7;
-                    armGoal = -15.5;
+                    armGoal = -15.5+ slippageOffSet;
                     spikeUp = true;
                 }
 
@@ -127,34 +134,34 @@ public class ManipulationManager implements ISubsystem {
                     //place high
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -10;
-                        armGoal = -217;
+                        armGoal = -217+ slippageOffSet;
                     }
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -5;
-                        armGoal = -235;
+                        armGoal = -235+ slippageOffSet;
                     }
                     //place low
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = 0;
-                        armGoal = -270;
+                        armGoal = -270+ slippageOffSet;
                     }
                 }
                 if (cubeConeMode) {
                     //place high
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -1;
-                        armGoal = -212;
+                        armGoal = -212+ slippageOffSet;
                     }
                     //place mid
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -40;
-                        armGoal = -195;
+                        armGoal = -195+ slippageOffSet;
                     }
                     //place low
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -0;
-                        armGoal = -270;
+                        armGoal = -270+ slippageOffSet;
                     }
 
                 }
@@ -255,7 +262,7 @@ public class ManipulationManager implements ISubsystem {
 
             if(robotSettings.ENABLE_WRIST){
                 //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
-                if(Robot.arm.arm.getRotations() >= -123){
+                if(Robot.arm.arm.getRotations() + slippageOffSet >= -123){
                     if(Robot.wrist.wrist.getRotations() >= 0 && Robot.wrist.wrist.getRotations() <= 4000){
                         Robot.wrist.wrist.moveAtVoltage(0);
                     }else{
@@ -321,10 +328,10 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-70 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -160){
+        if (-70 + slippageOffSet >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -160+  slippageOffSet){
             Robot.elevator.moveElevator(-44);
             return true;
-        }else if(-60 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -178){
+        }else if(-60 + slippageOffSet >= Robot.arm.arm.getRotations()  && Robot.arm.arm.getRotations() >= -178+ slippageOffSet){
             Robot.elevator.moveElevator(-27);
             return true;
         }
@@ -332,7 +339,7 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmCollision(){
-        if(Robot.arm.arm.getRotations() >= 10 || Robot.arm.arm.getRotations() <= -300){
+        if(Robot.arm.arm.getRotations() >= 10 + slippageOffSet || Robot.arm.arm.getRotations() <= -300 + slippageOffSet){
            return true;
         }
         return false;

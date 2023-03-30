@@ -276,9 +276,12 @@ public class AutonManager extends AbstractAutonManager {
                 angleTolerance = true;
                 inTolerance = true;
                 drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
+                return true;
             }
         }
+
         if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 2 || autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 179){
+            drivingChild.drivePure(0.02, 0, 0);
             return true;
         }
         UserInterface.smartDashboardPutNumber("how far from correct the angle is", Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()));
@@ -305,7 +308,7 @@ public class AutonManager extends AbstractAutonManager {
                     }
                     if(visionCamera.hasValidTarget() && bestAreaCube == true){
                         if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-                            y =  -(visionCamera.getAngle() - 2) * 0.1;
+                            y =  (-visionCamera.getAngle() + 2) * 0.1;
                         }else {
                             y = (visionCamera.getAngle() - 2) * 0.1;
                         }
