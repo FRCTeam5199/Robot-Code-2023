@@ -676,11 +676,15 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             fallLow = true;
             lockWheels();
         }else {
+            /*
             if(forwards < -1.48D/12)
                 forwards = -1.48D/12;
             if(forwards > 1.48D/12)
                 forwards = 1.48D/12;
-
+*/      if(forwards < -1.8D/12)
+                forwards = -1.8D/12;
+            if(forwards > 1.8D/12)
+                forwards = 1.8D/12;
         }
 
         if(totalMagnetude <= 11){

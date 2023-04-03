@@ -52,7 +52,12 @@ public enum AutonSpecialActions {
     WAIT500,
     WAIT100,
     /**
+     * If intarg is Time (Swerve)
+     */
+    DRIVE_WITH_TIME,
+    /**
      * If intarg is != 0, will swerve, otherwise will west coast
      */
-    DRIVE_TO, ARM_ELEVATOR_RESET;
+    DRIVE_TO,
+    ARM_ELEVATOR_RESET;
 }

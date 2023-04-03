@@ -166,6 +166,20 @@ public class AutonManager extends AbstractAutonManager {
                     Robot.intake.intakeRight.moveAtVoltage(-0);
                     specialActionComplete = true;
                     break;
+                case DRIVE_WITH_TIME:
+                if(!firstTimerRun){
+                    timer.reset();
+                    firstTimerRun = true;
+                }
+                if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
+                    drivingChild.drivePure(4,0,0);
+                }else {
+                    drivingChild.drivePure(-4, 0, 0);
+                }
+                specialActionComplete = timer.advanceIfElapsed(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
+                if(specialActionComplete)
+                    firstTimerRun = false;
+                break;
                 case DRIVE_TO:
                 case NONE:
                     //litterally do nothing
@@ -229,6 +243,7 @@ public class AutonManager extends AbstractAutonManager {
                     Robot.intake.intakeRight.moveAtVoltage(-0);
                     specialActionComplete2 = true;
                     break;
+                case DRIVE_WITH_TIME:
                 case NONE:
                     //litterally do nothing
                     specialActionComplete2 = true;
@@ -293,7 +308,10 @@ public class AutonManager extends AbstractAutonManager {
         }
         UserInterface.smartDashboardPutNumber("rotOffset", -rotationOffset);
         UserInterface.smartDashboardPutString("Current Position", here.toString());
-
+        if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
+            inTolerance = true;
+            angleTolerance = true;
+        }
         if (!(inTolerance && angleTolerance)) {
             if (permitSwiveling) {
                 double y;
@@ -336,9 +354,17 @@ public class AutonManager extends AbstractAutonManager {
                 rotation = UtilFunctions.mathematicalMod((goal - at) + 180, 360) - 180;
 
                 if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-                    drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .06);
+                    if(Math.abs(rotation) >= 50) {
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .015);
+                    }else{
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .055);
+                    }
                 }else {
-                    drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .06/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
+                    if(Math.abs(rotation) >= 50){
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .015/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
+                    }else {
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .055/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
+                    }
                 }
             } else {
                 double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;
@@ -353,10 +379,9 @@ public class AutonManager extends AbstractAutonManager {
                     drivingChild.lockWheels();
                 } else if (permitSwiveling) {
                     drivingChild.drivePure(0.02, 0, 0);
-                } else {
-
+                } else if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
+                }else {
                     drivingChild.drivePure(0, 0);
-
                 }
             }
             System.out.println("Robot Shouldnt be moving");
