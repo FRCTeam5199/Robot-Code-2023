@@ -133,7 +133,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             guidance.setSwerveOdometryCurrent(guidance.fieldX(), guidance.fieldY());
             guidance.resetOdometry();
         }
-        if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+        if(false){
             if(DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
                 startHeading = 180;
             }else{

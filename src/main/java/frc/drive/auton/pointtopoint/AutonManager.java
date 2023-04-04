@@ -166,6 +166,18 @@ public class AutonManager extends AbstractAutonManager {
                     Robot.intake.intakeRight.moveAtVoltage(-0);
                     specialActionComplete = true;
                     break;
+                case INTAKE_WHEEL_BOTTOM_OFF:
+                    Robot.intake.intakeBottom.moveAtVoltage(0);
+                    specialActionComplete = true;
+                    break;
+                case INTAKE_WHEEL_BOTTOM_IN:
+                    Robot.intake.intakeBottom.moveAtVoltage(-1);
+                    specialActionComplete = true;
+                    break;
+                case INTAKE_WHEEL_BOTTOM_OUT:
+                    Robot.intake.intakeBottom.moveAtVoltage(1);
+                    specialActionComplete = true;
+                    break;
                 case DRIVE_WITH_TIME:
                 if(!firstTimerRun){
                     timer.reset();
@@ -241,6 +253,18 @@ public class AutonManager extends AbstractAutonManager {
                 case INTAKE_WHEEL_OFF:
                     Robot.intake.intakeLeft.moveAtVoltage(0);
                     Robot.intake.intakeRight.moveAtVoltage(-0);
+                    specialActionComplete2 = true;
+                    break;
+                case INTAKE_WHEEL_BOTTOM_OFF:
+                    Robot.intake.intakeBottom.moveAtVoltage(0);
+                    specialActionComplete2 = true;
+                    break;
+                case INTAKE_WHEEL_BOTTOM_IN:
+                    Robot.intake.intakeBottom.moveAtVoltage(-1);
+                    specialActionComplete2 = true;
+                    break;
+                case INTAKE_WHEEL_BOTTOM_OUT:
+                    Robot.intake.intakeBottom.moveAtVoltage(1);
                     specialActionComplete2 = true;
                     break;
                 case DRIVE_WITH_TIME:

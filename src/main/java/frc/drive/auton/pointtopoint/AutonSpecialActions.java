@@ -46,6 +46,11 @@ public enum AutonSpecialActions {
 
     INTAKE_WHEEL_OUT,
 
+    INTAKE_WHEEL_BOTTOM_OUT,
+    INTAKE_WHEEL_BOTTOM_OFF,
+    INTAKE_WHEEL_BOTTOM_IN,
+
+
     INTAKE_WHEEL_OFF,
 
     WAIT1000,

@@ -78,7 +78,9 @@ public abstract class DefaultConfig {
 
     // Intake
     public SupportedMotors INTAKE_MOTOR_TYPE =  SupportedMotors.CAN_SPARK_MAX;
+    public SupportedMotors INTAKE_MOTOR_BOTTOM_TYPE =  SupportedMotors.VICTOR;
     public int INTAKE_MOTOR_LEFT_ID = 0;
+    public int INTAKE_MOTOR_BOTTOM_ID = 0;
     public int INTAKE_MOTOR_RIGHT_ID = 0;
     public String INTAKE_MOTOR_CANBUS = "rio";
     public boolean INTAKE_MANUAL = true;
