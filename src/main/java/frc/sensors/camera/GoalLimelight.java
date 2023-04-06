@@ -29,7 +29,8 @@ public class GoalLimelight implements IVision {
      */
     @Override
     public void init() {
-        limelight = NetworkTableInstance.getDefault().getTable("Limelight");
+        UserInterface.smartDashboardPutString("limelight", "limelight");
+        limelight = NetworkTableInstance.getDefault().getTable("limelight");
         filter = LinearFilter.movingAverage(5);
         yaw = limelight.getEntry("tx");
         size = limelight.getEntry("ta");

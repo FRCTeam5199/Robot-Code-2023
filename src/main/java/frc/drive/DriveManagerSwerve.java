@@ -203,11 +203,17 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         }
         forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (1);
         if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             //visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             if(visionCamera.hasValidTarget()) {
-                visionCamera.setLedMode(IVision.VisionLEDMode.ON);
                 System.out.println("AIMING");
-                //leftwards = limeLightPid.calculate(visionCamera.getAngle());
+                leftwards = limeLightPid.calculate(-visionCamera.getPitch()/10);
+                if(leftwards >= 0.25){
+                    leftwards = 0.25;
+                }
+                if(leftwards <= -0.25){
+                    leftwards = -0.25;
+                }
             }
         } else {
             visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
@@ -223,6 +229,12 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             //startHeading = guidance.imu.relativeYaw();
        // }else if(xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN){
         //    rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)*(-1.6);
+        }else if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            if(DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                rotation = UtilFunctions.mathematicalMod((180 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180;
+            }else {
+                rotation = UtilFunctions.mathematicalMod((0 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180;
+            }
         }else{
             rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }

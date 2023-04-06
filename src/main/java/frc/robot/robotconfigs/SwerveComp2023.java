@@ -41,7 +41,7 @@ public class SwerveComp2023 extends DefaultConfig{
         ENABLE_IMU = true;
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
-        limeLightPid = new PID(0.022, 0.0, 0.0);
+        limeLightPid = new PID(0.1, 0.0, 0);
         leveling = new PID(0.0175,0.0,0.01);
 
         //Elevator
@@ -144,9 +144,10 @@ public class SwerveComp2023 extends DefaultConfig{
         // limelight
         ENABLE_VISION = true;
         ENABLE_CAMERA = true;
-        GOAL_CAM_NAME = "Limelight";
+        GOAL_CAM_NAME = "limelight";
         BALL_CAM_NAME = "Camera";
         GOAL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;
+        BALL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;
     }
 
 }
