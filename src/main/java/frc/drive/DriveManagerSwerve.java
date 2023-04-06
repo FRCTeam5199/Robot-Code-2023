@@ -77,7 +77,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
         panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
-        createPIDControllers(new PID(0.0111, 0.0, 0.0));
+        createPIDControllers(new PID(0.011, 0.0, 0.0));
         createDriveMotors();
         setDrivingPIDS(new PID(0.0002, 0, 0.0001, 0.03));
         setCANCoder();
@@ -91,6 +91,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         if (robotSettings.ENABLE_VISION) {
             visionCamera = IVision.manufactureGoalCamera(robotSettings.GOAL_CAMERA_TYPE);
+            visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+            visionCamera.setPipeline(0);
         }
     }
 
@@ -194,20 +196,21 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private void driveSwerve() {
         if(robotSettings.ENABLE_VISION) {
             if (visionCamera.hasValidTarget()) {
-                UserInterface.smartDashboardPutNumber("Cube Yaw", visionCamera.getAngle());
+                UserInterface.smartDashboardPutNumber("Cube Yaw", visionCamera.getPitch());
             } else {
                 UserInterface.smartDashboardPutNumber("Cube Yaw", -99999999);
             }
         }
         forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (1);
-        if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN && !robotSettings.BRANDONISNOTHERE) {
+        if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             //visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             if(visionCamera.hasValidTarget()) {
-                //System.out.println("AIMING");
-                leftwards = limeLightPid.calculate(visionCamera.getAngle());
+                visionCamera.setLedMode(IVision.VisionLEDMode.ON);
+                System.out.println("AIMING");
+                //leftwards = limeLightPid.calculate(visionCamera.getAngle());
             }
         } else {
-           // visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+            visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
             leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (-1);
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);

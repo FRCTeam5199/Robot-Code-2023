@@ -144,9 +144,9 @@ public class SwerveComp2023 extends DefaultConfig{
         // limelight
         ENABLE_VISION = true;
         ENABLE_CAMERA = true;
-        GOAL_CAM_NAME = "HD_USB_Camera";
+        GOAL_CAM_NAME = "Limelight";
         BALL_CAM_NAME = "Camera";
-        GOAL_CAMERA_TYPE = IVision.SupportedVision.PHOTON;
+        GOAL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;
     }
 
 }

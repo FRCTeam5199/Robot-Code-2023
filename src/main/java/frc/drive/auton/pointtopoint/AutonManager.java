@@ -167,15 +167,15 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OFF:
-                    Robot.intake.intakeBottom.moveAtVoltage(0);
+                    Robot.intake.intakeBottom.moveAtPercent(0);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_IN:
-                    Robot.intake.intakeBottom.moveAtVoltage(-1);
+                    Robot.intake.intakeBottom.moveAtPercent(-1);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OUT:
-                    Robot.intake.intakeBottom.moveAtVoltage(1);
+                    Robot.intake.intakeBottom.moveAtPercent(1);
                     specialActionComplete = true;
                     break;
                 case DRIVE_WITH_TIME:
@@ -184,9 +184,9 @@ public class AutonManager extends AbstractAutonManager {
                     firstTimerRun = true;
                 }
                 if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-                    drivingChild.drivePure(4,0,0);
+                    drivingChild.drivePure(6,0,0);
                 }else {
-                    drivingChild.drivePure(-4, 0, 0);
+                    drivingChild.drivePure(-6, 0, 0);
                 }
                 specialActionComplete = timer.advanceIfElapsed(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
                 if(specialActionComplete)
@@ -256,15 +256,15 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OFF:
-                    Robot.intake.intakeBottom.moveAtVoltage(0);
+                    Robot.intake.intakeBottom.moveAtPercent(0);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_IN:
-                    Robot.intake.intakeBottom.moveAtVoltage(-1);
+                    Robot.intake.intakeBottom.moveAtPercent(-1);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OUT:
-                    Robot.intake.intakeBottom.moveAtVoltage(1);
+                    Robot.intake.intakeBottom.moveAtPercent(1);
                     specialActionComplete2 = true;
                     break;
                 case DRIVE_WITH_TIME:
@@ -335,6 +335,7 @@ public class AutonManager extends AbstractAutonManager {
         if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
             inTolerance = true;
             angleTolerance = true;
+            return inTolerance && angleTolerance;
         }
         if (!(inTolerance && angleTolerance)) {
             if (permitSwiveling) {
@@ -401,9 +402,9 @@ public class AutonManager extends AbstractAutonManager {
             if (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION != AutonSpecialActions.AUTO_LEVEL) {
                 if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.ARM_ELEVATOR_SHIFT_WEIGHT){
                     drivingChild.lockWheels();
+                } else if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
                 } else if (permitSwiveling) {
                     drivingChild.drivePure(0.02, 0, 0);
-                } else if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
                 }else {
                     drivingChild.drivePure(0, 0);
                 }
