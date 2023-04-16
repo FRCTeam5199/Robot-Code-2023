@@ -740,23 +740,27 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
     @Override
     public boolean driveForwardWithAngle() {
+        int signNeeded;
         if(overChargeCounter == 0) {
             Robot.arm.moveArm(-100);
             Robot.elevator.moveElevator(-44);
         }
-        if(overChargeCounter == 3){
+        if(overChargeCounter == 4){
             Robot.elevator.moveElevator(-44);
-            Robot.arm.moveArm(-170);
+            Robot.arm.moveArm(-150);
+        }
+        if(guidance.imu.relativeRoll() <0){
+            signNeeded = -1;
+        }else {
+            signNeeded = 1;
         }
         UserInterface.smartDashboardPutNumber("overChargeCounter", overChargeCounter);
         double totalMagnetude = Math.sqrt((Math.pow(guidance.imu.relativeRoll(), 2) + Math.pow(guidance.imu.relativePitch(), 2)));
-        if (totalMagnetude >= 8 && overChargeCounter == 0) {
-            overChargeCounter = 1;
-        }
-        if (Math.abs(totalMagnetude) <= 3 && overChargeCounter == 1) {
+        totalMagnetude *= signNeeded;
+        if (totalMagnetude <= -7 && overChargeCounter == 0) {
             overChargeCounter = 2;
         }
-        if (totalMagnetude >= 6 && overChargeCounter == 2) {
+        if (totalMagnetude >= 3 && overChargeCounter == 2) {
             overChargeCounter = 3;
         }
         if (Math.abs(totalMagnetude) <= 2.6 && overChargeCounter == 3) {
@@ -769,10 +773,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             if (timer.advanceIfElapsed(1))
                 overChargeCounter = 4;
         }
-        if(overChargeCounter == 4 && totalMagnetude >= 10){
+        if(overChargeCounter == 4 && Math.abs(totalMagnetude) >= 12){
             overChargeCounter = 5;
         }
-        if(overChargeCounter == 5 && totalMagnetude <= 2){
+        if(overChargeCounter == 5 && Math.abs(totalMagnetude) <= 11){
             return true;
         }
        if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
@@ -783,41 +787,42 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         if (overChargeCounter == 0) {
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                drivePure(adjustedDrive(1), adjustedDrive(.1), adjustedRotation(rotation * 0.01));
+                drivePure(adjustedDrive(.9), adjustedDrive(.15), adjustedRotation(rotation * 0.01));
             } else {
-                drivePure(-adjustedDrive(1), -adjustedDrive(.1), adjustedRotation(rotation* 0.01));
+                drivePure(-adjustedDrive(.9), -adjustedDrive(.15), adjustedRotation(rotation* 0.01));
             }
         }else if (overChargeCounter == 1) {
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                drivePure(adjustedDrive(.6), adjustedDrive(.1), adjustedRotation(rotation * 0.01));
+                drivePure(adjustedDrive(.9), adjustedDrive(.15), adjustedRotation(rotation * 0.01));
             } else {
-                drivePure(-adjustedDrive(.6), -adjustedDrive(.1), adjustedRotation(rotation* 0.01));
+                drivePure(-adjustedDrive(.9), -adjustedDrive(.15), adjustedRotation(rotation* 0.01));
             }
+
         }else if (overChargeCounter == 3) {
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                drivePure(adjustedDrive(.21), adjustedDrive(0), adjustedRotation(rotation * 0.01));
+                drivePure(adjustedDrive(.2), adjustedDrive(0.15), adjustedRotation(rotation * 0.01));
             } else {
-                drivePure(-adjustedDrive(.21), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+                drivePure(-adjustedDrive(.2), -adjustedDrive(0.15), adjustedRotation(rotation* 0.01));
             }
         }
         else if(overChargeCounter == 4){
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                drivePure(-adjustedDrive(5), adjustedDrive(0), adjustedRotation(rotation* 0.01));
+                drivePure(-adjustedDrive(5.5), adjustedDrive(0), adjustedRotation(rotation* 0.01));
             } else {
-                drivePure(adjustedDrive(5), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+                drivePure(adjustedDrive(5.5), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
             }
         }else if(overChargeCounter >= 5){
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                drivePure(-adjustedDrive(.2), adjustedDrive(0), adjustedRotation(rotation* 0.01));
+                drivePure(-adjustedDrive(.15), adjustedDrive(0), adjustedRotation(rotation* 0.01));
             } else {
-                drivePure(adjustedDrive(.2), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+                drivePure(adjustedDrive(.15), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
             }
         }
         else{
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                drivePure(adjustedDrive(.1), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+                drivePure(adjustedDrive(.55), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
             } else {
-                drivePure(-adjustedDrive(.1), adjustedDrive(0), adjustedRotation(rotation* 0.01));
+                drivePure(-adjustedDrive(.55), adjustedDrive(0), adjustedRotation(rotation* 0.01));
             }
         }
 
