@@ -18,9 +18,13 @@ public enum AutonSpecialActions {
 
     DRIVE_TO_CUBE,
     /**
-        Intarg will not be used
+     Intarg will not be used
      */
     AUTO_LEVEL,
+    /**
+     Intarg will not be used
+     */
+    DRIVE_OVER_STATION,
     /**
       Uses intarg 2 and 3 in the special action 2
      */
@@ -50,6 +54,8 @@ public enum AutonSpecialActions {
     INTAKE_WHEEL_BOTTOM_OFF,
     INTAKE_WHEEL_BOTTOM_IN,
 
+    INTAKE_PISTON_BOTTOM_OUT,
+    INTAKE_PISTON_BOTTOM_IN,
 
     INTAKE_WHEEL_OFF,
 

@@ -1,6 +1,7 @@
 package frc.drive.auton.pointtopoint;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.drive.AbstractDriveManager;
@@ -12,7 +13,6 @@ import frc.misc.UtilFunctions;
 import frc.robot.Robot;
 import frc.sensors.camera.IVision;
 
-import static edu.wpi.first.wpilibj.TimedRobot.kDefaultPeriod;
 import static frc.robot.Robot.autonManager;
 import static frc.robot.Robot.robotSettings;
 
@@ -178,6 +178,14 @@ public class AutonManager extends AbstractAutonManager {
                     Robot.intake.intakeBottom.moveAtPercent(1);
                     specialActionComplete = true;
                     break;
+                case INTAKE_PISTON_BOTTOM_IN:
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+                    specialActionComplete = true;
+                    break;
+                case INTAKE_PISTON_BOTTOM_OUT:
+                    Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+                    specialActionComplete = true;
+                    break;
                 case DRIVE_WITH_TIME:
                 if(!firstTimerRun){
                     timer.reset();
@@ -192,6 +200,9 @@ public class AutonManager extends AbstractAutonManager {
                 if(specialActionComplete)
                     firstTimerRun = false;
                 break;
+                case DRIVE_OVER_STATION:
+                    specialActionComplete = drivingChild.driveForwardWithAngle();
+                    break;
                 case DRIVE_TO:
                 case NONE:
                     //litterally do nothing
@@ -267,6 +278,9 @@ public class AutonManager extends AbstractAutonManager {
                     Robot.intake.intakeBottom.moveAtPercent(1);
                     specialActionComplete2 = true;
                     break;
+                case DRIVE_OVER_STATION:
+                    specialActionComplete2 = drivingChild.driveForwardWithAngle();
+                    break;
                 case DRIVE_WITH_TIME:
                 case NONE:
                     //litterally do nothing
@@ -307,8 +321,8 @@ public class AutonManager extends AbstractAutonManager {
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
         boolean angleTolerance = Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) <= (robotSettings.AUTON_TOLERANCE *5.0);
         boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
-        if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 1) {
-            inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
+        if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 3) {
+            inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 8, point);
         }
         if(autonPath.currentWaypoint == 0){
             if(timer.advanceIfElapsed(1)){
@@ -399,7 +413,7 @@ public class AutonManager extends AbstractAutonManager {
                 //drivingChild.drivePure(robotSettings.AUTO_SPEED * speed /* (robotSettings.INVERT_DRIVE_DIRECTION ? -1 : 0)*/, ROT_PID.calculate(targetHeading) * -robotSettings.AUTO_ROTATION_SPEED);
             }
         } else {
-            if (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION != AutonSpecialActions.AUTO_LEVEL) {
+            if (!(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.AUTO_LEVEL || autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_OVER_STATION)) {
                 if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.ARM_ELEVATOR_SHIFT_WEIGHT){
                     drivingChild.lockWheels();
                 } else if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){

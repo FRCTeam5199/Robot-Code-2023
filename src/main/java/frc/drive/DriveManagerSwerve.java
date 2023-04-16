@@ -2,7 +2,6 @@ package frc.drive;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.slack.api.model.User;
-import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,17 +11,19 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.*;
 import frc.motors.SwerveMotorController;
+import frc.robot.Robot;
 import frc.selfdiagnostics.MotorDisconnectedIssue;
 import frc.sensors.camera.IVision;
 
-import java.sql.Driver;
 import java.util.Objects;
 
+import static edu.wpi.first.wpilibj.RobotBase.getRuntimeType;
 import static frc.robot.Robot.robotSettings;
 
 /*
@@ -65,6 +66,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     private PIDController X_PID;
     private PIDController Y_PID;
     private double TAPX = 0, TAPY = 0, TAPRotation= 0, TAPSpeed = 0;
+    int overChargeCounter = 0;
+    Timer timer;
+    boolean timerFirstTick = false;
 
     public DriveManagerSwerve() {
         super();
@@ -72,6 +76,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
     @Override
     public void init() {
+        timer  =  new Timer();
+        timer.start();
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
@@ -163,7 +169,6 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         setBrake(true);
         //setSteeringContinuous(FLcoder.getAbsolutePosition(), FRcoder.getAbsolutePosition(),BLcoder.getAbsolutePosition(),BRcoder.getAbsolutePosition());
         useLocalOrientation = false;
-        guidance.imu.resetOdometry();
     }
 
     @Override
@@ -207,7 +212,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             //visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             if(visionCamera.hasValidTarget()) {
                 System.out.println("AIMING");
-                leftwards = limeLightPid.calculate(-visionCamera.getPitch()/10);
+                leftwards = limeLightPid.calculate(-(visionCamera.getPitch() - 6)/10);
                 if(leftwards >= 0.25){
                     leftwards = 0.25;
                 }
@@ -220,7 +225,26 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (-1);
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
-        if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
+
+        if(xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            if(DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                rotation = 0.06 * (UtilFunctions.mathematicalMod((180 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180);
+                if(startHeading>= 0){
+                    startHeading = (startHeading - startHeading%360) + 180;
+                }else{
+                    startHeading = (startHeading + startHeading%360) + 180;
+                }
+
+            }else {
+                rotation = 0.06 * (UtilFunctions.mathematicalMod((0 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180);
+                if(startHeading>= 0){
+                    startHeading = (startHeading - startHeading%360);
+                }else{
+                    startHeading = (startHeading + startHeading%360);
+                }
+            }
+
+        }else if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
             rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-2.25);
             startHeading = guidance.imu.relativeYaw();
 
@@ -229,16 +253,13 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             //startHeading = guidance.imu.relativeYaw();
        // }else if(xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN){
         //    rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)*(-1.6);
-        }else if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
-            if(DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                rotation = UtilFunctions.mathematicalMod((180 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180;
-            }else {
-                rotation = UtilFunctions.mathematicalMod((0 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180;
-            }
         }else{
             rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
 
+        if( xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
+            forwards *= .25;
+        }
         if(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_TRIGGER) >= 0.5){
             forwards *= .25;
             leftwards *= .25;
@@ -714,6 +735,92 @@ public class DriveManagerSwerve extends AbstractDriveManager {
                 drivePure(adjustedDrive(forwards), adjustedDrive(0), adjustedRotation(0));
             }
         }
+
+        return false;
+    }
+    @Override
+    public boolean driveForwardWithAngle() {
+        if(overChargeCounter == 0) {
+            Robot.arm.moveArm(-100);
+            Robot.elevator.moveElevator(-44);
+        }
+        if(overChargeCounter == 3){
+            Robot.elevator.moveElevator(-44);
+            Robot.arm.moveArm(-170);
+        }
+        UserInterface.smartDashboardPutNumber("overChargeCounter", overChargeCounter);
+        double totalMagnetude = Math.sqrt((Math.pow(guidance.imu.relativeRoll(), 2) + Math.pow(guidance.imu.relativePitch(), 2)));
+        if (totalMagnetude >= 8 && overChargeCounter == 0) {
+            overChargeCounter = 1;
+        }
+        if (Math.abs(totalMagnetude) <= 3 && overChargeCounter == 1) {
+            overChargeCounter = 2;
+        }
+        if (totalMagnetude >= 6 && overChargeCounter == 2) {
+            overChargeCounter = 3;
+        }
+        if (Math.abs(totalMagnetude) <= 2.6 && overChargeCounter == 3) {
+            if (timerFirstTick == false) {
+                timer.reset();
+                timerFirstTick = true;
+                timer.start();
+            }
+            UserInterface.smartDashboardPutNumber("timerOverChange", timer.get());
+            if (timer.advanceIfElapsed(1))
+                overChargeCounter = 4;
+        }
+        if(overChargeCounter == 4 && totalMagnetude >= 10){
+            overChargeCounter = 5;
+        }
+        if(overChargeCounter == 5 && totalMagnetude <= 2){
+            return true;
+        }
+       if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
+           rotation = UtilFunctions.mathematicalMod((180 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180;
+       }else {
+           rotation = UtilFunctions.mathematicalMod((0 - guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) + 180, 360) - 180;
+       }
+
+        if (overChargeCounter == 0) {
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                drivePure(adjustedDrive(1), adjustedDrive(.1), adjustedRotation(rotation * 0.01));
+            } else {
+                drivePure(-adjustedDrive(1), -adjustedDrive(.1), adjustedRotation(rotation* 0.01));
+            }
+        }else if (overChargeCounter == 1) {
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                drivePure(adjustedDrive(.6), adjustedDrive(.1), adjustedRotation(rotation * 0.01));
+            } else {
+                drivePure(-adjustedDrive(.6), -adjustedDrive(.1), adjustedRotation(rotation* 0.01));
+            }
+        }else if (overChargeCounter == 3) {
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                drivePure(adjustedDrive(.21), adjustedDrive(0), adjustedRotation(rotation * 0.01));
+            } else {
+                drivePure(-adjustedDrive(.21), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+            }
+        }
+        else if(overChargeCounter == 4){
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                drivePure(-adjustedDrive(5), adjustedDrive(0), adjustedRotation(rotation* 0.01));
+            } else {
+                drivePure(adjustedDrive(5), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+            }
+        }else if(overChargeCounter >= 5){
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                drivePure(-adjustedDrive(.2), adjustedDrive(0), adjustedRotation(rotation* 0.01));
+            } else {
+                drivePure(adjustedDrive(.2), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+            }
+        }
+        else{
+            if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                drivePure(adjustedDrive(.1), -adjustedDrive(0), adjustedRotation(rotation* 0.01));
+            } else {
+                drivePure(-adjustedDrive(.1), adjustedDrive(0), adjustedRotation(rotation* 0.01));
+            }
+        }
+
 
         return false;
     }

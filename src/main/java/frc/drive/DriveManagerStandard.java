@@ -226,7 +226,9 @@ public class DriveManagerStandard extends AbstractDriveManager {
     @Override
     public boolean leveling() {
         return true;
-
+    }
+    public boolean driveForwardWithAngle() {
+        return true;
     }
 
     /**

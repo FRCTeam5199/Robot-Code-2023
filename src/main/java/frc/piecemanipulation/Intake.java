@@ -131,7 +131,12 @@ public class Intake implements ISubsystem {
         intakeRight.setCurrentLimit(20);
         intakeRight.setBrake(true);
         intakeLeft.setBrake(true);
+        intakeRight.setInverted(true);
+        intakeLeft.setInverted(true);
         intakeBottom.setBrake(true);
+        intakeBottom.setInverted(false);
+
+
     }
 
     public void createControllers(){
@@ -160,13 +165,13 @@ public class Intake implements ISubsystem {
                             //System.out.println("Y is being pressed");
                             intakeRight.moveAtVoltage(-12);
                             intakeLeft.moveAtVoltage(12);
-                            intakeBottom.moveAtPercent(-.45);
+                            intakeBottom.moveAtPercent(-.6);
                         }
                     }else {
                         //System.out.println("Y is being pressed");
                         intakeRight.moveAtVoltage(-12);
                         intakeLeft.moveAtVoltage(12);
-                        intakeBottom.moveAtPercent(-.45);
+                        intakeBottom.moveAtPercent(-.6);
                     }
                 } else {
                     intakeRight.moveAtVoltage(0);
@@ -210,13 +215,13 @@ public class Intake implements ISubsystem {
                         //System.out.println("Y is being pressed");
                         intakeRight.moveAtVoltage(-12);
                         intakeLeft.moveAtVoltage(12);
-                        intakeBottom.moveAtPercent(-.45);
+                        intakeBottom.moveAtPercent(-.6);
                     }
                 }else {
                     //System.out.println("Y is being pressed");
                     intakeRight.moveAtVoltage(-12);
                     intakeLeft.moveAtVoltage(12);
-                    intakeBottom.moveAtPercent(-.45);
+                    intakeBottom.moveAtPercent(-.6);
                 }
             } else {
                 intakeRight.moveAtVoltage(0);
