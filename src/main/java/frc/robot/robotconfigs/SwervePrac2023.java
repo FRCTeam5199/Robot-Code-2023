@@ -133,6 +133,11 @@ public class SwervePrac2023 extends DefaultConfig{
         SWERVE_TURN_BR = 6;
         SWERVE_DRIVE_BL = 7;
         SWERVE_TURN_BL = 8;
+        /*for offsets on 9199 if it is in the same place as b4
+        FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
+        FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
+        BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
+        BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));*/
 
         // Camera Settings
         ONE_CAMERA = true;
