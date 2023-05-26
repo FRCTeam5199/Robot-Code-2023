@@ -254,7 +254,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
        // }else if(xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN){
         //    rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)*(-1.6);
         }else{
-            rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
+            rotation = (guidance.imu.relativeYaw() - startHeading) * .05;
         }
 
         if( xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
@@ -350,8 +350,8 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         double voltageMult = 95 / 371.0; // 127.4/371.0 is full speed
         //System.out.println(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverFR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
-        driverFL.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
-        driverBR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_BR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        driverFL.driver.moveAtVoltage(-adjustedDriveVoltage((FPS_FL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        driverBR.driver.moveAtVoltage(-adjustedDriveVoltage((FPS_BR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverBL.driver.moveAtVoltage(adjustedDriveVoltage((FPS_BL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
     }
 
@@ -560,14 +560,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     public void setCANCoder() {
-        FLcoder = new CANCoder(11, robotSettings.DRIVE_MOTOR_CANBUS);
-        FRcoder = new CANCoder(12, robotSettings.DRIVE_MOTOR_CANBUS);
-        BRcoder = new CANCoder(13, robotSettings.DRIVE_MOTOR_CANBUS);
-        BLcoder = new CANCoder(14, robotSettings.DRIVE_MOTOR_CANBUS);
-        FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
-        FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
-        BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
-        BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));
+        FLcoder = new CANCoder(robotSettings.FLcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        FRcoder = new CANCoder(robotSettings.FRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        BRcoder = new CANCoder(robotSettings.BRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        BLcoder = new CANCoder(robotSettings.BLcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        FLcoder.configMagnetOffset(-Math.toDegrees(robotSettings.FLOFFSET));
+        FRcoder.configMagnetOffset(-Math.toDegrees(robotSettings.FROFFSET));
+        BLcoder.configMagnetOffset(-Math.toDegrees(robotSettings.BLOFFSET));
+        BRcoder.configMagnetOffset(-Math.toDegrees(robotSettings.BROFFSET));
     }
 
     public void createPIDControllers(PID steeringPID) {
