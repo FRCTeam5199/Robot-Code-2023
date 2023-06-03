@@ -206,7 +206,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
                 UserInterface.smartDashboardPutNumber("Cube Yaw", -99999999);
             }
         }
-        forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (1);
+        forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (-1);
         if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             //visionCamera.setLedMode(IVision.VisionLEDMode.ON);
@@ -222,7 +222,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             }
         } else {
             visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
-            leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (-1);
+            leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (1);
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
 
@@ -245,7 +245,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             }
 
         }else if (Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) >= .2) {
-            rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (-2.25);
+            rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X) * (2.25);
             startHeading = guidance.imu.relativeYaw();
 
         } else if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) <= 0.15 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X)) <= 0.15 && Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) <= 0.15) {
