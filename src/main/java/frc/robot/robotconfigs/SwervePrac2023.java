@@ -55,13 +55,14 @@ public class SwervePrac2023 extends DefaultConfig{
         ARM_ELEVATOR_MANUAL = false;
 
         //ARM
-         ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-          ARM_MOTOR_ID = 31;
+        ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
+        ARM_MOTOR_ID = 31;
           ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
           ARM_SPROCKET_DIAMETER = 1;
           ARM_MOTOR_CANBUS = "rio";
           ENABLE_ARM = true;
         ARM_PID = new PID(.5, 0.0, 0);
+        ARM_EXTEND = true; 
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -133,11 +134,21 @@ public class SwervePrac2023 extends DefaultConfig{
         SWERVE_TURN_BR = 6;
         SWERVE_DRIVE_BL = 7;
         SWERVE_TURN_BL = 8;
+        FLcoderID = 11;
+        FRcoderID = 12;
+        BRcoderID = 13;
+        BLcoderID = 14;
+        DRIVE_MOTOR_CANBUS = "Canivore1";
         /*for offsets on 9199 if it is in the same place as b4
         FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
         FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
         BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
         BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));*/
+        //offsets
+        FROFFSET = 5.287632;
+        FLOFFSET = 0.535359;
+        BROFFSET = 1.185767;
+        BLOFFSET = 1.63829;
 
         // Camera Settings
         ONE_CAMERA = true;

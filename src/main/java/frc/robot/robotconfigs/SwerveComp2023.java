@@ -62,6 +62,7 @@ public class SwerveComp2023 extends DefaultConfig{
         ARM_MOTOR_CANBUS = "rio";
         ENABLE_ARM = true;
         ARM_PID = new PID(.5, 0.0, 0);
+        ARM_EXTEND = false;
 
         //INTAKE
         INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;

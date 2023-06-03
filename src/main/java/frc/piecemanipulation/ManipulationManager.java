@@ -247,7 +247,7 @@ public class ManipulationManager implements ISubsystem {
             } else {
                 if ((spikeUp)) {
                     Robot.elevator.moveElevator(elevateGoal);
-                    if (Math.abs(-15.5 - Robot.arm.arm.getRotations()) <= .2) {
+                    if (Math.abs(-15.5 - Robot.arm.armr.getRotations()) <= .2) {
                         elevateGoal = -10.3;
                         if (Math.abs(-10.3 - Robot.elevator.elevate.getRotations()) <= .2) {
                             Robot.intake.intakeIn();
@@ -262,7 +262,7 @@ public class ManipulationManager implements ISubsystem {
 
             if(robotSettings.ENABLE_WRIST){
                 //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
-                if(Robot.arm.arm.getRotations() + slippageOffSet >= -123){
+                if(Robot.arm.armr.getRotations() + slippageOffSet >= -123){
                     if(Robot.wrist.wrist.getRotations() >= 0 && Robot.wrist.wrist.getRotations() <= 4000){
                         Robot.wrist.wrist.moveAtVoltage(0);
                     }else{
@@ -328,10 +328,10 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmPassover(){
-        if (-70 + slippageOffSet >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -160+  slippageOffSet){
+        if (-70 + slippageOffSet >= Robot.arm.armr.getRotations() && Robot.arm.armr.getRotations() >= -160+  slippageOffSet){
             Robot.elevator.moveElevator(-44);
             return true;
-        }else if(-60 + slippageOffSet >= Robot.arm.arm.getRotations()  && Robot.arm.arm.getRotations() >= -178+ slippageOffSet){
+        }else if(-60 + slippageOffSet >= Robot.arm.armr.getRotations()  && Robot.arm.armr.getRotations() >= -178+ slippageOffSet){
             Robot.elevator.moveElevator(-27);
             return true;
         }
@@ -339,7 +339,7 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public boolean checkArmCollision(){
-        if(Robot.arm.arm.getRotations() >= 10 + slippageOffSet || Robot.arm.arm.getRotations() <= -300 + slippageOffSet){
+        if(Robot.arm.armr.getRotations() >= 10 + slippageOffSet || Robot.arm.armr.getRotations() <= -300 + slippageOffSet){
            return true;
         }
         return false;
@@ -347,7 +347,7 @@ public class ManipulationManager implements ISubsystem {
 
     public boolean goTo(double elevator, double arm){
 
-        if(Math.abs(elevator - Robot.elevator.elevate.getRotations()) <= .2 && Math.abs(arm - Robot.arm.arm.getRotations()) <= .2) {
+        if(Math.abs(elevator - Robot.elevator.elevate.getRotations()) <= .2 && Math.abs(arm - Robot.arm.armr.getRotations()) <= .2) {
             return true;
         }
         Robot.arm.moveArm(arm);
@@ -362,7 +362,7 @@ public class ManipulationManager implements ISubsystem {
 
         if(robotSettings.ENABLE_WRIST){
             //-75 >= Robot.arm.arm.getRotations() && Robot.arm.arm.getRotations() >= -200
-            if(Robot.arm.arm.getRotations() >= -125){
+            if(Robot.arm.armr.getRotations() >= -125){
                 if(Robot.wrist.wrist.getRotations() >= 0 && Robot.wrist.wrist.getRotations() <= 4000){
                     Robot.wrist.wrist.moveAtVoltage(0);
                 }else{

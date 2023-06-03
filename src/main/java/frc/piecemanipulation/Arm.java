@@ -1,7 +1,7 @@
 package frc.piecemanipulation;
 
-import frc.controllers.ButtonPanelController;
-import frc.controllers.ControllerEnums;
+import static frc.robot.Robot.robotSettings;
+
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
@@ -12,11 +12,8 @@ import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 
-import static edu.wpi.first.wpilibj.RobotBase.suppressExitWarning;
-import static frc.robot.Robot.robotSettings;
-
 public class Arm implements ISubsystem {
-    public AbstractMotorController arm;
+    public AbstractMotorController armr;
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Arm(){
@@ -29,7 +26,7 @@ public class Arm implements ISubsystem {
         createControllers();
         createMotors();
         createMotorPid(robotSettings.ARM_PID);
-        arm.setBrake(true);
+        armr.setBrake(true);
     }
 
     @Override
@@ -54,8 +51,8 @@ public class Arm implements ISubsystem {
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
             resetArmEncoder();
         }
-        System.out.println("Arm Position: " + arm.getRotations());
-        System.out.println("Motor Power " + arm.getVoltage());
+        System.out.println("Arm Position: " + armr.getRotations());
+        System.out.println("Motor Power " + armr.getVoltage());
     }
 
     @Override
@@ -79,7 +76,7 @@ public class Arm implements ISubsystem {
 
     @Override
     public void initAuton() {
-        arm.resetEncoder();
+        armr.resetEncoder();
     }
 
     @Override
@@ -108,16 +105,23 @@ public class Arm implements ISubsystem {
 
     public void createMotors(){
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-            arm = new TalonMotorController(robotSettings.ARM_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
+            armr = new TalonMotorController(robotSettings.ARM_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            arm = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
-        arm.setRealFactorFromMotorRPM(1, 1 );
+            armr = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
+        armr.setRealFactorFromMotorRPM(1, 1 );
         //arm.setOutPutRange(-.8,.8);
-        arm.setCurrentLimit(40);
+        armr.setCurrentLimit(40);
+        if(robotSettings.ARM_EXTEND){
+            if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
+                armr = new TalonMotorController(robotSettings.ARM_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
+            if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
+                armr = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
+        }
+            
 
     }
     public void createMotorPid(PID pid){
-        arm.setPid(pid);
+        armr.setPid(pid);
     }
 
 
@@ -127,9 +131,9 @@ public class Arm implements ISubsystem {
 
     public void manuelDrive(){
         if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
-            arm.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
+            armr.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
         }else {
-            arm.moveAtVoltage(0);
+            armr.moveAtVoltage(0);
         }
         //System.out.println("Manual Enabled");
 
@@ -160,7 +164,7 @@ public class Arm implements ISubsystem {
     }
 
     public void moveArm(double position){
-        arm.moveAtPosition(position);
+        armr.moveAtPosition(position);
         UserInterface.smartDashboardPutNumber("Arm Goal Position" , position);
     }
 

@@ -68,7 +68,8 @@ public class PDP implements ISubsystem {
         UserInterface.smartDashboardPutNumber("Left Intake Motor Current", Robot.intake.intakeLeft.getCurrent());
         UserInterface.smartDashboardPutNumber("Right Intake Motor Current", Robot.intake.intakeRight.getCurrent());
         UserInterface.smartDashboardPutNumber("Elevator Motor Current", Robot.elevator.elevate.getCurrent());
-        UserInterface.smartDashboardPutNumber("Arm Motor Current", Robot.arm.arm.getCurrent());
+        UserInterface.smartDashboardPutNumber("Arm Motor Current", Robot.arm.armr.getCurrent());//
+        //UserInterface.smartDashboardPutNumber("Arm Motor Current", Robot.arm.armex.getCurrent());
     }
 
     public void setToggleable(boolean on) {

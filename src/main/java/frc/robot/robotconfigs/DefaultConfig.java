@@ -116,6 +116,7 @@ public abstract class DefaultConfig {
     public boolean ENABLE_ARM = true;
     public boolean ENABLE_WRIST = true;
     public PID ARM_PID = EMPTY_PID;
+    public boolean ARM_EXTEND;
 
     public SupportedIMU IMU_TYPE = SupportedIMU.PIGEON;
     public AutonType AUTON_TYPE = AutonType.POINT_TO_POINT;
