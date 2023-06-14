@@ -13,7 +13,7 @@ import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 
 public class Arm implements ISubsystem {
-    public AbstractMotorController armr;
+    public AbstractMotorController armr, armex;
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Arm(){
@@ -25,7 +25,7 @@ public class Arm implements ISubsystem {
     public void init() {
         createControllers();
         createMotors();
-        createMotorPid(robotSettings.ARM_PID);
+        createMotorPid(robotSettings.ARM_ROTATE_PID);
         armr.setBrake(true);
     }
 
@@ -105,17 +105,17 @@ public class Arm implements ISubsystem {
 
     public void createMotors(){
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-            armr = new TalonMotorController(robotSettings.ARM_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
+            armr = new TalonMotorController(robotSettings.ARM_ROTATE_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            armr = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
+            armr = new SparkMotorController(robotSettings.ARM_ROTATE_MOTOR_ID);
         armr.setRealFactorFromMotorRPM(1, 1 );
         //arm.setOutPutRange(-.8,.8);
         armr.setCurrentLimit(40);
         if(robotSettings.ARM_EXTEND){
             if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-                armr = new TalonMotorController(robotSettings.ARM_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
+                armex = new TalonMotorController(robotSettings.ARM_EXTEND_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
             if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-                armr = new SparkMotorController(robotSettings.ARM_MOTOR_ID);
+                armex = new SparkMotorController(robotSettings.ARM_EXTEND_MOTOR_ID);
         }
             
 

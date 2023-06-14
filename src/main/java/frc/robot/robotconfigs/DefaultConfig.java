@@ -107,7 +107,8 @@ public abstract class DefaultConfig {
     public PID ELEVATORPID = EMPTY_PID;
 
     public SupportedMotors ARM_MOTOR_TYPE = SupportedMotors.TALON_FX;
-    public int ARM_MOTOR_ID = 0;
+    public int ARM_ROTATE_MOTOR_ID = 0;
+    public int ARM_EXTEND_MOTOR_ID = 0;
     public double ARM_GEARING = 1.0/9;
     public double ARM_SPROCKET_DIAMETER = 2D;
     public String ARM_MOTOR_CANBUS = "rio";
@@ -115,7 +116,8 @@ public abstract class DefaultConfig {
     public boolean ARM_MANUAL = true;
     public boolean ENABLE_ARM = true;
     public boolean ENABLE_WRIST = true;
-    public PID ARM_PID = EMPTY_PID;
+    public PID ARM_ROTATE_PID = EMPTY_PID;
+    public PID ARM_EXTEND_PID = EMPTY_PID;
     public boolean ARM_EXTEND;
 
     public SupportedIMU IMU_TYPE = SupportedIMU.PIGEON;
