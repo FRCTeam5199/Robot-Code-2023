@@ -18,9 +18,9 @@ import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
 import frc.piecemanipulation.*;
 import frc.sensors.camera.IVision;
-import edu.wpi.first.wpilibj.util.Color;
+// import edu.wpi.first.wpilibj.util.Color;
 
-import com.revrobotics.ColorSensorV3;
+// import com.revrobotics.ColorSensorV3;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
-                    autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.DO_NOTHING_RED, driver);//Trajectories.TEST_PATH, driver);
+                    autonManager = new AutonManager(AutonRoutines.DO_NOTHING_RED, driver);//Trajectories.TEST_PATH, driver);
                     System.out.println("autoRoutine waypoint");
                     break;
             }

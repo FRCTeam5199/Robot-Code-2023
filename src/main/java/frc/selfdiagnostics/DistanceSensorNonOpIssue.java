@@ -5,7 +5,7 @@ package frc.selfdiagnostics;
 import frc.misc.ISubsystem;
 import frc.robot.Main;
 
-import static frc.robot.Robot.robotSettings;
+// import static frc.robot.Robot.robotSettings;
 
 /**
  * Use this when the {@link frc.sensors.distancesensor.IDistanceSensor Distance sensor} appears to be
