@@ -3,8 +3,6 @@ package frc.selfdiagnostics;
 import frc.misc.ISubsystem;
 import frc.robot.Main;
 
-import static frc.robot.Robot.robotSettings;
-
 /**
  * Pretty self explanatory. This issue is regarding an non operational IMU
  */

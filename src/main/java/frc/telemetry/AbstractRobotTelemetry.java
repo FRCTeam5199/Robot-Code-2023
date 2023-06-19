@@ -14,7 +14,7 @@ import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
 import frc.misc.UtilFunctions;
 import frc.telemetry.imu.AbstractIMU;
-import frc.telemetry.AprilTagManager;
+
 import static frc.robot.Robot.robotSettings;
 
 public abstract class AbstractRobotTelemetry implements ISubsystem {

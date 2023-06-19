@@ -1,11 +1,7 @@
 package frc.selfdiagnostics;
 
 
-
 import frc.misc.ISubsystem;
-import frc.robot.Main;
-
-import static frc.robot.Robot.robotSettings;
 
 /**
  * Not a {@link BrownoutIssue}. Activates sooner, is resolvable and does not use {@link frc.gpws.Alarms} but rather a

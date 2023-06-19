@@ -1,37 +1,34 @@
 package frc.telemetry;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.*;
-
-import edu.wpi.first.apriltag.*;
-import edu.wpi.first.apriltag.AprilTagPoseEstimate.*;
-import edu.wpi.first.apriltag.AprilTagPoseEstimator.*;
-import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.drive.AbstractDriveManager;
-import frc.drive.DriveManagerStandard;
 import frc.drive.DriveManagerSwerve;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
 import frc.robot.Robot;
-import org.photonvision.*;
-import org.photonvision.PhotonTargetSortMode;
-import edu.wpi.first.math.*;
-import frc.telemetry.RobotTelemetrySwivel;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 
-import org.photonvision.RobotPoseEstimator;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import frc.sensors.camera.GoalPhoton;
-import edu.wpi.first.math.geometry.Translation2d;
-import org.photonvision.targeting.PhotonTrackedTarget;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
-import static java.util.Timer.*;
 
 
 public class AprilTagManager implements ISubsystem {

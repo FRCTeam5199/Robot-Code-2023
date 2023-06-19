@@ -1,22 +1,21 @@
 package frc.piecemanipulation;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.controllers.basecontrollers.DefaultControllerEnums.ButtonStatus;
 import frc.misc.ISubsystem;
 import frc.misc.LEDs;
-import frc.misc.SubsystemStatus;
 import frc.misc.LEDs.LEDEnums;
+import frc.misc.SubsystemStatus;
 import frc.robot.Robot;
-import java.io.IOError;
-// import java.io.IOException;
-import static frc.robot.Robot.arm;
-import static frc.robot.Robot.robotSettings;
 
+import java.io.IOError;
 import java.util.Objects;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import static frc.robot.Robot.arm;
+import static frc.robot.Robot.robotSettings;
 
 
 public class ManipulationManager implements ISubsystem {

@@ -1,7 +1,6 @@
 package frc.piecemanipulation;
 
 import com.revrobotics.CANSparkMaxLowLevel;
-import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;

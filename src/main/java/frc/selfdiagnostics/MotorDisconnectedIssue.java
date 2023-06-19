@@ -5,8 +5,6 @@ import frc.motors.AbstractMotorController;
 import frc.motors.followers.AbstractFollowerMotorController;
 import frc.robot.Main;
 
-import static frc.robot.Robot.robotSettings;
-
 /**
  * Pretty self explanatory. This issue is regarding an non operational Motor
  */
