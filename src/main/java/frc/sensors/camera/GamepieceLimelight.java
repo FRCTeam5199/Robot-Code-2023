@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.misc.SubsystemStatus;
-import frc.misc.UserInterface;
 import frc.robot.Robot;
 
 import static frc.robot.Robot.robotSettings;

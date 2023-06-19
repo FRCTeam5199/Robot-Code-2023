@@ -1,6 +1,9 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.drive.AbstractDriveManager;
 import frc.drive.DriveManagerStandard;
@@ -8,19 +11,24 @@ import frc.drive.DriveManagerSwerve;
 import frc.drive.auton.AbstractAutonManager;
 import frc.drive.auton.pointtopoint.AutonManager;
 import frc.drive.auton.pointtopoint.AutonRoutines;
-import frc.misc.*;
+import frc.misc.Chirp;
+import frc.misc.ISubsystem;
+import frc.misc.LEDs;
+import frc.misc.Pneumatics;
+import frc.misc.UserInterface;
 import frc.motors.AbstractMotorController;
 import frc.pdp.PDP;
+import frc.piecemanipulation.Arm;
+import frc.piecemanipulation.Elevator;
+import frc.piecemanipulation.Intake;
+import frc.piecemanipulation.ManipulationManager;
+import frc.piecemanipulation.Wrist;
 import frc.robot.robotconfigs.DefaultConfig;
 import frc.robot.robotconfigs.Swerve2022;
 import frc.robot.robotconfigs.SwerveComp2023;
 import frc.robot.robotconfigs.SwervePrac2023;
 import frc.selfdiagnostics.ISimpleIssue;
-import frc.piecemanipulation.*;
 import frc.sensors.camera.IVision;
-// import edu.wpi.first.wpilibj.util.Color;
-
-// import com.revrobotics.ColorSensorV3;
 
 import java.io.File;
 import java.util.ArrayList;

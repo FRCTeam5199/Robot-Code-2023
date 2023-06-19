@@ -1,6 +1,10 @@
 package frc.robot.robotconfigs;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import frc.drive.auton.AutonType;
 import frc.misc.PID;
 import frc.motors.AbstractMotorController.SupportedMotors;

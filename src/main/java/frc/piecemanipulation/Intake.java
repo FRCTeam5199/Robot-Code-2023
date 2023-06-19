@@ -1,4 +1,5 @@
 package frc.piecemanipulation;
+
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
@@ -15,9 +16,6 @@ import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 import frc.motors.VictorMotorController;
 import frc.robot.Robot;
-// import frc.sensors.colorsensor.RevColorSensor;
-
-// import java.sql.Time;
 
 import static frc.robot.Robot.*;
 

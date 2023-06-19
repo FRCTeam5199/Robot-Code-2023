@@ -3,9 +3,6 @@ package frc.selfdiagnostics;
 
 import frc.misc.ISubsystem;
 import frc.pdp.PDP;
-// import frc.robot.Main;
-
-// import static frc.robot.Robot.robotSettings;
 
 /**
  *

@@ -3,8 +3,6 @@ package frc.misc;
 import frc.robot.Robot;
 import frc.selfdiagnostics.ISimpleIssue;
 
-import java.io.IOException;
-
 /**
  * The generic layout for any subsystem. Ensures that any subsystem on the robot has the appropriate fields
  *

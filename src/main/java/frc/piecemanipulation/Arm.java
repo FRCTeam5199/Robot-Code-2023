@@ -1,7 +1,5 @@
 package frc.piecemanipulation;
 
-// import frc.controllers.ButtonPanelController;
-// import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
@@ -12,7 +10,6 @@ import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 
-// import static edu.wpi.first.wpilibj.RobotBase.suppressExitWarning;
 import static frc.robot.Robot.robotSettings;
 
 public class Arm implements ISubsystem {

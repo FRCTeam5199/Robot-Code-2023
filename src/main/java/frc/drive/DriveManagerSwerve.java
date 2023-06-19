@@ -1,7 +1,6 @@
 package frc.drive;
 
 import com.ctre.phoenix.sensors.CANCoder;
-import com.slack.api.model.User;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,7 +14,11 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
-import frc.misc.*;
+import frc.misc.InitializationFailureException;
+import frc.misc.PID;
+import frc.misc.SubsystemStatus;
+import frc.misc.UserInterface;
+import frc.misc.UtilFunctions;
 import frc.motors.SwerveMotorController;
 import frc.robot.Robot;
 import frc.selfdiagnostics.MotorDisconnectedIssue;
@@ -23,7 +26,6 @@ import frc.sensors.camera.IVision;
 
 import java.util.Objects;
 
-import static edu.wpi.first.wpilibj.RobotBase.getRuntimeType;
 import static frc.robot.Robot.robotSettings;
 
 /*
