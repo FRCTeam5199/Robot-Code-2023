@@ -28,8 +28,6 @@
 
 package com.revrobotics.jni;
 
-import com.revrobotics.jni.DistanceSensorJNIWrapper;
-
 public class VL53L0XJNI extends DistanceSensorJNIWrapper {
   public static native void Init(int port, int addr);
   public static native boolean GetVersion();
