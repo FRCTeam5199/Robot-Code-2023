@@ -38,6 +38,8 @@ import java.util.Random;
 /**
  * Welcome. Please enjoy your stay here in programmer fun time land. And remember, IntelliJ is king
  */
+
+// Hello!
 public class Robot extends TimedRobot {
     /**
      * No son, I refuse to make a new, unseeded random everytime we want a new song. Besides, we have a random at home
