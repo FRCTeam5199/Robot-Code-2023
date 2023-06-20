@@ -79,9 +79,8 @@ public class Robot extends TimedRobot {
 
         if (robotSettings.ENABLE_ELEVATOR)
             elevator = new Elevator();
-        if (robotSettings.ENABLE_MUSIC) {
+        if (robotSettings.ENABLE_MUSIC) 
             chirp = new Chirp();
-        }
         if(robotSettings.ENABLE_WRIST)
             wrist =  new Wrist();
         if(robotSettings.ENABLE_ARM)

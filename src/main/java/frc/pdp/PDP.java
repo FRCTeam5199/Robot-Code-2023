@@ -64,12 +64,14 @@ public class PDP implements ISubsystem {
             BrownoutIssue.handleIssue(this, RobotController.getBatteryVoltage() < BatteryMinVoltage && RobotController.getBatteryVoltage() > 0);
             UndervoltageIssue.handleIssue(this, RobotController.getBatteryVoltage() >= BatteryMinVoltage && RobotController.getBatteryVoltage() <= (BatteryMinVoltage + 2));
         }
+        /* 
         UserInterface.smartDashboardPutNumber("Wrist Motor Current", Robot.wrist.wrist.getCurrent());
         UserInterface.smartDashboardPutNumber("Left Intake Motor Current", Robot.intake.intakeLeft.getCurrent());
         UserInterface.smartDashboardPutNumber("Right Intake Motor Current", Robot.intake.intakeRight.getCurrent());
         UserInterface.smartDashboardPutNumber("Elevator Motor Current", Robot.elevator.elevate.getCurrent());
         UserInterface.smartDashboardPutNumber("Arm Motor Current", Robot.arm.armr.getCurrent());//
         //UserInterface.smartDashboardPutNumber("Arm Motor Current", Robot.arm.armex.getCurrent());
+        UserInterface.smartDashboardPutNumber("Arm Motor Current", Robot.arm.arm.getCurrent());*/
     }
 
     public void setToggleable(boolean on) {

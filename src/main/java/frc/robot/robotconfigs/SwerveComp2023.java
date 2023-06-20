@@ -18,11 +18,11 @@ public class SwerveComp2023 extends DefaultConfig{
         ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
-        ENABLE_APRILTAG = true;
-        ENABLE_PIECE_MANAGER = true;
+        ENABLE_APRILTAG = false;
+        ENABLE_PIECE_MANAGER = false;
         ENABLE_PNOOMATICS = true;
-        ENABLE_LEDS = true;
-        ENABLE_SPIKE = true;
+        ENABLE_LEDS = false;
+        ENABLE_SPIKE = false;
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
@@ -32,12 +32,12 @@ public class SwerveComp2023 extends DefaultConfig{
         WRIST_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         WRIST_MOTOR_ID = 34;
         WRIST_MOTOR_CANBUS = "rio";
-        WRIST_MANUAL = true;
-        ENABLE_WRIST = true;
+        WRIST_MANUAL = false;
+        ENABLE_WRIST = false;
         WRISTPID = new PID(0.08 , 0.0001, 0.045);
 
         //Misc
-        ENABLE_VISION = true;
+        ENABLE_VISION = false;
         ENABLE_IMU = true;
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
@@ -45,7 +45,7 @@ public class SwerveComp2023 extends DefaultConfig{
         leveling = new PID(0.0175,0.0,0.01);
 
         //Elevator
-        ENABLE_ELEVATOR = true;
+        ENABLE_ELEVATOR = false;
         ELEVATOR_GEARING = 1/9.0;
         ELEVATOR_MOTOR_CANBUS = "rio";
         ELEVATOR_MOTOR_ID = 40;
@@ -60,7 +60,7 @@ public class SwerveComp2023 extends DefaultConfig{
         ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
         ARM_SPROCKET_DIAMETER = 1;
         ARM_MOTOR_CANBUS = "rio";
-        ENABLE_ARM = true;
+        ENABLE_ARM = false;
         ARM_ROTATE_PID = new PID(.5, 0.0, 0);
         ARM_EXTEND = false;
 
@@ -71,8 +71,8 @@ public class SwerveComp2023 extends DefaultConfig{
         INTAKE_MOTOR_LEFT_ID = 44;
         INTAKE_MOTOR_RIGHT_ID = 27;
         INTAKE_MOTOR_CANBUS = "rio";
-        INTAKE_MANUAL = true;
-        ENABLE_INTAKE = true;
+        INTAKE_MANUAL = false;
+        ENABLE_INTAKE = false;
 
         PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
         PCM_ID = 50;
@@ -88,8 +88,8 @@ public class SwerveComp2023 extends DefaultConfig{
         DRIVE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.TALON_FX;
         IMU_TYPE = AbstractIMU.SupportedIMU.PIGEON;
         DRIVE_BASE = AbstractDriveManager.DriveBases.SWIVEL;
-        ENABLE_CAMERA = true;
-        ENABLE_VISION = true;
+        ENABLE_CAMERA = false;
+        ENABLE_VISION = false;
 
 
         AUTON_TYPE = AutonType.POINT_TO_POINT;
@@ -149,12 +149,12 @@ public class SwerveComp2023 extends DefaultConfig{
 
 
         // Camera Settings
-        ONE_CAMERA = true;
+        ONE_CAMERA = false;
         FOUR_CAMERA = false;
 
         // limelight
-        ENABLE_VISION = true;
-        ENABLE_CAMERA = true;
+        ENABLE_VISION = false;
+        ENABLE_CAMERA = false;
         GOAL_CAM_NAME = "limelight";
         BALL_CAM_NAME = "Camera";
         GOAL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;

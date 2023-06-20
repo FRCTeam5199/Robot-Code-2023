@@ -1,7 +1,11 @@
 package frc.drive;
 
+import static frc.robot.Robot.robotSettings;
+
+import java.util.Objects;
+
 import com.ctre.phoenix.sensors.CANCoder;
-import com.slack.api.model.User;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,16 +19,15 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
-import frc.misc.*;
+import frc.misc.InitializationFailureException;
+import frc.misc.PID;
+import frc.misc.SubsystemStatus;
+import frc.misc.UserInterface;
+import frc.misc.UtilFunctions;
 import frc.motors.SwerveMotorController;
 import frc.robot.Robot;
 import frc.selfdiagnostics.MotorDisconnectedIssue;
 import frc.sensors.camera.IVision;
-
-import java.util.Objects;
-
-import static edu.wpi.first.wpilibj.RobotBase.getRuntimeType;
-import static frc.robot.Robot.robotSettings;
 
 /*
 notes n stuff
@@ -221,7 +224,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
                 }
             }
         } else {
-            visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+            if (robotSettings.ENABLE_VISION) {
+                visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
+            }
             leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (-1);
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
@@ -560,14 +565,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     public void setCANCoder() {
-        FLcoder = new CANCoder(robotSettings.FLcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
-        FRcoder = new CANCoder(robotSettings.FRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
-        BRcoder = new CANCoder(robotSettings.BRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
-        BLcoder = new CANCoder(robotSettings.BLcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
-        FLcoder.configMagnetOffset(-Math.toDegrees(robotSettings.FLOFFSET));
-        FRcoder.configMagnetOffset(-Math.toDegrees(robotSettings.FROFFSET));
-        BLcoder.configMagnetOffset(-Math.toDegrees(robotSettings.BLOFFSET));
-        BRcoder.configMagnetOffset(-Math.toDegrees(robotSettings.BROFFSET));
+        FLcoder = new CANCoder(robotSettings.FLcoderID);
+        FRcoder = new CANCoder(robotSettings.FRcoderID);
+        BRcoder = new CANCoder(robotSettings.BRcoderID);
+        BLcoder = new CANCoder(robotSettings.BLcoderID);
+        FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
+        FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
+        BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
+        BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));
     }
 
     public void createPIDControllers(PID steeringPID) {

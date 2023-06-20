@@ -15,7 +15,7 @@ public class SwervePrac2023 extends DefaultConfig{
 
     public SwervePrac2023(){
         ENABLE_SHOOTER = false;
-        ENABLE_DRIVE = false;
+        ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
         ENABLE_APRILTAG = false;
@@ -37,8 +37,8 @@ public class SwervePrac2023 extends DefaultConfig{
         WRISTPID = new PID(0.08 , 0.0001, 0.045);
 
         //Misc
-        ENABLE_VISION = true;
-        ENABLE_IMU = true;
+        ENABLE_VISION = false;
+        ENABLE_IMU = false;
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
         limeLightPid = new PID(0.022, 0.0, 0.0);
@@ -61,9 +61,9 @@ public class SwervePrac2023 extends DefaultConfig{
           ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
           ARM_SPROCKET_DIAMETER = 1;
           ARM_MOTOR_CANBUS = "rio";
-          ENABLE_ARM = true;
+          ENABLE_ARM = false;//
         ARM_ROTATE_PID = new PID(.5, 0.0, 0);
-        ARM_EXTEND = true; 
+        ARM_EXTEND = false; //
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -156,8 +156,8 @@ public class SwervePrac2023 extends DefaultConfig{
         FOUR_CAMERA = false;
 
         // limelight
-        ENABLE_VISION = true;
-        ENABLE_CAMERA = true;
+        ENABLE_VISION = false;
+        ENABLE_CAMERA = false;
         GOAL_CAM_NAME = "GoalCamera";
         BALL_CAM_NAME = "BallCamera";
         GOAL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;
