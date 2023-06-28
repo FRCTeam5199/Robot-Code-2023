@@ -140,7 +140,7 @@ public class SwerveComp2023 extends DefaultConfig{
         FRcoderID = 12;
         BRcoderID = 13;
         BLcoderID = 14;
-        DRIVE_MOTOR_CANBUS = "Canivore1";
+        DRIVE_MOTOR_CANBUS = "rio";
         //offsets
         FROFFSET = 5.287632;
         FLOFFSET = 0.535359;
