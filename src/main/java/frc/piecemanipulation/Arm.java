@@ -55,7 +55,7 @@ public class Arm implements ISubsystem {
         System.out.println("Motor Power " + armr.getVoltage());
 
         double exposition = armex.getRotations();
-
+        exmove();
         if(exposition > 100){
             armex.moveAtVoltage(0);
         }
@@ -179,8 +179,8 @@ public class Arm implements ISubsystem {
     }
 
     public void exmove(){
-        if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
-            armex.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
+        if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
+            armex.moveAtVoltage(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
         }else {
             armex.moveAtVoltage(0);
         }
