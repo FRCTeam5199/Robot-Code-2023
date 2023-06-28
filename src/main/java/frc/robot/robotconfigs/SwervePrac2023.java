@@ -57,13 +57,13 @@ public class SwervePrac2023 extends DefaultConfig{
         //ARM
         ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ARM_ROTATE_MOTOR_ID = 31;
-        ARM_EXTEND_MOTOR_ID = 0;
+        ARM_EXTEND_MOTOR_ID = 43;
           ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
           ARM_SPROCKET_DIAMETER = 1;
           ARM_MOTOR_CANBUS = "rio";
-          ENABLE_ARM = false;//
+          ENABLE_ARM = true;//
         ARM_ROTATE_PID = new PID(.5, 0.0, 0);
-        ARM_EXTEND = false; //
+        ARM_EXTEND = true; //
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
