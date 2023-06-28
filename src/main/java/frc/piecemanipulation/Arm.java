@@ -56,9 +56,6 @@ public class Arm implements ISubsystem {
 
         double exposition = armex.getRotations();
         exmove();
-        if(exposition > 100){
-            armex.moveAtVoltage(0);
-        }
     }
 
 
