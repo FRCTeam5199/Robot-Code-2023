@@ -177,7 +177,7 @@ public class Arm implements ISubsystem {
 
     public void exmove(){
         if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
-            armex.moveAtVoltage(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
+            armex.moveAtPercent(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
         }else {
             armex.moveAtVoltage(0);
         }
