@@ -4,6 +4,7 @@ import static frc.robot.Robot.robotSettings;
 
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
+import frc.controllers.basecontrollers.BaseController.DefaultControllers;
 import frc.misc.ISubsystem;
 import frc.misc.PID;
 import frc.misc.SubsystemStatus;
@@ -16,7 +17,7 @@ public class Arm implements ISubsystem {
     public AbstractMotorController armr, armex;
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
-    public Arm(){
+    public Arm() {
         addToMetaList();
         init();
     }
@@ -30,123 +31,95 @@ public class Arm implements ISubsystem {
     }
 
     @Override
-    public SubsystemStatus getSubsystemStatus() {
-        return null;
-    }
+    public SubsystemStatus getSubsystemStatus() { return null; }
 
     @Override
-    public void updateTest() {
-
-    }
+    public void updateTest() {}
 
     @Override
     public void updateTeleop() {
-        if(robotSettings.ARM_ELEVATOR_MANUAL) {
+        if (robotSettings.ARM_ELEVATOR_MANUAL) {
             manuelDrive();
-        }else{
+        } else {
             if (!robotSettings.ENABLE_PIECE_MANAGER) {
                 PositionDrive();
             }
         }
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
+
+        if (xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
             resetArmEncoder();
         }
-        System.out.println("Arm Position: " + armr.getRotations());
-        System.out.println("Motor Power " + armr.getVoltage());
 
         double exposition = armex.getRotations();
         exmove();
     }
 
-
+    @Override
+    public void updateAuton() {}
 
     @Override
-    public void updateAuton() {
-
-    }
+    public void updateGeneric() {}
 
     @Override
-    public void updateGeneric() {
-
-    }
+    public void initTest() {}
 
     @Override
-    public void initTest() {
-
-    }
+    public void initTeleop() { armex.resetEncoder(); }
 
     @Override
-    public void initTeleop() {
-        armex.resetEncoder();
-
-    }
+    public void initAuton() { armr.resetEncoder(); }
 
     @Override
-    public void initAuton() {
-        armr.resetEncoder();
-    }
+    public void initDisabled() {}
 
     @Override
-    public void initDisabled() {
-
-    }
+    public void initGeneric() {}
 
     @Override
-    public void initGeneric() {
+    public String getSubsystemName() { return null; }
 
+    public void createControllers() {
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, DefaultControllers.XBOX_CONTROLLER);
+        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, DefaultControllers.XBOX_CONTROLLER);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, DefaultControllers.BUTTON_PANEL);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, DefaultControllers.BUTTON_PANEL);
     }
 
-    @Override
-    public String getSubsystemName() {
-        return null;
-    }
-
-    public void createControllers(){
-        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
-        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
-        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
-    }
-
-    public void createMotors(){
+    public void createMotors() {
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
             armr = new TalonMotorController(robotSettings.ARM_ROTATE_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
             armr = new SparkMotorController(robotSettings.ARM_ROTATE_MOTOR_ID);
-        armr.setRealFactorFromMotorRPM(1, 1 );
+
         //arm.setOutPutRange(-.8,.8);
+        armr.setRealFactorFromMotorRPM(1, 1 );
         armr.setCurrentLimit(40);
-        if(robotSettings.ARM_EXTEND){
+        
+        if (robotSettings.ARM_EXTEND) {
             if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
                 armex = new TalonMotorController(robotSettings.ARM_EXTEND_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
             if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
                 armex = new SparkMotorController(robotSettings.ARM_EXTEND_MOTOR_ID);
         }
-            
 
     }
-    public void createMotorPid(PID pid){
-        armr.setPid(pid);
-    }
+    public void createMotorPid(PID pid) { armr.setPid(pid); }
 
-
-    public void resetArmEncoder(){
+    public void resetArmEncoder() {
        // arm.resetEncoder();
     }
 
-    public void manuelDrive(){
+    public void manuelDrive() {
         if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
             armr.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
-        }else {
+        } else {
             armr.moveAtVoltage(0);
         }
-        //System.out.println("Manual Enabled");
-
     }
-    public void PositionDrive(){
-       /* if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
+    public void PositionDrive() {
+        /*if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
             arm.moveAtPosition(-1);
             //System.out.println("trying to go to zero");
         }
@@ -165,23 +138,27 @@ public class Arm implements ISubsystem {
         if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
             arm.moveAtPosition(-15);
             //System.out.println("forward horizonal");
-        }
-        System.out.println("Motor Power " + arm.getVoltage());
-        //System.out.println("Arm Position: " + arm.getRotations()); */
+        }*/
     }
 
-    public void moveArm(double position){
+    public void moveArm(double position) {
         armr.moveAtPosition(position);
         UserInterface.smartDashboardPutNumber("Arm Goal Position" , position);
     }
 
-    public void exmove(){
-        if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
-            armex.moveAtPercent(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
-        }else {
-            armex.moveAtVoltage(0);
-        }
+    /**
+     * Runs the arm extend motor
+     **/
+    public void exmove() {
+            if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armex).getAbsoluteRotations() < 10)) {
+                    armex.setInverted(false);
+                    armex.moveAtPercent(25);
+            // Logic for retracting doesn't work because the motor resets to 4017 when it goes over and it will rarely be exactly 0 so the code will always be true \/
+            } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armex).getAbsoluteRotations() > 0)) {
+                    armex.setInverted(true);
+                    armex.moveAtPercent(25);
+            } else {
+                armex.moveAtPercent(0);
+            }
     }
-
-
 }

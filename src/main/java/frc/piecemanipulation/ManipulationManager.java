@@ -240,7 +240,7 @@ public class ManipulationManager implements ISubsystem {
             }
         }
         if(!robotSettings.ARM_ELEVATOR_MANUAL) {
-            Robot.arm.moveArm(armGoal);
+            // Robot.arm.moveArm(armGoal);
 
             if (checkArmCollision()) {
             } else if (checkArmPassover()) {

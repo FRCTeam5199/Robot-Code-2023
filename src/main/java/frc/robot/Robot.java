@@ -83,8 +83,10 @@ public class Robot extends TimedRobot {
             chirp = new Chirp();
         if(robotSettings.ENABLE_WRIST)
             wrist =  new Wrist();
-        if(robotSettings.ENABLE_ARM)
+
+        if(robotSettings.ENABLE_ARM) {
             arm = new Arm();
+        }
         if(robotSettings.ENABLE_INTAKE)
             intake = new Intake();
         if(robotSettings.ENABLE_PIECE_MANAGER) {
@@ -145,18 +147,23 @@ public class Robot extends TimedRobot {
         switch (hostName) {
             case "2022-Swivel":
                 robotSettings = new Swerve2022();
+                System.out.println("Using Swerve 2022");
                 break;
             case "2023-Prac":
                 robotSettings = new SwervePrac2023();
+                System.out.println("Using Swerve Practice 2023");
                 break;
             case "2023-Comp":
                 robotSettings = new SwerveComp2023();
+                System.out.println("Using Swerve Competition 2022");
                 break;
             default:
                 //preferences.putString("hostname", "2021-Comp");
                 //settingsFile = new CompetitionRobot2021();
                 //break;
                 robotSettings = new SwerveComp2023();
+
+                System.out.println("Defaulting to Swerve Competition 2022");
                 //throw new IllegalStateException("You need to ID this robot.");
         }
     }
@@ -192,6 +199,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        
         if (UserInterface.PRINT_ROBOT_TOGGLES.getEntry().getBoolean(false)) {
             robotSettings.printToggles();
             UserInterface.PRINT_ROBOT_TOGGLES.getEntry().setBoolean(false);

@@ -112,7 +112,7 @@ public abstract class DefaultConfig {
     public double ARM_GEARING = 1.0/9;
     public double ARM_SPROCKET_DIAMETER = 2D;
     public String ARM_MOTOR_CANBUS = "rio";
-    public boolean ARM_ELEVATOR_MANUAL = false;
+    public boolean ARM_ELEVATOR_MANUAL = true;
     public boolean ARM_MANUAL = true;
     public boolean ENABLE_ARM = true;
     public boolean ENABLE_WRIST = true;
