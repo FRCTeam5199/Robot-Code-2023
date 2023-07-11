@@ -2,6 +2,8 @@ package frc.piecemanipulation;
 
 import static frc.robot.Robot.robotSettings;
 
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.controllers.basecontrollers.BaseController.DefaultControllers;
@@ -14,7 +16,7 @@ import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 
 public class Arm implements ISubsystem {
-    public AbstractMotorController armr, armex;
+    public AbstractMotorController armRotationController, armExtendingController;
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Arm() {
@@ -27,7 +29,8 @@ public class Arm implements ISubsystem {
         createControllers();
         createMotors();
         createMotorPid(robotSettings.ARM_ROTATE_PID);
-        armr.setBrake(true);
+        
+        armRotationController.setBrake(true);
     }
 
     @Override
@@ -50,8 +53,9 @@ public class Arm implements ISubsystem {
             resetArmEncoder();
         }
 
-        double exposition = armex.getRotations();
-        exmove();
+        double exposition = armExtendingController.getRotations();
+        extendMove();
+        rotateMove();
     }
 
     @Override
@@ -64,10 +68,16 @@ public class Arm implements ISubsystem {
     public void initTest() {}
 
     @Override
-    public void initTeleop() { armex.resetEncoder(); }
+    public void initTeleop() {
+        armExtendingController.resetEncoder();
+        armRotationController.resetEncoder();
+    }
 
     @Override
-    public void initAuton() { armr.resetEncoder(); }
+    public void initAuton() {
+        armRotationController.resetEncoder();
+        armRotationController.resetEncoder();
+    }
 
     @Override
     public void initDisabled() {}
@@ -89,34 +99,33 @@ public class Arm implements ISubsystem {
 
     public void createMotors() {
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-            armr = new TalonMotorController(robotSettings.ARM_ROTATE_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
+            armRotationController = new TalonMotorController(robotSettings.ARM_ROTATE_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
         if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            armr = new SparkMotorController(robotSettings.ARM_ROTATE_MOTOR_ID);
+            armRotationController = new SparkMotorController(robotSettings.ARM_ROTATE_MOTOR_ID, MotorType.kBrushless);
 
         //arm.setOutPutRange(-.8,.8);
-        armr.setRealFactorFromMotorRPM(1, 1 );
-        armr.setCurrentLimit(40);
+        armRotationController.setRealFactorFromMotorRPM(1, 1 );
+        armRotationController.setCurrentLimit(40);
         
         if (robotSettings.ARM_EXTEND) {
             if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-                armex = new TalonMotorController(robotSettings.ARM_EXTEND_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
+                armExtendingController = new TalonMotorController(robotSettings.ARM_EXTEND_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
             if(robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-                armex = new SparkMotorController(robotSettings.ARM_EXTEND_MOTOR_ID);
+                armExtendingController = new SparkMotorController(robotSettings.ARM_EXTEND_MOTOR_ID);
         }
-
     }
-    public void createMotorPid(PID pid) { armr.setPid(pid); }
+    public void createMotorPid(PID pid) { armRotationController.setPid(pid); }
 
     public void resetArmEncoder() {
        // arm.resetEncoder();
     }
 
     public void manuelDrive() {
-        if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
+        /*if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
             armr.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) * -12);
         } else {
             armr.moveAtVoltage(0);
-        }
+        }*/
     }
     public void PositionDrive() {
         /*if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) == DefaultControllerEnums.ButtonStatus.DOWN){
@@ -142,23 +151,42 @@ public class Arm implements ISubsystem {
     }
 
     public void moveArm(double position) {
-        armr.moveAtPosition(position);
+        armRotationController.moveAtPosition(position);
         UserInterface.smartDashboardPutNumber("Arm Goal Position" , position);
     }
 
     /**
      * Runs the arm extend motor
      **/
-    public void exmove() {
-            if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armex).getAbsoluteRotations() < 10)) {
-                    armex.setInverted(false);
-                    armex.moveAtPercent(25);
-            // Logic for retracting doesn't work because the motor resets to 4017 when it goes over and it will rarely be exactly 0 so the code will always be true \/
-            } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armex).getAbsoluteRotations() > 0)) {
-                    armex.setInverted(true);
-                    armex.moveAtPercent(25);
-            } else {
-                armex.moveAtPercent(0);
-            }
+    public void extendMove() {
+        if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armExtendingController).getAbsoluteRotations() < 20) ) {
+            System.out.println("Right Extend: " + ((SparkMotorController)armExtendingController).getAbsoluteRotations());
+            armExtendingController.setInverted(false);
+            armExtendingController.moveAtPercent(15);
+        // Logic for retracting might not work because the motor resets to 4017 when it goes over and it will rarely be exactly 0 so the code will always be true \/
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((((SparkMotorController)armExtendingController).getAbsoluteRotations() > 0) && (((SparkMotorController)armExtendingController).getAbsoluteRotations() < 25) || ((SparkMotorController)armExtendingController).getAbsoluteRotations() > 4018))) {
+            System.out.println("Left Extend: " + ((SparkMotorController)armExtendingController).getAbsoluteRotations());
+            armExtendingController.setInverted(true);
+            armExtendingController.moveAtPercent(15);
+        } else {
+            armExtendingController.moveAtPercent(0);
+        }
+    }
+
+    public void rotateMove() {
+        // armRotationController.moveAtPercent(15);
+        if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.UP) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armRotationController).getAbsoluteRotations() < 100) ) {
+            System.out.println("Right Rotate: " + ((SparkMotorController)armRotationController).getAbsoluteRotations());
+            armRotationController.setInverted(true);
+            armRotationController.moveAtPercent(0.25);
+        // Logic for retracting might not work because the motor resets to 4017 when it goes over and it will rarely be exactly 0 so the code will always be true \/
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.DOWN) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armRotationController).getAbsoluteRotations() > 0)) {
+            System.out.println("Left Rotate: " + ((SparkMotorController)armRotationController).getAbsoluteRotations());
+            armRotationController.setInverted(false);
+            armRotationController.moveAtPercent(0.25);
+        } else {
+            armRotationController.moveAtPercent(0);
+        }
+        // System.out.println(((SparkMotorController)armRotationController).getAbsoluteRotations());
     }
 }
