@@ -55,13 +55,15 @@ public class Elevator implements ISubsystem {
     public void updateGeneric() {
        if (robotSettings.ARM_ELEVATOR_MANUAL){
             manuelDrive();
-       }else{
+       } else {
            if (!robotSettings.ENABLE_PIECE_MANAGER)
                positionDrive();
         }
         if(xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
             //resetElevateEncoder();
         }
+
+        elevator();
     }
 
     @Override
@@ -113,20 +115,17 @@ public class Elevator implements ISubsystem {
         elevate.setCurrentLimit(40);
     }
 
-    public void resetElevateEncoder(){
-        elevate.resetEncoder();
-    }
+    public void resetElevateEncoder(){ elevate.resetEncoder(); }
 
-    public void createMotorPid(PID pid){
-        elevate.setPid(pid);
-    }
+    public void createMotorPid(PID pid){ elevate.setPid(pid); }
 
     public void manuelDrive(){
-        if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) >= .1){
-            elevate.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * -6);
-        }else {
+        // elevate.moveAtPercent(15);
+        //if(/*Math.abs(*/xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP/*XboxAxes.LEFT_JOY_Y)) >= .1*/) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //    elevate.moveAtVoltage(/*xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP.XboxAxes.LEFT_JOY_Y) * -6)*/15);
+        /*} else {
             elevate.moveAtVoltage(0);
-        }
+        }*/
         System.out.println("Elevator Position: " + elevate.getRotations());
     }
 
@@ -150,5 +149,11 @@ public class Elevator implements ISubsystem {
     public void moveElevator(double position){
         elevate.moveAtPosition(position);
         UserInterface.smartDashboardPutNumber("Elevator goal position:", position);
+    }
+
+    // WORK ON A NAME \/
+    public void elevator() {
+        elevate.moveAtPercent(15);
+        System.out.println("Elevator Position: " + elevate.getRotations());
     }
 }
