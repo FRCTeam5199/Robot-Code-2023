@@ -19,12 +19,14 @@ public class Elevator implements ISubsystem {
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Elevator(){
+        System.out.println("Running Constructor...");
         addToMetaList();
         init();
     }
 
     @Override
     public void init() {
+        System.out.println("Running Init...");
         createControllers();
         createMotors();
         createMotorPid(robotSettings.ELEVATORPID);
@@ -32,37 +34,34 @@ public class Elevator implements ISubsystem {
     }
 
     @Override
-    public SubsystemStatus getSubsystemStatus() {
-        return null;
-    }
+    public SubsystemStatus getSubsystemStatus() { return null; }
 
     @Override
-    public void updateTest() {
-
-    }
+    public void updateTest() {}
 
     @Override
     public void updateTeleop() {
+        System.out.println("Calling Update Generic...");
         updateGeneric();
     }
 
     @Override
-    public void updateAuton() {
-
-    }
+    public void updateAuton() {}
 
     @Override
     public void updateGeneric() {
-       if (robotSettings.ARM_ELEVATOR_MANUAL){
+        if (robotSettings.ARM_ELEVATOR_MANUAL){
             manuelDrive();
-       } else {
-           if (!robotSettings.ENABLE_PIECE_MANAGER)
+        } else {
+            if (!robotSettings.ENABLE_PIECE_MANAGER)
                positionDrive();
         }
-        if(xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
+
+        if (xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
             //resetElevateEncoder();
         }
 
+        System.out.println("Calling Elevator...");
         elevator();
     }
 
@@ -77,26 +76,18 @@ public class Elevator implements ISubsystem {
     }
 
     @Override
-    public void initAuton() {
-        elevate.resetEncoder();
-    }
+    public void initAuton() { elevate.resetEncoder(); }
 
     @Override
-    public void initDisabled() {
-
-    }
+    public void initDisabled() {}
 
     @Override
-    public void initGeneric() {
-
-    }
+    public void initGeneric() {}
 
     @Override
-    public String getSubsystemName() {
-        return null;
-    }
+    public String getSubsystemName() { return null; }
 
-    public void createControllers(){
+    public void createControllers() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
         panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
@@ -105,7 +96,7 @@ public class Elevator implements ISubsystem {
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
-    public void createMotors(){
+    public void createMotors() {
         if(robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
             elevate = new TalonMotorController(robotSettings.ELEVATOR_MOTOR_ID, robotSettings.ELEVATOR_MOTOR_CANBUS);
         if(robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
@@ -115,21 +106,21 @@ public class Elevator implements ISubsystem {
         elevate.setCurrentLimit(40);
     }
 
-    public void resetElevateEncoder(){ elevate.resetEncoder(); }
+    public void resetElevateEncoder() { elevate.resetEncoder(); }
 
-    public void createMotorPid(PID pid){ elevate.setPid(pid); }
+    public void createMotorPid(PID pid) { elevate.setPid(pid); }
 
-    public void manuelDrive(){
+    public void manuelDrive() {
         // elevate.moveAtPercent(15);
         //if(/*Math.abs(*/xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP/*XboxAxes.LEFT_JOY_Y)) >= .1*/) == DefaultControllerEnums.ButtonStatus.DOWN) {
         //    elevate.moveAtVoltage(/*xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP.XboxAxes.LEFT_JOY_Y) * -6)*/15);
         /*} else {
             elevate.moveAtVoltage(0);
         }*/
-        System.out.println("Elevator Position: " + elevate.getRotations());
+        System.out.println("Manuel Drive: " + elevate.getRotations());
     }
 
-    public void positionDrive(){
+    public void positionDrive() {
        /* if(panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
             elevate.moveAtPosition(-1);
             System.out.println("top");
@@ -144,16 +135,18 @@ public class Elevator implements ISubsystem {
         }
         System.out.println("Elevator Position: " + elevate.getRotations());
         System.out.println("Elevator Voltage: " + elevate.getVoltage()); */
+        System.out.println("Position Drive: " + elevate.getRotations());
     }
 
-    public void moveElevator(double position){
+    public void moveElevator(double position) {
         elevate.moveAtPosition(position);
         UserInterface.smartDashboardPutNumber("Elevator goal position:", position);
+        System.out.println("Moving Elevator: " + elevate.getRotations());
     }
 
     // WORK ON A NAME \/
     public void elevator() {
         elevate.moveAtPercent(15);
-        System.out.println("Elevator Position: " + elevate.getRotations());
+        System.out.println("Elevator: " + elevate.getRotations());
     }
 }

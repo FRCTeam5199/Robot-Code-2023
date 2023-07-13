@@ -94,5 +94,7 @@ public interface ISubsystem {
      */
     default void addToMetaList() {
         Robot.subsystems.add(this);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ADDED SUBSYSTEM: " + this.getSubsystemName());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUBSYSTEM STATUS: " + this.getSubsystemStatus());
     }
 }

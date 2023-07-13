@@ -159,12 +159,13 @@ public class Arm implements ISubsystem {
      * Runs the arm extend motor
      **/
     public void extendMove() {
-        if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armExtendingController).getAbsoluteRotations() < 20) ) {
+        // WORK ON MOVE LOGIC \/
+        if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armExtendingController).getAbsoluteRotations() < 20)) {
             System.out.println("Right Extend: " + ((SparkMotorController)armExtendingController).getAbsoluteRotations());
             armExtendingController.setInverted(false);
             armExtendingController.moveAtPercent(15);
         // Logic for retracting might not work because the motor resets to 4017 when it goes over and it will rarely be exactly 0 so the code will always be true \/
-        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN) && (((((SparkMotorController)armExtendingController).getAbsoluteRotations() > 0) && (((SparkMotorController)armExtendingController).getAbsoluteRotations() < 25) || ((SparkMotorController)armExtendingController).getAbsoluteRotations() > 4018))) {
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN)/* && (((((SparkMotorController)armExtendingController).getAbsoluteRotations() > 0) && (((SparkMotorController)armExtendingController).getAbsoluteRotations() < 25) || ((SparkMotorController)armExtendingController).getAbsoluteRotations() > 4018)) */) {
             System.out.println("Left Extend: " + ((SparkMotorController)armExtendingController).getAbsoluteRotations());
             armExtendingController.setInverted(true);
             armExtendingController.moveAtPercent(15);
@@ -178,12 +179,12 @@ public class Arm implements ISubsystem {
         if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.UP) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armRotationController).getAbsoluteRotations() < 100) ) {
             System.out.println("Right Rotate: " + ((SparkMotorController)armRotationController).getAbsoluteRotations());
             armRotationController.setInverted(true);
-            armRotationController.moveAtPercent(0.25);
+            armRotationController.moveAtPercent(0.5);
         // Logic for retracting might not work because the motor resets to 4017 when it goes over and it will rarely be exactly 0 so the code will always be true \/
-        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.DOWN) == DefaultControllerEnums.ButtonStatus.DOWN) && (((SparkMotorController)armRotationController).getAbsoluteRotations() > 0)) {
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.DOWN) == DefaultControllerEnums.ButtonStatus.DOWN)/* && (((SparkMotorController)armRotationController).getAbsoluteRotations() > 0) */) {
             System.out.println("Left Rotate: " + ((SparkMotorController)armRotationController).getAbsoluteRotations());
             armRotationController.setInverted(false);
-            armRotationController.moveAtPercent(0.25);
+            armRotationController.moveAtPercent(0.5);
         } else {
             armRotationController.moveAtPercent(0);
         }
