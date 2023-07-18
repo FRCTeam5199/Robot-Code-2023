@@ -28,16 +28,19 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Welcome. Please enjoy your stay here in programmer fun time land. And remember, IntelliJ is king
+ * Welcome. Please enjoy your stay here in programmer fun time land. And
+ * remember, IntelliJ is king
  */
 public class Robot extends TimedRobot {
     /**
-     * No son, I refuse to make a new, unseeded random everytime we want a new song. Besides, we have a random at home
+     * No son, I refuse to make a new, unseeded random everytime we want a new song.
+     * Besides, we have a random at home
      * already so you don't need another one
      */
     public static final Random RANDOM = new Random(System.currentTimeMillis());
     /**
-     * If you change this ONE SINGULAR VARIABLE the ENTIRE CONFIG WILL CHANGE. Use this to select which robot you are
+     * If you change this ONE SINGULAR VARIABLE the ENTIRE CONFIG WILL CHANGE. Use
+     * this to select which robot you are
      * using from the list under robotconfigs
      */
     public static final ArrayList<ISubsystem> subsystems = new ArrayList<>();
@@ -79,25 +82,26 @@ public class Robot extends TimedRobot {
 
         if (robotSettings.ENABLE_ELEVATOR)
             elevator = new Elevator();
-        if (robotSettings.ENABLE_MUSIC) 
+        if (robotSettings.ENABLE_MUSIC)
             chirp = new Chirp();
-        if(robotSettings.ENABLE_WRIST)
-            wrist =  new Wrist();
+        if (robotSettings.ENABLE_WRIST)
+            wrist = new Wrist();
 
-        if(robotSettings.ENABLE_ARM) {
+        if (robotSettings.ENABLE_ARM) {
             arm = new Arm();
         }
-        if(robotSettings.ENABLE_INTAKE)
+        if (robotSettings.ENABLE_INTAKE)
             intake = new Intake();
-        if(robotSettings.ENABLE_PIECE_MANAGER) {
+        if (robotSettings.ENABLE_PIECE_MANAGER) {
             manipulationManager = new ManipulationManager();
         }
-        if(robotSettings.ENABLE_PNOOMATICS)
-            pneumatics =  new Pneumatics();
+        if (robotSettings.ENABLE_PNOOMATICS)
+            pneumatics = new Pneumatics();
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
-                    autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.DO_NOTHING_RED, driver);//Trajectories.TEST_PATH, driver);
+                    autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.DO_NOTHING_RED, driver);// Trajectories.TEST_PATH,
+                                                                                                                       // driver);
                     System.out.println("autoRoutine waypoint");
                     break;
             }
@@ -108,7 +112,9 @@ public class Robot extends TimedRobot {
 
         for (AbstractMotorController motor : AbstractMotorController.motorList) {
             if (motor.getMotorTemperature() > 5) {
-                UserInterface.motorTemperatureMonitors.put(motor, UserInterface.WARNINGS_TAB.add(motor.getName(), motor.getMotorTemperature()).withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", 30, "Max", 80)));
+                UserInterface.motorTemperatureMonitors.put(motor,
+                        UserInterface.WARNINGS_TAB.add(motor.getName(), motor.getMotorTemperature())
+                                .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", 30, "Max", 80)));
             }
         }
         if (robotSettings.ENABLE_VISION)
@@ -117,8 +123,10 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * Reads from the preferences what the last boot time is. Depending on current system time, sets the {@link
-     * #SECOND_TRY} flag to either restart on error or to persist as best as possible. If you leave the robot on for
+     * Reads from the preferences what the last boot time is. Depending on current
+     * system time, sets the {@link
+     * #SECOND_TRY} flag to either restart on error or to persist as best as
+     * possible. If you leave the robot on for
      * half a century then it might not work right so please refrain from that
      */
     private static void getRestartProximity() {
@@ -158,13 +166,13 @@ public class Robot extends TimedRobot {
                 System.out.println("Using Swerve Competition 2022");
                 break;
             default:
-                //preferences.putString("hostname", "2021-Comp");
-                //settingsFile = new CompetitionRobot2021();
-                //break;
+                // preferences.putString("hostname", "2021-Comp");
+                // settingsFile = new CompetitionRobot2021();
+                // break;
                 robotSettings = new SwerveComp2023();
 
                 System.out.println("Defaulting to Swerve Competition 2022");
-                //throw new IllegalStateException("You need to ID this robot.");
+                // throw new IllegalStateException("You need to ID this robot.");
         }
     }
 
@@ -199,7 +207,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        
+
         if (UserInterface.PRINT_ROBOT_TOGGLES.getEntry().getBoolean(false)) {
             robotSettings.printToggles();
             UserInterface.PRINT_ROBOT_TOGGLES.getEntry().setBoolean(false);
@@ -225,12 +233,14 @@ public class Robot extends TimedRobot {
         UserInterface.smartDashboardPutString("alliance", DriverStation.getAlliance().toString());
 
         driver.updateGeneric();
-    /*
-        for (AbstractMotorController motor : AbstractMotorController.motorList) {
-            if (motor.getMotorTemperature() > 5) {
-                UserInterface.motorTemperatureMonitors.get(motor).getEntry().setDouble(motor.getMotorTemperature());
-            }
-        }*/
+        /*
+         * for (AbstractMotorController motor : AbstractMotorController.motorList) {
+         * if (motor.getMotorTemperature() > 5) {
+         * UserInterface.motorTemperatureMonitors.get(motor).getEntry().setDouble(motor.
+         * getMotorTemperature());
+         * }
+         * }
+         */
 
         ISimpleIssue.robotPeriodic();
     }
@@ -263,7 +273,8 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * Uses {@link #deleteFolder(File) deadly recursion} in order to maybe delete ghost files
+     * Uses {@link #deleteFolder(File) deadly recursion} in order to maybe delete
+     * ghost files
      *
      * @param parentFolder The deploy folder/subfolders within deploy folder
      */

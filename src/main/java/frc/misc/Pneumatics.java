@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.*;
 import static frc.robot.Robot.robotSettings;
 
 /**
- * I accidentally deleted this, so here we go again. Allows you to control all of the solenoids for all of your air
+ * I accidentally deleted this, so here we go again. Allows you to control all
+ * of the solenoids for all of your air
  * powered needs (pnoomatics)
  *
  * @author Smaltin
@@ -13,6 +14,8 @@ import static frc.robot.Robot.robotSettings;
 public class Pneumatics implements ISubsystem {
     public DoubleSolenoid intakePiston;
     public DoubleSolenoid spikePiston;
+
+    public DoubleSolenoid clawPiston;
 
     public DoubleSolenoid climberLock;
     public DoubleSolenoid indexerBlocker;
@@ -33,10 +36,12 @@ public class Pneumatics implements ISubsystem {
             compressor = new Compressor(robotSettings.PNEUMATICS_MODULE_TYPE);
         }
         if (robotSettings.ENABLE_INTAKE && robotSettings.ENABLE_PNOOMATICS) {
-            intakePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
+            intakePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE,
+                    robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
         }
-        if(robotSettings.ENABLE_SPIKE && robotSettings.ENABLE_PNOOMATICS)
-            spikePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.SPIKE_OUT_ID, robotSettings.SPIKE_IN_ID);
+        if (robotSettings.ENABLE_SPIKE && robotSettings.ENABLE_PNOOMATICS)
+            spikePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE,
+                    robotSettings.SPIKE_OUT_ID, robotSettings.SPIKE_IN_ID);
 
     }
 
@@ -66,7 +71,7 @@ public class Pneumatics implements ISubsystem {
             compressor.enableDigital();
 
         } else if (robotSettings.PNEUMATICS_MODULE_TYPE == PneumaticsModuleType.REVPH) {
-                pneumaticsHub.enableCompressorDigital();
+            pneumaticsHub.enableCompressorDigital();
         }
     }
 

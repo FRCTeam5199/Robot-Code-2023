@@ -1,5 +1,7 @@
 package frc.piecemanipulation;
 
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.math.controller.PIDController;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
@@ -16,126 +18,155 @@ import static frc.robot.Robot.robotSettings;
 
 public class Elevator implements ISubsystem {
     public AbstractMotorController elevate;
+    public PIDController elevatorPIDController = new PIDController(0.1, 0, 0);
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
-    public Elevator(){
-        System.out.println("Running Constructor...");
+    public Elevator() {
         addToMetaList();
         init();
     }
 
     @Override
     public void init() {
-        System.out.println("Running Init...");
         createControllers();
         createMotors();
         createMotorPid(robotSettings.ELEVATORPID);
         elevate.setBrake(true);
+        elevatorPIDController.setTolerance(5, 10);
     }
 
     @Override
-    public SubsystemStatus getSubsystemStatus() { return null; }
+    public SubsystemStatus getSubsystemStatus() {
+        return null;
+    }
 
     @Override
-    public void updateTest() {}
+    public void updateTest() {
+    }
 
     @Override
     public void updateTeleop() {
-        System.out.println("Calling Update Generic...");
         updateGeneric();
     }
 
     @Override
-    public void updateAuton() {}
+    public void updateAuton() {
+    }
 
     @Override
     public void updateGeneric() {
-        if (robotSettings.ARM_ELEVATOR_MANUAL){
+        if (robotSettings.ARM_ELEVATOR_MANUAL) {
             manuelDrive();
         } else {
             if (!robotSettings.ENABLE_PIECE_MANAGER)
-               positionDrive();
+                positionDrive();
         }
 
-        if (xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN){
-            //resetElevateEncoder();
+        if (xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            // resetElevateEncoder();
         }
 
-        System.out.println("Calling Elevator...");
         elevator();
     }
 
     @Override
     public void initTest() {
-
     }
 
     @Override
     public void initTeleop() {
-        //elevate.resetEncoder();
+        elevate.resetEncoder();
     }
 
     @Override
-    public void initAuton() { elevate.resetEncoder(); }
+    public void initAuton() {
+        elevate.resetEncoder();
+    }
 
     @Override
-    public void initDisabled() {}
+    public void initDisabled() {
+    }
 
     @Override
-    public void initGeneric() {}
+    public void initGeneric() {
+    }
 
     @Override
-    public String getSubsystemName() { return null; }
+    public String getSubsystemName() {
+        return null;
+    }
 
     public void createControllers() {
-        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
-        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
-        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT,
+                BaseController.DefaultControllers.XBOX_CONTROLLER);
+        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2,
+                BaseController.DefaultControllers.XBOX_CONTROLLER);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1,
+                BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
+                BaseController.DefaultControllers.BUTTON_PANEL);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID,
+                BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID,
+                BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public void createMotors() {
-        if(robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
+        if (robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
             elevate = new TalonMotorController(robotSettings.ELEVATOR_MOTOR_ID, robotSettings.ELEVATOR_MOTOR_CANBUS);
-        if(robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            elevate = new SparkMotorController(robotSettings.ELEVATOR_MOTOR_ID);
-        //elevate.setRealFactorFromMotorRPM(robotSettings.ELEVATOR_GEARING * (robotSettings.ELEVATOR_SPROCKET_DIAMETER * Math.PI / 12), 1/60D );
-        elevate.setRealFactorFromMotorRPM(1, 1 );
+        if (robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
+            elevate = new SparkMotorController(robotSettings.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+        // elevate.setRealFactorFromMotorRPM(robotSettings.ELEVATOR_GEARING *
+        // (robotSettings.ELEVATOR_SPROCKET_DIAMETER * Math.PI / 12), 1/60D );
+        elevate.setRealFactorFromMotorRPM(1, 1);
         elevate.setCurrentLimit(40);
+
+        System.out.println("Elevator Motor Type: " + robotSettings.ELEVATOR_MOTOR_TYPE);
     }
 
-    public void resetElevateEncoder() { elevate.resetEncoder(); }
+    public void resetElevateEncoder() {
+        elevate.resetEncoder();
+    }
 
-    public void createMotorPid(PID pid) { elevate.setPid(pid); }
+    public void createMotorPid(PID pid) {
+        elevate.setPid(pid);
+    }
 
     public void manuelDrive() {
         // elevate.moveAtPercent(15);
-        //if(/*Math.abs(*/xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP/*XboxAxes.LEFT_JOY_Y)) >= .1*/) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //    elevate.moveAtVoltage(/*xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP.XboxAxes.LEFT_JOY_Y) * -6)*/15);
-        /*} else {
-            elevate.moveAtVoltage(0);
-        }*/
-        System.out.println("Manuel Drive: " + elevate.getRotations());
+        // if(/*Math.abs(*/xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP/*XboxAxes.LEFT_JOY_Y))
+        // >= .1*/) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        // elevate.moveAtVoltage(/*xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP.XboxAxes.LEFT_JOY_Y)
+        // * -6)*/15);
+        /*
+         * } else {
+         * elevate.moveAtVoltage(0);
+         * }
+         */
+        // System.out.println("Manuel Drive: " + elevate.getRotations());
     }
 
     public void positionDrive() {
-       /* if(panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) == DefaultControllerEnums.ButtonStatus.DOWN){
-            elevate.moveAtPosition(-1);
-            System.out.println("top");
-        }
-        if(panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_DOWN) == DefaultControllerEnums.ButtonStatus.DOWN){
-            elevate.moveAtPosition(-26);
-            System.out.println("MID");
-        }
-        if(panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_5) == DefaultControllerEnums.ButtonStatus.DOWN){
-            elevate.moveAtPosition(-52);
-            System.out.println("bottom");
-        }
-        System.out.println("Elevator Position: " + elevate.getRotations());
-        System.out.println("Elevator Voltage: " + elevate.getVoltage()); */
-        System.out.println("Position Drive: " + elevate.getRotations());
+        /*
+         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_UP) ==
+         * DefaultControllerEnums.ButtonStatus.DOWN){
+         * elevate.moveAtPosition(-1);
+         * System.out.println("top");
+         * }
+         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.FIRST_STAGE_DOWN) ==
+         * DefaultControllerEnums.ButtonStatus.DOWN){
+         * elevate.moveAtPosition(-26);
+         * System.out.println("MID");
+         * }
+         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.AUX_5) ==
+         * DefaultControllerEnums.ButtonStatus.DOWN){
+         * elevate.moveAtPosition(-52);
+         * System.out.println("bottom");
+         * }
+         * System.out.println("Elevator Position: " + elevate.getRotations());
+         * System.out.println("Elevator Voltage: " + elevate.getVoltage());
+         */
+        // System.out.println("Position Drive: " + elevate.getRotations());
     }
 
     public void moveElevator(double position) {
@@ -144,9 +175,37 @@ public class Elevator implements ISubsystem {
         System.out.println("Moving Elevator: " + elevate.getRotations());
     }
 
-    // WORK ON A NAME \/
+    // WORK ON A BETTER NAME \/
     public void elevator() {
-        elevate.moveAtPercent(15);
-        System.out.println("Elevator: " + elevate.getRotations());
+
+        if ((xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            System.out.println("Elevate: " + ((SparkMotorController) elevate).getAbsoluteRotations());
+            elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(), 30));
+        } else if ((xbox
+                .get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            System.out.println("Left Rotate: " + ((SparkMotorController) elevate).getAbsoluteRotations());
+            elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(),
+                    0));
+        } else {
+            elevate.moveAtPercent(0);
+        }
+
+        // pidElevator.setSetpoint(15);
+        // elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(),
+        // 10));
+
+        /*
+         * if (elevate.getRotations() < 10) {
+         * elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(),
+         * 10));
+         * System.out.println("Elevator Up: " + elevate.getRotations());
+         * } else if (elevate.getRotations() > 0) {
+         * elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(),
+         * 0));
+         * System.out.println("Elevator Down: " + elevate.getRotations());
+         * }
+         */
+
+        // System.out.println("Elevator: " + elevate.getRotations());
     }
 }

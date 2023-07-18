@@ -12,24 +12,18 @@ import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 import frc.misc.UserInterface;
 import frc.motors.AbstractMotorController;
-import frc.motors.SparkMotorController;
-import frc.motors.TalonMotorController;
-import frc.motors.VictorMotorController;
 import frc.robot.Robot;
-import frc.sensors.colorsensor.RevColorSensor;
-
-import java.sql.Time;
 
 import static frc.robot.Robot.*;
 
-public class Intake implements ISubsystem {
-    public AbstractMotorController intakeLeft, intakeRight, intakeBottom;
+public class Claw implements ISubsystem {
+    public AbstractMotorController clawLeft, clawRight, clawBottom;
     private BaseController xbox, panel1, panel2, midiTop, midiBot;
     private I2C.Port i2cPort;
     public ColorSensorV3 m_colorSensor;
     public Timer closeTimer;
 
-    public Intake() {
+    public Claw() {
         addToMetaList();
         init();
     }
@@ -37,11 +31,7 @@ public class Intake implements ISubsystem {
     @Override
     public void init() {
         createControllers();
-        createMotors();
-        if (robotSettings.ENABLE_COLOR_SENSOR) {
-            i2cPort = I2C.Port.kMXP;
-            m_colorSensor = new ColorSensorV3(i2cPort);
-        }
+        // createMotors();
         closeTimer = new Timer();
         closeTimer.reset();
         closeTimer.start();
@@ -59,7 +49,7 @@ public class Intake implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if (robotSettings.INTAKE_MANUAL)
+        if (robotSettings.CLAW_MANUAL)
             manuelDrive();
         updateGeneric();
     }
@@ -74,9 +64,9 @@ public class Intake implements ISubsystem {
         if (robotSettings.ENABLE_COLOR_SENSOR) {
             UserInterface.smartDashboardPutNumber("proxy cube", m_colorSensor.getProximity());
             if (m_colorSensor.getProximity() >= 350) {
-                if (intakeLeft.getVoltage() >= 10 || intakeRight.getVoltage() >= 10) {
-                    intakeLeft.moveAtVoltage(0);
-                    intakeRight.moveAtVoltage(0);
+                if (clawLeft.getVoltage() >= 10 || clawRight.getVoltage() >= 10) {
+                    clawLeft.moveAtVoltage(0);
+                    clawRight.moveAtVoltage(0);
                 }
             }
         }
@@ -112,34 +102,40 @@ public class Intake implements ISubsystem {
         return null;
     }
 
-    public void createMotors() {
-        if (robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX) {
-            intakeLeft = new TalonMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID,
-                    robotSettings.INTAKE_MOTOR_CANBUS);
-            intakeRight = new TalonMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID,
-                    robotSettings.INTAKE_MOTOR_CANBUS);
-        }
-        if (robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX) {
-            intakeLeft = new SparkMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID);
-            intakeRight = new SparkMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID);
-        }
-        if (robotSettings.INTAKE_MOTOR_TYPE == AbstractMotorController.SupportedMotors.VICTOR) {
-            intakeLeft = new VictorMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID);
-            intakeRight = new VictorMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID);
-        }
-        if (robotSettings.INTAKE_MOTOR_BOTTOM_TYPE == AbstractMotorController.SupportedMotors.VICTOR) {
-            intakeBottom = new VictorMotorController(robotSettings.INTAKE_MOTOR_BOTTOM_ID);
-        }
-        intakeLeft.setCurrentLimit(20);
-        intakeRight.setCurrentLimit(20);
-        intakeRight.setBrake(true);
-        intakeLeft.setBrake(true);
-        intakeRight.setInverted(true);
-        intakeLeft.setInverted(true);
-        intakeBottom.setBrake(true);
-        intakeBottom.setInverted(false);
-
-    }
+    /*
+     * public void createMotors() {
+     * if (robotSettings.CLAW_MOTOR_TYPE ==
+     * AbstractMotorController.SupportedMotors.TALON_FX) {
+     * clawLeft = new TalonMotorController(robotSettings.CLAW_MOTOR_LEFT_ID,
+     * robotSettings.CLAW_MOTOR_CANBUS);
+     * clawRight = new TalonMotorController(robotSettings.CLAW_MOTOR_RIGHT_ID,
+     * robotSettings.CLAW_MOTOR_CANBUS);
+     * }
+     * if (robotSettings.CLAW_MOTOR_TYPE ==
+     * AbstractMotorController.SupportedMotors.CAN_SPARK_MAX) {
+     * clawLeft = new SparkMotorController(robotSettings.CLAW_MOTOR_LEFT_ID);
+     * clawRight = new SparkMotorController(robotSettings.CLAW_MOTOR_RIGHT_ID);
+     * }
+     * if (robotSettings.CLAW_MOTOR_TYPE ==
+     * AbstractMotorController.SupportedMotors.VICTOR) {
+     * clawLeft = new VictorMotorController(robotSettings.CLAW_MOTOR_LEFT_ID);
+     * clawRight = new VictorMotorController(robotSettings.CLAW_MOTOR_RIGHT_ID);
+     * }
+     * if (robotSettings.CLAW_MOTOR_BOTTOM_TYPE ==
+     * AbstractMotorController.SupportedMotors.VICTOR) {
+     * clawBottom = new VictorMotorController(robotSettings.CLAW_MOTOR_BOTTOM_ID);
+     * }
+     * clawLeft.setCurrentLimit(20);
+     * clawRight.setCurrentLimit(20);
+     * clawRight.setBrake(true);
+     * clawLeft.setBrake(true);
+     * clawRight.setInverted(true);
+     * clawLeft.setInverted(true);
+     * clawBottom.setBrake(true);
+     * clawBottom.setInverted(false);
+     * 
+     * }
+     */
 
     public void createControllers() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT,
@@ -160,51 +156,51 @@ public class Intake implements ISubsystem {
                 if (xbox.get(
                         DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     // System.out.println("X is being pressed");
-                    intakeRight.moveAtVoltage(3);
-                    intakeLeft.moveAtVoltage(-3);
-                    intakeBottom.moveAtPercent(1);
+                    clawRight.moveAtVoltage(3);
+                    clawLeft.moveAtVoltage(-3);
+                    clawBottom.moveAtPercent(1);
                 } else if (xbox
                         .get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     if (robotSettings.ENABLE_COLOR_SENSOR) {
                         if (m_colorSensor.getProximity() >= 350) {
-                            intakeLeft.moveAtVoltage(0);
-                            intakeRight.moveAtVoltage(0);
-                            intakeBottom.moveAtPercent(0);
+                            clawLeft.moveAtVoltage(0);
+                            clawRight.moveAtVoltage(0);
+                            clawBottom.moveAtPercent(0);
                         } else {
                             // System.out.println("Y is being pressed");
-                            intakeRight.moveAtVoltage(-12);
-                            intakeLeft.moveAtVoltage(12);
-                            intakeBottom.moveAtPercent(-.6);
+                            clawRight.moveAtVoltage(-12);
+                            clawLeft.moveAtVoltage(12);
+                            clawBottom.moveAtPercent(-.6);
                         }
                     } else {
                         // System.out.println("Y is being pressed");
-                        intakeRight.moveAtVoltage(-12);
-                        intakeLeft.moveAtVoltage(12);
-                        intakeBottom.moveAtPercent(-.6);
+                        clawRight.moveAtVoltage(-12);
+                        clawLeft.moveAtVoltage(12);
+                        clawBottom.moveAtPercent(-.6);
                     }
                 } else {
-                    intakeRight.moveAtVoltage(0);
-                    intakeLeft.moveAtVoltage(0);
-                    intakeBottom.moveAtPercent(0);
+                    clawRight.moveAtVoltage(0);
+                    clawLeft.moveAtVoltage(0);
+                    clawBottom.moveAtPercent(0);
                 }
             }
             if (manipulationManager.cubeConeMode) {
                 // System.out.println(elevate.getRotations());
-                intakeRight.moveAtVoltage(0);
-                intakeLeft.moveAtVoltage(0);
-                intakeBottom.moveAtPercent(0);
+                clawRight.moveAtVoltage(0);
+                clawLeft.moveAtVoltage(0);
+                clawBottom.moveAtPercent(0);
                 if (xbox.get(
-                        DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+                        DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
                     closeTimer.reset();
                 }
-                if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                    Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
                     closeTimer.reset();
                 }
                 if (robotSettings.ENABLE_COLOR_SENSOR) {
                     // if (m_colorSensor.getProximity() >= 150 && closeTimer.get() >= .5) {
-                    // Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                    // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
                     // closeTimer.reset();
                     // }
                 }
@@ -212,44 +208,44 @@ public class Intake implements ISubsystem {
         } else {
             if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 // System.out.println("X is being pressed");
-                intakeRight.moveAtVoltage(6);
-                intakeLeft.moveAtVoltage(-6);
-                intakeBottom.moveAtPercent(1);
+                clawRight.moveAtVoltage(6);
+                clawLeft.moveAtVoltage(-6);
+                clawBottom.moveAtPercent(1);
             } else if (xbox
                     .get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
                 if (robotSettings.ENABLE_COLOR_SENSOR) {
                     if (m_colorSensor.getProximity() >= 500) {
-                        intakeLeft.moveAtVoltage(0);
-                        intakeRight.moveAtVoltage(0);
-                        intakeBottom.moveAtPercent(0);
+                        clawLeft.moveAtVoltage(0);
+                        clawRight.moveAtVoltage(0);
+                        clawBottom.moveAtPercent(0);
                     } else {
                         // System.out.println("Y is being pressed");
-                        intakeRight.moveAtVoltage(-12);
-                        intakeLeft.moveAtVoltage(12);
-                        intakeBottom.moveAtPercent(-.6);
+                        clawRight.moveAtVoltage(-12);
+                        clawLeft.moveAtVoltage(12);
+                        clawBottom.moveAtPercent(-.6);
                     }
                 } else {
                     // System.out.println("Y is being pressed");
-                    intakeRight.moveAtVoltage(-12);
-                    intakeLeft.moveAtVoltage(12);
-                    intakeBottom.moveAtPercent(-.6);
+                    clawRight.moveAtVoltage(-12);
+                    clawLeft.moveAtVoltage(12);
+                    clawBottom.moveAtPercent(-.6);
                 }
             } else {
-                intakeRight.moveAtVoltage(0);
-                intakeLeft.moveAtVoltage(0);
-                intakeBottom.moveAtPercent(0);
+                clawRight.moveAtVoltage(0);
+                clawLeft.moveAtVoltage(0);
+                clawBottom.moveAtPercent(0);
             }
             if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+                Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
                 closeTimer.reset();
             }
             if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
                 closeTimer.reset();
             }
             if (closeTimer.hasElapsed(.5)) {
                 if (m_colorSensor.getProximity() >= 1024) {
-                    Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+                    Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
                     closeTimer.reset();
                 }
             }
@@ -270,7 +266,7 @@ public class Intake implements ISubsystem {
                 }
                 case STANDARD_2023: {
                     if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == ButtonStatus.DOWN) {
-                        pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+                        pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
                     }
                     if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == ButtonStatus.DOWN) {
                         Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
@@ -321,11 +317,11 @@ public class Intake implements ISubsystem {
 
     }
 
-    public void intakeIn() {
-        Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
+    public void clawIn() {
+        Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void intakeOut() {
-        Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kForward);
+    public void clawOut() {
+        Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
     }
 }
