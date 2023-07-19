@@ -418,7 +418,7 @@ public class AutonManager extends AbstractAutonManager {
                     drivingChild.lockWheels();
                 } else if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
                 } else if (permitSwiveling) {
-                    drivingChild.drivePure(0.02, 0, 0);
+                    drivingChild.drivePure(-0.02, 0, 0);
                 }else {
                     drivingChild.drivePure(0, 0);
                 }

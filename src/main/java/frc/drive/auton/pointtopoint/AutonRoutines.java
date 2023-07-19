@@ -20,23 +20,23 @@ public enum AutonRoutines {
             new AutonWaypoint(new Point(-54 + 3.2, 0) ,.25,DRIVE_TO, 180)
     ),
     AUTON_PLACE_2_ANTIHP_RED(
-            new AutonWaypoint(new Point(-5.4, 2), .25, DRIVE_TO, 2),
+            new AutonWaypoint(new Point(5.4, 2), .25, DRIVE_TO, 2),
             new AutonWaypoint(INTAKE_PISTON_IN),
             new AutonWaypoint(WAIT500),
-            new AutonWaypoint(new Point(-5.4, 2), 1, DRIVE_TO, 2, ARM_ELEVATOR_UP),
-            new AutonWaypoint(new Point(-5.4, 2), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, 2,-60),
-            new AutonWaypoint(new Point(-5.4, 2), 1, DRIVE_TO, 2,    ARM_ELEVATOR_GO_TO, -3,-207),
-            new AutonWaypoint(new Point(-5.4, 2), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, -2,-220),
+            new AutonWaypoint(new Point(5.4, 2), 1, DRIVE_TO, 2, ARM_ELEVATOR_UP),
+            new AutonWaypoint(new Point(5.4, 2), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, 2,-60),
+            new AutonWaypoint(new Point(5.4, 2), 1, DRIVE_TO, 2,    ARM_ELEVATOR_GO_TO, -3,-207),
+            new AutonWaypoint(new Point(5.4, 2), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, -2,-220),
             new AutonWaypoint(INTAKE_PISTON_OUT),
             new AutonWaypoint(INTAKE_WHEEL_BOTTOM_IN),
             //new AutonWaypoint(new Point(-17, 14.2), .5, DRIVE_TO, 1,  ARM_ELEVATOR_GO_TO, -35,-33),,
-            new AutonWaypoint(new Point(-18, 5.5), .37, DRIVE_TO, 1, ARM_ELEVATOR_GO_TO, -44,-140),
+            new AutonWaypoint(new Point(18, 5.5), .37, DRIVE_TO, 0, ARM_ELEVATOR_GO_TO, -44,-140),
             new AutonWaypoint(INTAKE_PISTON_BOTTOM_OUT),
-            new AutonWaypoint(new Point(-25.5, 5.7), .34, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(25.5, 5.7), .34, DRIVE_TO, 1),
             new AutonWaypoint(INTAKE_PISTON_BOTTOM_IN),
-            new AutonWaypoint(new Point(-8.6, 4), .3, DRIVE_TO, 1),
+            new AutonWaypoint(new Point(8.6, 4), .3, DRIVE_TO, 1),
             new AutonWaypoint(INTAKE_WHEEL_BOTTOM_OFF),
-            new AutonWaypoint(new Point(-8.6, 4), .3, DRIVE_TO, 170),
+            new AutonWaypoint(new Point(8.6, 4), .3, DRIVE_TO, 170),
             //new AutonWaypoint(new Point(-10, 15), .37, DRIVE_TO, -179),
             //new AutonWaypoint(new Point(-8, 14.5), .37, DRIVE_TO, -179),
             new AutonWaypoint(INTAKE_WHEEL_BOTTOM_OUT),
@@ -159,13 +159,13 @@ public enum AutonRoutines {
     ),
     CLIMB_RED_MOBILITY(
             new AutonWaypoint(new Point(-5.4, 8), .25, DRIVE_TO, 2),
-            new AutonWaypoint(INTAKE_PISTON_IN),
-            new AutonWaypoint(WAIT500),
-            new AutonWaypoint(new Point(-5.4, 8), 1, DRIVE_TO, 2, ARM_ELEVATOR_UP),
-            new AutonWaypoint(new Point(-5.4, 8), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, 2,-60),
-            new AutonWaypoint(new Point(-5.4, 8), 1, DRIVE_TO, 2,    ARM_ELEVATOR_GO_TO, -3,-207),
-            new AutonWaypoint(new Point(-5.4, 8), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, -2,-220),
-            new AutonWaypoint(INTAKE_PISTON_OUT),
+        //     new AutonWaypoint(INTAKE_PISTON_IN),
+             new AutonWaypoint(WAIT500),
+        //     new AutonWaypoint(new Point(5.4, 8), 1, DRIVE_TO, 2, ARM_ELEVATOR_UP),
+        //     new AutonWaypoint(new Point(5.4, 8), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, 2,-60),
+        //     new AutonWaypoint(new Point(5.4, 8), 1, DRIVE_TO, 2,    ARM_ELEVATOR_GO_TO, -3,-207),
+        //     new AutonWaypoint(new Point(5.4, 8), 1, DRIVE_TO, 2,  ARM_ELEVATOR_GO_TO, -2,-220),
+        //     new AutonWaypoint(INTAKE_PISTON_OUT),
             new AutonWaypoint(DRIVE_OVER_STATION),
             new AutonWaypoint(AUTO_LEVEL)
     ),
@@ -320,6 +320,10 @@ public enum AutonRoutines {
             new AutonWaypoint(LOCK_WHEELS)
 
     ),
+    AUTON_LEAVE_RED(
+        new AutonWaypoint(new Point(3.2, 1.5), .1, DRIVE_TO,3),
+        new AutonWaypoint(new Point(18, 1.5), .1, DRIVE_TO,3)
+    )
     ;
 
     public static SendableChooser<AutonRoutines> myChooser;
