@@ -69,7 +69,7 @@ public class Wrist implements ISubsystem {
         // System.out.println(wrist.getRotations());
         if (xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN)
             wrist.resetEncoder();
-        System.out.println(wrist.getRotations());
+        // System.out.println(wrist.getRotations());
 
         moveWrist();
     }

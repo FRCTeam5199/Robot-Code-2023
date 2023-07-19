@@ -63,6 +63,7 @@ public class SwerveComp2023 extends DefaultConfig {
         ARM_MOTOR_CANBUS = "rio";
         ENABLE_ARM = true;
         ARM_ROTATE_PID = new PID(.5, 0.0, 0);
+        ARM_EXTEND_PID = new PID(.1, 0.0, 0);
         ARM_EXTEND = true;
 
         // CLAW

@@ -1,9 +1,10 @@
 package frc.piecemanipulation;
 
+import static frc.robot.Robot.robotSettings;
+
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
@@ -13,8 +14,6 @@ import frc.misc.UserInterface;
 import frc.motors.AbstractMotorController;
 import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
-
-import static frc.robot.Robot.robotSettings;
 
 public class Elevator implements ISubsystem {
     public AbstractMotorController elevate;
@@ -177,7 +176,6 @@ public class Elevator implements ISubsystem {
 
     // WORK ON A BETTER NAME \/
     public void elevator() {
-
         if ((xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN)) {
             System.out.println("Elevate: " + ((SparkMotorController) elevate).getAbsoluteRotations());
             elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(), 30));
