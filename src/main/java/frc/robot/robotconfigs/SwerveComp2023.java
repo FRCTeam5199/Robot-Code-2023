@@ -105,7 +105,7 @@ public class SwerveComp2023 extends DefaultConfig{
         WHEEL_DIAMETER = 4; //update: now it's used once
         TURN_SCALE = 0.7;
         DRIVE_SCALE = 1;
-        DRIVE_GEARING = 1/6.12;
+        DRIVE_GEARING = 1/6.75;
         ENABLE_COLOR_SENSOR = true;
 
         CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
