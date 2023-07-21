@@ -161,7 +161,18 @@ public abstract class DefaultConfig {
     public int SWERVE_DRIVE_FL, SWERVE_TURN_FL;
     public int SWERVE_DRIVE_BR, SWERVE_TURN_BR;
     public int SWERVE_DRIVE_BL, SWERVE_TURN_BL;
+    //Swerve Drive CANCoders
+    public int FRcoderID;
+    public int FLcoderID;
+    public int BRcoderID;
+    public int BLcoderID;
     public boolean INVERT_DRIVE_DIRECTION;
+    //Swerve Drive offsets
+    public double FROFFSET;
+    public double FLOFFSET;
+    public double BROFFSET;
+    public double BLOFFSET;
+    
 
     public int IMU_ID = 22; //pigeon
     //leds

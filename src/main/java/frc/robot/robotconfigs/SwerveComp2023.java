@@ -134,7 +134,17 @@ public class SwerveComp2023 extends DefaultConfig{
         SWERVE_TURN_BR = 6;
         SWERVE_DRIVE_BL = 7;
         SWERVE_TURN_BL = 8;
+        //Swerve CANCoders
+        FLcoderID = 11;
+        FRcoderID = 12;
+        BRcoderID = 13;
+        BLcoderID = 14;
         DRIVE_MOTOR_CANBUS = "Canivore1";
+        //offsets
+        FROFFSET = 5.287632;
+        FLOFFSET = 0.535359;
+        BROFFSET = 1.185767;
+        BLOFFSET = 1.63829;
 
 
         // Camera Settings
