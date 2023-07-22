@@ -65,7 +65,7 @@ public class SwerveComp2023 extends DefaultConfig{
 
         //INTAKE
         INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-        INTAKE_MOTOR_BOTTOM_TYPE = AbstractMotorController.SupportedMotors.VICTOR;
+        INTAKE_MOTOR_BOTTOM_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         INTAKE_MOTOR_BOTTOM_ID = 54;
         INTAKE_MOTOR_LEFT_ID = 44;
         INTAKE_MOTOR_RIGHT_ID = 27;
@@ -144,7 +144,7 @@ public class SwerveComp2023 extends DefaultConfig{
         FROFFSET = 5.287632;
         FLOFFSET = 0.535359;
         BROFFSET = 1.185767;
-        BLOFFSET = 1.63829;
+        BLOFFSET = 1.63829+1.06765+0.532291;
 
 
         // Camera Settings

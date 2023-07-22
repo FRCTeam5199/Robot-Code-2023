@@ -254,7 +254,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
        // }else if(xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN){
         //    rotation = xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)*(-1.6);
         }else{
-            rotation = (guidance.imu.relativeYaw() - startHeading) * .05;
+            rotation = (guidance.imu.relativeYaw() - startHeading) * -.05;
         }
 
         if( xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN){
@@ -268,9 +268,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
 
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-                driveMPS(adjustedDrive(-forwards), adjustedDrive(-leftwards), adjustedRotation(rotation));
+                driveMPS(adjustedDrive(-forwards), adjustedDrive(-leftwards), adjustedRotation(-rotation));
             }else {
-                driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
+                driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(-rotation));
             }
 
 

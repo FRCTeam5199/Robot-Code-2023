@@ -124,8 +124,8 @@ public class Intake implements ISubsystem {
             intakeLeft = new VictorMotorController(robotSettings.INTAKE_MOTOR_LEFT_ID);
             intakeRight = new VictorMotorController(robotSettings.INTAKE_MOTOR_RIGHT_ID);
         }
-        if(robotSettings.INTAKE_MOTOR_BOTTOM_TYPE == AbstractMotorController.SupportedMotors.VICTOR){
-            intakeBottom = new VictorMotorController(robotSettings.INTAKE_MOTOR_BOTTOM_ID);
+        if(robotSettings.INTAKE_MOTOR_BOTTOM_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX){
+            intakeBottom = new SparkMotorController(robotSettings.INTAKE_MOTOR_BOTTOM_ID);
         }
         intakeLeft.setCurrentLimit(20);
         intakeRight.setCurrentLimit(20);
