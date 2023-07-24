@@ -14,8 +14,8 @@ import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 
 public class Wrist implements ISubsystem {
-    public AbstractMotorController wrist;
-    public PIDController wristPIDControllor = new PIDController(0.1, 0.1, 0);
+    public AbstractMotorController wristController;
+    public PIDController wristPIDController = new PIDController(0.1, 0.00001, 0);
     public BaseController panel1, panel2, xbox2, midiTop, midiBot;
 
     public Wrist() {
@@ -27,8 +27,8 @@ public class Wrist implements ISubsystem {
     public void init() {
         createControllers();
         createMotors();
-        wrist.setPid(robotSettings.WRISTPID);
-        wrist.setCurrentLimit(10);
+        wristController.setPid(robotSettings.WRISTPID);
+        wristController.setCurrentLimit(10);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class Wrist implements ISubsystem {
          */
         // System.out.println(wrist.getRotations());
         if (xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN)
-            wrist.resetEncoder();
+            wristController.resetEncoder();
         // System.out.println(wrist.getRotations());
 
         moveWrist();
@@ -109,12 +109,13 @@ public class Wrist implements ISubsystem {
 
     public void createMotors() {
         if (robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-            wrist = new TalonMotorController(robotSettings.WRIST_MOTOR_ID, robotSettings.WRIST_MOTOR_CANBUS);
+            wristController = new TalonMotorController(robotSettings.WRIST_MOTOR_ID, robotSettings.WRIST_MOTOR_CANBUS);
         if (robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            wrist = new SparkMotorController(robotSettings.WRIST_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+            wristController = new SparkMotorController(robotSettings.WRIST_MOTOR_ID,
+                    CANSparkMaxLowLevel.MotorType.kBrushless);
         // wrist.setCurrentLimit(2,40);
-        wrist.setCurrentLimit(40);
-        wrist.setBrake(true);
+        wristController.setCurrentLimit(40);
+        wristController.setBrake(true);
     }
 
     public void createControllers() {
@@ -131,7 +132,21 @@ public class Wrist implements ISubsystem {
     }
 
     public void moveWrist() {
-        wrist.moveAtPercent(/* wristPIDControllor.calculate(wrist.getRotations(), 15) */ 5);
+        wristController.moveAtPercent(/* wristPIDControllor.calculate(wrist.getRotations(), 15) */ 5);
         // System.out.println("Wrist: " + wrist.getRotations());
+
+        // FIGURE OUT BUTTONS FOR WRIST \/
+        if (xbox2.get(DefaultControllerEnums.XBoxPOVButtons.UP_RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            System.out.println("Right Wrist: " + wristController.getRotations());
+            System.out.println("PID TARGET RIGHT WRIST PERCENT: "
+                    + wristPIDController.calculate(wristController.getRotations(), 10));
+            wristController.moveAtPercent(wristPIDController.calculate(wristController.getRotations(), 10));
+        } else if (xbox2
+                .get(DefaultControllerEnums.XBoxPOVButtons.UP_LEFT) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            System.out.println("Left Wrist: " + wristController.getRotations());
+            System.out.println("PID TARGET LEFT WRIST PERCENT: "
+                    + wristPIDController.calculate(wristController.getRotations(), 0));
+            wristController.moveAtPercent(wristPIDController.calculate(wristController.getRotations(), 0));
+        }
     }
 }

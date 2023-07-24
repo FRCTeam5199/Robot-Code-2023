@@ -16,8 +16,8 @@ import frc.motors.SparkMotorController;
 import frc.motors.TalonMotorController;
 
 public class Elevator implements ISubsystem {
-    public AbstractMotorController elevate;
-    public PIDController elevatorPIDController = new PIDController(0.1, 0, 0);
+    public AbstractMotorController elevatorController;
+    public PIDController elevatorPIDController = new PIDController(0.01, 0, 0);
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Elevator() {
@@ -30,7 +30,7 @@ public class Elevator implements ISubsystem {
         createControllers();
         createMotors();
         createMotorPid(robotSettings.ELEVATORPID);
-        elevate.setBrake(true);
+        elevatorController.setBrake(true);
         elevatorPIDController.setTolerance(5, 10);
     }
 
@@ -74,12 +74,12 @@ public class Elevator implements ISubsystem {
 
     @Override
     public void initTeleop() {
-        elevate.resetEncoder();
+        elevatorController.resetEncoder();
     }
 
     @Override
     public void initAuton() {
-        elevate.resetEncoder();
+        elevatorController.resetEncoder();
     }
 
     @Override
@@ -112,23 +112,24 @@ public class Elevator implements ISubsystem {
 
     public void createMotors() {
         if (robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-            elevate = new TalonMotorController(robotSettings.ELEVATOR_MOTOR_ID, robotSettings.ELEVATOR_MOTOR_CANBUS);
+            elevatorController = new TalonMotorController(robotSettings.ELEVATOR_MOTOR_ID,
+                    robotSettings.ELEVATOR_MOTOR_CANBUS);
         if (robotSettings.ELEVATOR_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            elevate = new SparkMotorController(robotSettings.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+            elevatorController = new SparkMotorController(robotSettings.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         // elevate.setRealFactorFromMotorRPM(robotSettings.ELEVATOR_GEARING *
         // (robotSettings.ELEVATOR_SPROCKET_DIAMETER * Math.PI / 12), 1/60D );
-        elevate.setRealFactorFromMotorRPM(1, 1);
-        elevate.setCurrentLimit(40);
+        elevatorController.setRealFactorFromMotorRPM(1, 1);
+        elevatorController.setCurrentLimit(40);
 
         System.out.println("Elevator Motor Type: " + robotSettings.ELEVATOR_MOTOR_TYPE);
     }
 
     public void resetElevateEncoder() {
-        elevate.resetEncoder();
+        elevatorController.resetEncoder();
     }
 
     public void createMotorPid(PID pid) {
-        elevate.setPid(pid);
+        elevatorController.setPid(pid);
     }
 
     public void manuelDrive() {
@@ -169,23 +170,25 @@ public class Elevator implements ISubsystem {
     }
 
     public void moveElevator(double position) {
-        elevate.moveAtPosition(position);
+        elevatorController.moveAtPosition(position);
         UserInterface.smartDashboardPutNumber("Elevator goal position:", position);
-        System.out.println("Moving Elevator: " + elevate.getRotations());
+        System.out.println("Moving Elevator: " + elevatorController.getRotations());
     }
 
     // WORK ON A BETTER NAME \/
     public void elevator() {
-        if ((xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            System.out.println("Elevate: " + ((SparkMotorController) elevate).getAbsoluteRotations());
-            elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(), 30));
-        } else if ((xbox
-                .get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            System.out.println("Left Rotate: " + ((SparkMotorController) elevate).getAbsoluteRotations());
-            elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(),
-                    0));
+        if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            System.out.println("Elevator Up: " + elevatorController.getRotations());
+            // System.out.println("PID TARGET UP ELEVATOR PERCENT: " +
+            // elevatorPIDController.calculate(elevatorController.getRotations(), 35));
+            elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(), 35));
+        } else if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            System.out.println("Elevator Down: " + elevatorController.getRotations());
+            // System.out.println("PID TARGET DOWN ELEVATOR PERCENT: " +
+            // elevatorPIDController.calculate(elevatorController.getRotations(), 0));
+            elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(), 0));
         } else {
-            elevate.moveAtPercent(0);
+            elevatorController.moveAtPercent(0);
         }
 
         // pidElevator.setSetpoint(15);

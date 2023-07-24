@@ -18,7 +18,8 @@ import frc.motors.TalonMotorController;
 
 public class Arm implements ISubsystem {
     public AbstractMotorController armRotationController, armExtendingController;
-    public PIDController armPIDController = new PIDController(0.1, 0, 0);
+    public PIDController armExtendingPIDController = new PIDController(0.03, 0.001, 0);
+    public PIDController armRotationPIDController = new PIDController(0.01, 0, 0);
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Arm() {
@@ -32,7 +33,9 @@ public class Arm implements ISubsystem {
         createMotors();
         createExtendMotorPid(robotSettings.ARM_EXTEND_PID);
         createRotateMotorPid(robotSettings.ARM_ROTATE_PID);
+        armExtendingController.setBrake(false);
         armRotationController.setBrake(true);
+        armRotationPIDController.setTolerance(5, 10);
     }
 
     @Override
@@ -196,56 +199,68 @@ public class Arm implements ISubsystem {
      **/
     public void extendMove() {
         // WORK ON MOVE LOGIC \/
-        System.out.println("Arm Extend: " + ((SparkMotorController) armExtendingController).getAbsoluteRotations());
-        armExtendingController.moveAtPercent(
-                armPIDController.calculate(((SparkMotorController) armExtendingController).getAbsoluteRotations(), 20));
+        // System.out.println("Arm Extend: " + ((SparkMotorController)
+        // armExtendingController).getAbsoluteRotations());
+        /*
+         * armExtendingController.moveAtPercent(
+         * armExtendingPIDController
+         * .calculate(((SparkMotorController)
+         * armExtendingController).getAbsoluteRotations(), 20));
+         */
         if (xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            System.out
-                    .println("Right Extend: " + ((SparkMotorController) armExtendingController).getAbsoluteRotations());
+            System.out.println("Right Extend: " + armExtendingController.getRotations());
             // armExtendingController.setInverted(false);
-            armExtendingController.moveAtPosition(armPIDController
-                    .calculate(((SparkMotorController) armExtendingController).getAbsoluteRotations(), 15));
-            // Logic for retracting might not work because the motor resets to 4017 when it
-            // goes over and it will rarely be exactly 0 so the code will always be true \/
-        } else if ((xbox.get(
-                DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            System.out
-                    .println("Left Extend: " + ((SparkMotorController) armExtendingController).getAbsoluteRotations());
-            // armExtendingController.setInverted(true);
-            armExtendingController.moveAtPosition(armPIDController
-                    .calculate(((SparkMotorController) armExtendingController).getAbsoluteRotations(), 0));
-        } else if ((armRotationController.getRotations() > 13 &&
-                armRotationController.getRotations() < 20)
-                && (armExtendingController.getRotations() < 10)) {
-            armExtendingController.moveAtPosition(armPIDController
-                    .calculate(((SparkMotorController) armExtendingController).getAbsoluteRotations(), 7));
-        } else {
+            // System.out.println("PID TARGET RIGHT EXTEND PERCENT: "
+            // + armExtendingPIDController.calculate(armExtendingController.getRotations(),
+            // 15));
+            armExtendingController
+                    .moveAtPercent(armExtendingPIDController.calculate(armExtendingController.getRotations(), 15));
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            System.out.println("Left Extend: " + armExtendingController.getRotations());
+            // System.out.println("PID TARGET LEFT EXTEND PERCENT: "
+            // + armExtendingPIDController.calculate(armExtendingController.getRotations(),
+            // 0));
+            armExtendingController
+                    .moveAtPercent(armExtendingPIDController.calculate(armExtendingController.getRotations(), 0));
+            // If arm is at the elevator, extend the arm so it doesn't hit the elevator.
+        }
+        /*
+         * else if ((armRotationController.getRotations() > 13 &&
+         * armRotationController.getRotations() < 20)
+         * && (armExtendingController.getRotations() < 10)) {
+         * armExtendingController.moveAtPosition(armPIDController
+         * .calculate(((SparkMotorController)
+         * armExtendingController).getAbsoluteRotations(), 7));
+         * }
+         */
+        else {
             armExtendingController.moveAtPercent(0);
         }
-        // armExtendingController.setInverted(false);
-        // armExtendingController.moveAtPercent(
-        // armPIDController.calculate(((SparkMotorController)
-        // armExtendingController).getAbsoluteRotations(),
-        // 7));
-        // armExtendingController.moveAtPercent(5);
+
     }
 
     public void rotateMove() {
-        // armRotationController.moveAtPercent(15);
         if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.UP) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            System.out.println("Right Rotate: " +
-                    ((SparkMotorController) armRotationController).getAbsoluteRotations());
-            armRotationController.setInverted(true);
-            armRotationController.moveAtPercent(0.5);
-            // Logic for retracting might not work because the motor resets to 4017 when it
-            // goes over and it will rarely be exactly 0 so the code will always be true \/
-        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.DOWN) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            System.out.println("Left Rotate: " + ((SparkMotorController) armRotationController).getAbsoluteRotations());
+            System.out.println("Up Rotate: " + armRotationController.getRotations());
             armRotationController.setInverted(false);
-            armRotationController.moveAtPercent(0.5);
+            // System.out.println("PID TARGET UP ROTATE PERCENT: " +
+            // armRotationPIDController.calculate(armRotationController.getRotations(),
+            // 30));
+            armRotationController.moveAtPercent(armRotationPIDController.calculate(armRotationController.getRotations(),
+                    30));
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.DOWN) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            System.out.println("Down Rotate: " + armRotationController.getRotations());
+            armRotationController.setInverted(true);
+            // System.out.println("PID TARGET DOWN ROTATE PERCENT: " +
+            // armRotationPIDController.calculate(armRotationController.getRotations(),
+            // 70));
+            armRotationController
+                    .moveAtPercent(armRotationPIDController.calculate(armRotationController.getRotations(), 70));
         } else {
             armRotationController.moveAtPercent(0);
         }
-        System.out.println("Arm Rotate: " + ((SparkMotorController) armRotationController).getAbsoluteRotations());
+
+        // System.out.println("Arm Rotate: " + ((SparkMotorController)
+        // armRotationController).getAbsoluteRotations());
     }
 }

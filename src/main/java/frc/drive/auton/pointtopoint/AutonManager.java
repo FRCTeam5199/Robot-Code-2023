@@ -229,7 +229,7 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = timer.advanceIfElapsed(.5);
                     break;
                 case ARM_ELEVATOR_UP:
-                    Robot.elevator.elevate.moveAtPosition(2.315);
+                    Robot.elevator.elevatorController.moveAtPosition(2.315);
                     specialActionComplete2 = timer.advanceIfElapsed(.1);
                     System.out.println("tring to move Elevator");
                     break;
