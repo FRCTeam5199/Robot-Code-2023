@@ -1,20 +1,23 @@
 {
-  "java.configuration.updateBuildConfiguration": "automatic",
-  "java.server.launchMode": "Standard",
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "bin/": true,
-    "**/.classpath": true,
-    "**/.project": true,
-    "**/.settings": true,
-    "**/.factorypath": true,
-    "**/*~": true
-
-  },
-  "typescript.reportStyleChecksAsWarnings": false,
-  "java.compile.nullAnalysis.mode": "automatic"
+	"java.configuration.updateBuildConfiguration": "automatic",
+	"java.server.launchMode": "Standard",
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"bin/": true,
+		"**/.classpath": true,
+		"**/.project": true,
+		"**/.settings": true,
+		"**/.factorypath": true,
+		"**/*~": true
+	},
+	"typescript.reportStyleChecksAsWarnings": false,
+	"java.compile.nullAnalysis.mode": "automatic",
+	"prettier.printWidth": 180,
+	"prettier.proseWrap": "never",
+	"editor.wordWrap": "wordWrapColumn",
+	"editor.wordWrapColumn": 1000
 }

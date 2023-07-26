@@ -170,3 +170,4 @@ imgui.ini
 PathWeaver/pathweaver.json
 .idea/jarRepositories.xml
 .idea/misc.xml
+.vscode/settings.json

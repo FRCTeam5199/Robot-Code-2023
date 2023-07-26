@@ -42,7 +42,10 @@ public class Pneumatics implements ISubsystem {
         if (robotSettings.ENABLE_SPIKE && robotSettings.ENABLE_PNOOMATICS)
             spikePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE,
                     robotSettings.SPIKE_OUT_ID, robotSettings.SPIKE_IN_ID);
-
+        if (robotSettings.ENABLE_CLAW && robotSettings.ENABLE_PNOOMATICS)
+            clawPiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE,
+                    robotSettings.CLAW_OUT_ID, robotSettings.CLAW_IN_ID);
+        
     }
 
     @Override
@@ -68,9 +71,11 @@ public class Pneumatics implements ISubsystem {
     @Override
     public void updateGeneric() {
         if (robotSettings.PNEUMATICS_MODULE_TYPE == PneumaticsModuleType.CTREPCM) {
+            System.out.println("---------------- Running Compressor of type CTREPCM");
             compressor.enableDigital();
 
         } else if (robotSettings.PNEUMATICS_MODULE_TYPE == PneumaticsModuleType.REVPH) {
+            System.out.println("---------------- Running Compressor of type REVPH");
             pneumaticsHub.enableCompressorDigital();
         }
     }

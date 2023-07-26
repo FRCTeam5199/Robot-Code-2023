@@ -57,6 +57,8 @@ public abstract class DefaultConfig {
     public int INTAKE_OUT_ID;
     public int SPIKE_IN_ID;
     public int SPIKE_OUT_ID;
+    public int CLAW_IN_ID;
+    public int CLAW_OUT_ID;
     public PID limeLightPid = EMPTY_PID;
     public PID leveling = EMPTY_PID;
 
@@ -78,7 +80,7 @@ public abstract class DefaultConfig {
 
     // Intake
     public boolean CLAW_MANUAL = true;
-    public boolean ENABLE_CLAW = false;
+    public boolean ENABLE_CLAW = true;
     // public boolean ENABLE_SPIKE = false;
     // public boolean ENABLE_PIECE_MANAGER = false;
 

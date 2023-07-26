@@ -30,7 +30,7 @@ public class SwerveComp2023 extends DefaultConfig {
 
         // Wrist
         WRIST_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-        WRIST_MOTOR_ID = 34;
+        WRIST_MOTOR_ID = 31;
         WRIST_MOTOR_CANBUS = "rio";
         WRIST_MANUAL = false;
         ENABLE_WRIST = true;
@@ -68,7 +68,7 @@ public class SwerveComp2023 extends DefaultConfig {
 
         // CLAW
         CLAW_MANUAL = false;
-        ENABLE_CLAW = false;
+        ENABLE_CLAW = true;
 
         // INTAKE
         INTAKE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -86,6 +86,8 @@ public class SwerveComp2023 extends DefaultConfig {
         INTAKE_OUT_ID = 9;
         SPIKE_IN_ID = 8;
         SPIKE_OUT_ID = 11;
+        CLAW_IN_ID = 2;
+        CLAW_OUT_ID = 12;
 
         // 61:15 52:28 15:1
         // UI Styles

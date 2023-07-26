@@ -207,7 +207,10 @@ public class Arm implements ISubsystem {
          * .calculate(((SparkMotorController)
          * armExtendingController).getAbsoluteRotations(), 20));
          */
-        if (xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (armExtendingController.getRotations() > 1000) {
+            armExtendingController.moveAtPercent(1);
+
+        } else if (xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) {
             System.out.println("Right Extend: " + armExtendingController.getRotations());
             // armExtendingController.setInverted(false);
             // System.out.println("PID TARGET RIGHT EXTEND PERCENT: "
