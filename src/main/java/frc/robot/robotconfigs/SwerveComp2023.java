@@ -65,7 +65,7 @@ public class SwerveComp2023 extends DefaultConfig{
 
         //INTAKE
         INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-        INTAKE_MOTOR_BOTTOM_TYPE = AbstractMotorController.SupportedMotors.VICTOR;
+        INTAKE_MOTOR_BOTTOM_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         INTAKE_MOTOR_BOTTOM_ID = 54;
         INTAKE_MOTOR_LEFT_ID = 44;
         INTAKE_MOTOR_RIGHT_ID = 27;
@@ -105,7 +105,7 @@ public class SwerveComp2023 extends DefaultConfig{
         WHEEL_DIAMETER = 4; //update: now it's used once
         TURN_SCALE = 0.7;
         DRIVE_SCALE = 1;
-        DRIVE_GEARING = 1/6.75;
+        DRIVE_GEARING = 1/6.12;
         ENABLE_COLOR_SENSOR = true;
 
         CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
@@ -134,7 +134,17 @@ public class SwerveComp2023 extends DefaultConfig{
         SWERVE_TURN_BR = 6;
         SWERVE_DRIVE_BL = 7;
         SWERVE_TURN_BL = 8;
+        //Swerve CANCoders
+        FLcoderID = 11;
+        FRcoderID = 12;
+        BRcoderID = 13;
+        BLcoderID = 14;
         DRIVE_MOTOR_CANBUS = "Canivore1";
+        //offsets
+        FROFFSET = 5.287632;
+        FLOFFSET = 0.535359;
+        BROFFSET = 1.185767;
+        BLOFFSET = 1.63829+1.06765+0.532291;
 
 
         // Camera Settings

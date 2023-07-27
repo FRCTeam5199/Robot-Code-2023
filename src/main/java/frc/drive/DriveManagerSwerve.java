@@ -43,7 +43,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     public SwerveMotorController driverFR, driverBR, driverBL, driverFL;
     public IVision visionCamera;
     boolean useLocalOrientation = false;
-    double startHeading = 0;
+    double startHeading = 90;
     double rotation;
     double forwards;
     double orgDeg = 0;
@@ -52,10 +52,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     double firstPressed = 0;
     double currentMotorRot = 0;
     int limelightcounter = 0;
-    private Translation2d frontLeftLocation = new Translation2d(-trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701);
-    private Translation2d frontRightLocation = new Translation2d(-trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
-    private Translation2d backLeftLocation = new Translation2d(trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701);
-    private Translation2d backRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
+    private Translation2d frontLeftLocation = new Translation2d(trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701);
+    private Translation2d frontRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
+    private Translation2d backLeftLocation = new Translation2d(-trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701);
+    private Translation2d backRightLocation = new Translation2d(-trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701);
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
     private PIDController FRpid, BRpid, BLpid, FLpid;
     private PIDController limeLightPid, leveling;
@@ -206,7 +206,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
                 UserInterface.smartDashboardPutNumber("Cube Yaw", -99999999);
             }
         }
-        forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (1);
+        forwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y) * (-1);
         if (robotSettings.ENABLE_VISION && xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             visionCamera.setLedMode(IVision.VisionLEDMode.ON);
             //visionCamera.setLedMode(IVision.VisionLEDMode.ON);
@@ -222,7 +222,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             }
         } else {
             visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
-            leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (-1);
+            leftwards = xbox.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_X) * (1);
         }
             //visionCamera.setLedMode(IVision.VisionLEDMode.OFF);
 
@@ -349,10 +349,17 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         double gearRatio = 1;//robotSettings.SWERVE_SDS_DRIVE_BASE.getDriveReduction() * robotSettings.SWERVE_SDS_DRIVE_BASE.getWheelDiameter();
         double voltageMult = 95 / 371.0; // 127.4/371.0 is full speed
         //System.out.println(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        //if(Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) < -0.15 || Math.abs(xbox.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)) > 0.15){
         driverFR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverFL.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverBR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_BR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
         driverBL.driver.moveAtVoltage(adjustedDriveVoltage((FPS_BL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        /* }else{
+        driverFR.driver.moveAtVoltage(adjustedDriveVoltage((FPS_FR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        driverFL.driver.moveAtVoltage(-adjustedDriveVoltage((FPS_FL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        driverBR.driver.moveAtVoltage(-adjustedDriveVoltage((FPS_BR) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        driverBL.driver.moveAtVoltage(adjustedDriveVoltage((FPS_BL) * gearRatio * robotSettings.DRIVE_SCALE, voltageMult));
+        }*/
     }
 
     /**
@@ -509,10 +516,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     private void setKin(){
-        Translation2d FLPos = Objects.requireNonNullElseGet(frontLeftLocation, () -> frontLeftLocation = new Translation2d(-trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701));
-        Translation2d FRPos = Objects.requireNonNullElseGet(frontRightLocation, () -> frontRightLocation = new Translation2d(-trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701));
-        Translation2d BLPos = Objects.requireNonNullElseGet(backLeftLocation, () -> backLeftLocation = new Translation2d(trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701));
-        Translation2d BRPos = Objects.requireNonNullElseGet(backRightLocation, () -> backRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701));
+        Translation2d FLPos = Objects.requireNonNullElseGet(frontLeftLocation, () -> frontLeftLocation = new Translation2d(trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701));
+        Translation2d FRPos = Objects.requireNonNullElseGet(frontRightLocation, () -> frontRightLocation = new Translation2d(trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701));
+        Translation2d BLPos = Objects.requireNonNullElseGet(backLeftLocation, () -> backLeftLocation = new Translation2d(-trackLength / 2 / 39.3701, trackWidth / 2 / 39.3701));
+        Translation2d BRPos = Objects.requireNonNullElseGet(backRightLocation, () -> backRightLocation = new Translation2d(-trackLength / 2 / 39.3701, -trackWidth / 2 / 39.3701));
         kinematics = Objects.requireNonNullElseGet(kinematics, () -> kinematics = new SwerveDriveKinematics(FLPos, FRPos, BLPos, BRPos));
     }
 
@@ -560,14 +567,14 @@ public class DriveManagerSwerve extends AbstractDriveManager {
     }
 
     public void setCANCoder() {
-        FLcoder = new CANCoder(11, robotSettings.DRIVE_MOTOR_CANBUS);
-        FRcoder = new CANCoder(12, robotSettings.DRIVE_MOTOR_CANBUS);
-        BRcoder = new CANCoder(13, robotSettings.DRIVE_MOTOR_CANBUS);
-        BLcoder = new CANCoder(14, robotSettings.DRIVE_MOTOR_CANBUS);
-        FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
-        FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
-        BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
-        BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));
+        FLcoder = new CANCoder(robotSettings.FLcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        FRcoder = new CANCoder(robotSettings.FRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        BRcoder = new CANCoder(robotSettings.BRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        BLcoder = new CANCoder(robotSettings.BLcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
+        FLcoder.configMagnetOffset(-Math.toDegrees(robotSettings.FLOFFSET));
+        FRcoder.configMagnetOffset(-Math.toDegrees(robotSettings.FROFFSET));
+        BLcoder.configMagnetOffset(-Math.toDegrees(robotSettings.BLOFFSET));
+        BRcoder.configMagnetOffset(-Math.toDegrees(robotSettings.BROFFSET));
     }
 
     public void createPIDControllers(PID steeringPID) {
@@ -613,10 +620,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
 
         //System.out.println("original motor rotation: " + currentMotorRot + "motorRot = " + motorRot + "how far motor has moved: " + driverFR.driver.getRotations());
         if ((driverFR.driver.getRotations() > currentMotorRot - motorRot) && move > 0) {
-            driveMPS(adjustedDrive(-percent), adjustedDrive(0), adjustedRotation(0));
+            driveMPS(adjustedDrive(percent), adjustedDrive(0), adjustedRotation(0));
             return false;
         } else if ((driverFR.driver.getRotations() < currentMotorRot + motorRot) && move < 0) {
-            driveMPS(adjustedDrive(percent), adjustedDrive(0), adjustedRotation(0));
+            driveMPS(adjustedDrive(-percent), adjustedDrive(0), adjustedRotation(0));
             return false;
         } else {
             motorRot = 0;
@@ -634,10 +641,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         }
 
         if ((driverFR.driver.getRotations() > currentMotorRot - motorRot) && move > 0) {
-            driveMPS(adjustedDrive(-percent), adjustedDrive(0), adjustedRotation(0));
+            driveMPS(adjustedDrive(percent), adjustedDrive(0), adjustedRotation(0));
             return false;
         } else if ((driverFR.driver.getRotations() < currentMotorRot + motorRot) && move < 0) {
-            driveMPS(adjustedDrive(percent), adjustedDrive(0), adjustedRotation(0));
+            driveMPS(adjustedDrive(-percent), adjustedDrive(0), adjustedRotation(0));
             return false;
         } else {
             motorRot = 0;
