@@ -71,11 +71,9 @@ public class Pneumatics implements ISubsystem {
     @Override
     public void updateGeneric() {
         if (robotSettings.PNEUMATICS_MODULE_TYPE == PneumaticsModuleType.CTREPCM) {
-            System.out.println("---------------- Running Compressor of type CTREPCM");
             compressor.enableDigital();
 
         } else if (robotSettings.PNEUMATICS_MODULE_TYPE == PneumaticsModuleType.REVPH) {
-            System.out.println("---------------- Running Compressor of type REVPH");
             pneumaticsHub.enableCompressorDigital();
         }
     }

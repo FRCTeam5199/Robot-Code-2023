@@ -22,6 +22,7 @@ public class Claw implements ISubsystem {
     private I2C.Port i2cPort;
     public ColorSensorV3 m_colorSensor;
     public Timer closeTimer;
+    public boolean clawOpen = false;
 
     public Claw() {
         addToMetaList();
@@ -62,13 +63,14 @@ public class Claw implements ISubsystem {
     @Override
     public void updateGeneric() {
         // if (robotSettings.ENABLE_COLOR_SENSOR) {
-        //     UserInterface.smartDashboardPutNumber("proxy cube", m_colorSensor.getProximity());
-        //     // if (m_colorSensor.getProximity() >= 350) {
-        //     // if (clawLeft.getVoltage() >= 10 || clawRight.getVoltage() >= 10) {
-        //     // clawLeft.moveAtVoltage(0);
-        //     // clawRight.moveAtVoltage(0);
-        //     // }
-        //     // }
+        // UserInterface.smartDashboardPutNumber("proxy cube",
+        // m_colorSensor.getProximity());
+        // // if (m_colorSensor.getProximity() >= 350) {
+        // // if (clawLeft.getVoltage() >= 10 || clawRight.getVoltage() >= 10) {
+        // // clawLeft.moveAtVoltage(0);
+        // // clawRight.moveAtVoltage(0);
+        // // }
+        // // }
         // }
 
         moveClaw();
@@ -339,14 +341,23 @@ public class Claw implements ISubsystem {
 
     public void moveClaw() {
         if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            System.out.println("Left Claw");
+            // System.out.println("Left Claw");
             Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
         }
 
         if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            System.out.println("Right Claw");
+            // System.out.println("Right Claw");
             Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
         }
+
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) ==
+        // DefaultControllerEnums.ButtonStatus.DOWN) {
+        // if (!clawOpen) {
+        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
+        // } else if (!clawOpen) {
+        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
+        // }
+        // }
     }
 
     // public void clawIn() {

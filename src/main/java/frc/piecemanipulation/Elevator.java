@@ -181,15 +181,19 @@ public class Elevator implements ISubsystem {
             System.out.println("Elevator Up: " + elevatorController.getRotations());
             // System.out.println("PID TARGET UP ELEVATOR PERCENT: " +
             // elevatorPIDController.calculate(elevatorController.getRotations(), 35));
-            elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(), 35));
+            // elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(),
+            // 35));
+            elevatorPIDController.setSetpoint(38);
         } else if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             System.out.println("Elevator Down: " + elevatorController.getRotations());
             // System.out.println("PID TARGET DOWN ELEVATOR PERCENT: " +
             // elevatorPIDController.calculate(elevatorController.getRotations(), 0));
-            elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(), 0));
-        } else {
-            elevatorController.moveAtPercent(0);
+            // elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(),
+            // 0));
+            elevatorPIDController.setSetpoint(0);
         }
+
+        elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations()));
 
         // pidElevator.setSetpoint(15);
         // elevate.moveAtPercent(elevatorPIDController.calculate(elevate.getRotations(),

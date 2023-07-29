@@ -301,7 +301,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
             driveMPS(adjustedDrive(-forwards), adjustedDrive(-leftwards), adjustedRotation(rotation));
         } else {
-            driveMPS(adjustedDrive(forwards), adjustedDrive(leftwards), adjustedRotation(rotation));
+            driveMPS(adjustedDrive(-forwards), adjustedDrive(-leftwards), adjustedRotation(rotation));
         }
 
     }
