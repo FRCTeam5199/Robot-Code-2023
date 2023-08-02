@@ -5,6 +5,7 @@ import static frc.robot.Robot.robotSettings;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.controllers.basecontrollers.BaseController.DefaultControllers;
@@ -38,7 +39,7 @@ public class Arm implements ISubsystem {
         armRotationController.setBrake(true);
         armRotationPIDController.setTolerance(5, 10);
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> Resetting Arm Rotation Controller...");
+        armExtendingController.resetEncoder();
         armRotationController.resetEncoder();
     }
 
@@ -67,7 +68,6 @@ public class Arm implements ISubsystem {
 
         double exposition = armExtendingController.getRotations();
         extendMove();
-        rotateMove();
     }
 
     @Override
@@ -109,18 +109,16 @@ public class Arm implements ISubsystem {
 
     public void createControllers() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, DefaultControllers.XBOX_CONTROLLER);
-        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2,
-                DefaultControllers.XBOX_CONTROLLER);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1, DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, DefaultControllers.BUTTON_PANEL);
+        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, DefaultControllers.XBOX_CONTROLLER);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3, DefaultControllers.BUTTON_PANEL);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, DefaultControllers.BUTTON_PANEL);
     }
 
     public void createMotors() {
         if (robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-            armRotationController = new TalonMotorController(robotSettings.ARM_ROTATE_MOTOR_ID,
-                    robotSettings.ARM_MOTOR_CANBUS);
+            armRotationController = new TalonMotorController(robotSettings.ARM_ROTATE_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
         if (robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
             armRotationController = new SparkMotorController(robotSettings.ARM_ROTATE_MOTOR_ID, MotorType.kBrushless);
 
@@ -130,8 +128,7 @@ public class Arm implements ISubsystem {
 
         if (robotSettings.ARM_EXTEND) {
             if (robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
-                armExtendingController = new TalonMotorController(robotSettings.ARM_EXTEND_MOTOR_ID,
-                        robotSettings.ARM_MOTOR_CANBUS);
+                armExtendingController = new TalonMotorController(robotSettings.ARM_EXTEND_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
             if (robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
                 armExtendingController = new SparkMotorController(robotSettings.ARM_EXTEND_MOTOR_ID);
         }
@@ -153,44 +150,56 @@ public class Arm implements ISubsystem {
     }
 
     public void manuelDrive() {
-        /*
-         * if(Math.abs(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y)) >= .1){
-         * armr.moveAtVoltage(xbox2.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_Y) *
-         * -12);
-         * } else {
-         * armr.moveAtVoltage(0);
-         * }
-         */
+        if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            armExtendingController.setInverted(false);
+            armExtendingController.moveAtPercent(2);
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            armExtendingController.setInverted(true);
+            armExtendingController.moveAtPercent(2);
+        } else {
+            armExtendingController.moveAtPercent(0);
+        }
+
+        if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.UP) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            armRotationController.setInverted(false);
+            armRotationController.moveAtPercent(5);
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.DOWN) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            armRotationController.setInverted(true);
+            armRotationController.moveAtPercent(5);
+        } else {
+            armRotationController.moveAtPercent(0);
+        }
     }
 
     public void PositionDrive() {
-        /*
-         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.FENDER_SHOT) ==
-         * DefaultControllerEnums.ButtonStatus.DOWN){
-         * arm.moveAtPosition(-1);
-         * //System.out.println("trying to go to zero");
-         * }
-         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.TARMAC_SHOT) ==
-         * DefaultControllerEnums.ButtonStatus.DOWN){
-         * arm.moveAtPosition(-43);
-         * //System.out.println("trying to go verticle");
-         * }
-         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.LOW_SHOT) ==
-         * DefaultControllerEnums.ButtonStatus.DOWN){
-         * arm.moveAtPosition(-70);
-         * // System.out.println("back horizontal");
-         * }
-         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_DOWN) ==
-         * DefaultControllerEnums.ButtonStatus.DOWN){
-         * arm.moveAtPosition(-90);
-         * //System.out.println("trying to go groudn");
-         * }
-         * if(panel.get(ControllerEnums.ButtonPanelButtons2022.INTAKE_UP) ==
-         * DefaultControllerEnums.ButtonStatus.DOWN){
-         * arm.moveAtPosition(-15);
-         * //System.out.println("forward horizonal");
-         * }
-         */
+        // Human Player
+        if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            armRotationController.setInverted(false);
+            armRotationPIDController.setSetpoint(25);
+
+        // Stable
+        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            armRotationController.setInverted(true);
+            armRotationPIDController.setSetpoint(5);
+
+        // High Cone Goal
+        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            armRotationController.setInverted(true);
+            armRotationPIDController.setSetpoint(63);
+
+        // Mid Cone Goal
+        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            armRotationController.setInverted(true);
+            armRotationPIDController.setSetpoint(80);
+
+        // Low Cone Goal
+        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            armRotationController.setInverted(true);
+            armRotationPIDController.setSetpoint(55);
+        }
+
+        armRotationController.moveAtPercent(armRotationPIDController.calculate(armRotationController.getRotations()));
+
     }
 
     public void moveArm(double position) {
@@ -256,36 +265,5 @@ public class Arm implements ISubsystem {
 
         // armExtendingController
         // .moveAtPercent(/*armExtendingPIDController.calculate(armExtendingController.getRotations())*/-0.1);
-    }
-
-    public void rotateMove() {
-        // if ((xbox.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN)) {
-        // armRotationController
-        // .moveAtPercent(armRotationPIDController.calculate(armRotationController.getRotations(),
-        // 0));
-        // }
-
-        if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.UP) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            // System.out.println("Up Rotate: " + armRotationController.getRotations());
-            armRotationController.setInverted(false);
-            // System.out.println("PID TARGET UP ROTATE PERCENT: " +
-            // armRotationPIDController.calculate(armRotationController.getRotations(),
-            // 25));
-
-            armRotationPIDController.setSetpoint(25);
-        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.DOWN) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            // System.out.println("Down Rotate: " + armRotationController.getRotations());
-            armRotationController.setInverted(true);
-            // System.out.println("PID TARGET DOWN ROTATE PERCENT: " +
-            // armRotationPIDController.calculate(armRotationController.getRotations(),
-            // 63));
-            armRotationPIDController.setSetpoint(63);
-        }
-
-        armRotationController.moveAtPercent(armRotationPIDController.calculate(armRotationController.getRotations()));
-
-        // System.out.println("Arm Rotate: " + ((SparkMotorController)
-        // armRotationController).getAbsoluteRotations());
     }
 }

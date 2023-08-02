@@ -58,6 +58,7 @@ public class ManipulationManager implements ISubsystem {
 
     @Override
     public void updateTeleop() {
+
         if (xbox2.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             robotSettings.ARM_ELEVATOR_MANUAL = true;
         }
@@ -150,11 +151,11 @@ public class ManipulationManager implements ISubsystem {
                             armGoal = -235 + slippageOffSet;
                         }
                         // place low
-                        if (panel2.get(
-                                ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                            elevateGoal = 0;
-                            armGoal = -270 + slippageOffSet;
-                        }
+                        // if (panel2.get(
+                        //         ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        //     elevateGoal = 0;
+                        //     armGoal = -270 + slippageOffSet;
+                        // }
                     }
                     if (cubeConeMode) {
                         // place high
@@ -170,11 +171,11 @@ public class ManipulationManager implements ISubsystem {
                             armGoal = -195 + slippageOffSet;
                         }
                         // place low
-                        if (panel2.get(
-                                ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
-                            elevateGoal = -0;
-                            armGoal = -270 + slippageOffSet;
-                        }
+                        // if (panel2.get(
+                        //         ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        //     elevateGoal = -0;
+                        //     armGoal = -270 + slippageOffSet;
+                        // }
 
                     }
                 }
@@ -338,9 +339,9 @@ public class ManipulationManager implements ISubsystem {
     }
 
     public void enableControllers() {
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1,
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
                 BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3,
                 BaseController.DefaultControllers.BUTTON_PANEL);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2,
                 BaseController.DefaultControllers.XBOX_CONTROLLER);

@@ -51,8 +51,8 @@ public class SwerveComp2023 extends DefaultConfig {
         ELEVATOR_MOTOR_ID = 40;
         ELEVATOR_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         ELEVATOR_SPROCKET_DIAMETER = 2D;
-        ELEVATORPID = new PID(.3, 0.0, 0.0);
-        ARM_ELEVATOR_MANUAL = /* false */true;
+        ELEVATORPID = new PID(0.01, 0, 0);
+        ARM_ELEVATOR_MANUAL = false;
 
         // ARM
         ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -67,7 +67,7 @@ public class SwerveComp2023 extends DefaultConfig {
         ARM_EXTEND = true;
 
         // CLAW
-        CLAW_MANUAL = false;
+        CLAW_MANUAL = true;
         ENABLE_CLAW = true;
 
         // INTAKE

@@ -15,7 +15,7 @@ import frc.motors.TalonMotorController;
 
 public class Wrist implements ISubsystem {
     public AbstractMotorController wristController;
-    public PIDController wristPIDController = new PIDController(0.001, 0, 0);
+    public PIDController wristPIDController = new PIDController(0.01, 0, 0);
     public BaseController panel1, panel2, xbox, xbox2, midiTop, midiBot;
 
     public Wrist() {
@@ -114,8 +114,7 @@ public class Wrist implements ISubsystem {
         if (robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
             wristController = new TalonMotorController(robotSettings.WRIST_MOTOR_ID, robotSettings.WRIST_MOTOR_CANBUS);
         if (robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            wristController = new SparkMotorController(robotSettings.WRIST_MOTOR_ID,
-                    CANSparkMaxLowLevel.MotorType.kBrushed);
+            wristController = new SparkMotorController(robotSettings.WRIST_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushed);
         // wrist.setCurrentLimit(2,40);
         wristController.setCurrentLimit(40);
         wristController.setRealFactorFromMotorRPM(1, 1);
@@ -124,42 +123,34 @@ public class Wrist implements ISubsystem {
     }
 
     public void createControllers() {
-        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT,
-                BaseController.DefaultControllers.XBOX_CONTROLLER);
-        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2,
-                BaseController.DefaultControllers.XBOX_CONTROLLER);
-        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
-                BaseController.DefaultControllers.BUTTON_PANEL);
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public void moveWrist() {
-        // FIND BETTER BUTTONS FOR WRIST \/
         // MAKE IT SO WHEN YOU PRESS BUTTON ONCE IT WILL FLIP WRIST \/
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // wristPIDController.setSetpoint(300);
-        // System.out.println("Right Wrist: " + wristController.getRotations());
-        // System.out.println("PID TARGET RIGHT WRIST PERCENT: "
-        // + wristPIDController.calculate(wristController.getRotations()));
-
-        // } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // wristPIDController.setSetpoint(0);
-        // System.out.println("Left Wrist: " + wristController.getRotations());
-        // // System.out.println("PID TARGET LEFT WRIST PERCENT: "
-        // // + wristPIDController.calculate(wristController.getRotations()));
+        // if (wristController.getRotations() > 1000) {
+        //     System.out.println("Readjusting...");
+        //     wristController.moveAtPercent(-1);
         // }
 
+        if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            wristPIDController.setSetpoint(100);
+            System.out.println("Right Wrist: " + wristController.getRotations());
+            System.out.println("PID TARGET RIGHT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+        } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
+            DefaultControllerEnums.ButtonStatus.DOWN) {
+            wristPIDController.setSetpoint(0);
+            System.out.println("Left Wrist: " + wristController.getRotations());
+            System.out.println("PID TARGET LEFT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+        }
+
         // System.out.println("Wrist: " + wristController.getRotations());
-        // System.out.println(
-        // "PID TARGET WRIST PERCENT: " +
-        // -wristPIDController.calculate(wristController.getRotations()));
+        // System.out.println("PID TARGET WRIST PERCENT: " + -wristPIDController.calculate(wristController.getRotations()));
         // wristController.moveAtPercent(-wristPIDController.calculate(wristController.getRotations()));
 
     }

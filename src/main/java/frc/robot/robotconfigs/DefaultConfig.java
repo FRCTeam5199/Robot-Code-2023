@@ -192,8 +192,8 @@ public abstract class DefaultConfig {
 
     public int XBOX_CONTROLLER_USB_SLOT = 0;
     public int XBOX_CONTROLLER_USB_SLOT_2 = 1;
-    public int BUTTON_PANEL_USB_SLOT1 = 2;
-    public int BUTTON_PANEL_USB_SLOT2 = 3;
+    public int BUTTON_PANEL_USB_SLOT2 = 2;
+    public int BUTTON_PANEL_USB_SLOT3 = 3;
     public int MIDI_CONTROLLER_TOP_ID = 3;
     public int MIDI_CONTROLLER_BOT_ID = 4;
 

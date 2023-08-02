@@ -88,9 +88,9 @@ public class DriveManagerSwerve extends AbstractDriveManager {
                 BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID,
                 BaseController.DefaultControllers.BUTTON_PANEL);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1,
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
                 BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3,
                 BaseController.DefaultControllers.BUTTON_PANEL);
         createPIDControllers(new PID(0.011, 0.0, 0.0));
         createDriveMotors();

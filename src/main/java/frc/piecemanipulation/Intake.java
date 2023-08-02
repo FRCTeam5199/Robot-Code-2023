@@ -144,9 +144,9 @@ public class Intake implements ISubsystem {
     public void createControllers() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT,
                 BaseController.DefaultControllers.XBOX_CONTROLLER);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1,
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
                 BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3,
                 BaseController.DefaultControllers.BUTTON_PANEL);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID,
                 BaseController.DefaultControllers.BUTTON_PANEL);

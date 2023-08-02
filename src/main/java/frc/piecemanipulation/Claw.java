@@ -73,7 +73,7 @@ public class Claw implements ISubsystem {
         // // }
         // }
 
-        moveClaw();
+        // moveClaw();
     }
 
     @Override
@@ -141,224 +141,56 @@ public class Claw implements ISubsystem {
      */
 
     public void createControllers() {
-        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT,
-                BaseController.DefaultControllers.XBOX_CONTROLLER);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT1,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID,
-                BaseController.DefaultControllers.BUTTON_PANEL);
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public void manuelDrive() {
-        // if (!robotSettings.BRANDONISNOTHERE) {
-        // if (!manipulationManager.cubeConeMode) {
-        // // if (xbox.get(
-        // // DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // // // System.out.println("X is being pressed");
-        // // // clawRight.moveAtVoltage(3);
-        // // // clawLeft.moveAtVoltage(-3);
-        // // // clawBottom.moveAtPercent(1);
-        // // } else if (xbox
-        // // .get(DefaultControllerEnums.XBoxButtons.A_CROSS) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // // if (robotSettings.ENABLE_COLOR_SENSOR) {
-        // // if (m_colorSensor.getProximity() >= 350) {
-        // // clawLeft.moveAtVoltage(0);
-        // // clawRight.moveAtVoltage(0);
-        // // clawBottom.moveAtPercent(0);
-        // // } else {
-        // // // System.out.println("Y is being pressed");
-        // // clawRight.moveAtVoltage(-12);
-        // // clawLeft.moveAtVoltage(12);
-        // // clawBottom.moveAtPercent(-.6);
-        // // }
-        // // } else {
-        // // // System.out.println("Y is being pressed");
-        // // clawRight.moveAtVoltage(-12);
-        // // clawLeft.moveAtVoltage(12);
-        // // clawBottom.moveAtPercent(-.6);
-        // // }
-        // // } else {
-        // // clawRight.moveAtVoltage(0);
-        // // clawLeft.moveAtVoltage(0);
-        // // clawBottom.moveAtPercent(0);
-        // // }
-        // }
-        // if (manipulationManager.cubeConeMode) {
-        // // System.out.println(elevate.getRotations());
-        // // clawRight.moveAtVoltage(0);
-        // // clawLeft.moveAtVoltage(0);
-        // // clawBottom.moveAtPercent(0);
-        // if (xbox.get(
-        // DefaultControllerEnums.XBoxButtons.GUIDE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        // closeTimer.reset();
-        // }
-        // // if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        // // closeTimer.reset();
-        // // }
-        // if (robotSettings.ENABLE_COLOR_SENSOR) {
-        // // if (m_colorSensor.getProximity() >= 150 && closeTimer.get() >= .5) {
-        // // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        // // closeTimer.reset();
-        // // }
-        // }
-        // }
-        // } else {
-        // // if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // // // System.out.println("X is being pressed");
-        // // clawRight.moveAtVoltage(6);
-        // // clawLeft.moveAtVoltage(-6);
-        // // clawBottom.moveAtPercent(1);
-        // // } else if (xbox
-        // // .get(DefaultControllerEnums.XBoxButtons.A_CROSS) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // // if (robotSettings.ENABLE_COLOR_SENSOR) {
-        // // if (m_colorSensor.getProximity() >= 500) {
-        // // clawLeft.moveAtVoltage(0);
-        // // clawRight.moveAtVoltage(0);
-        // // clawBottom.moveAtPercent(0);
-        // // } else {
-        // // // System.out.println("Y is being pressed");
-        // // clawRight.moveAtVoltage(-12);
-        // // clawLeft.moveAtVoltage(12);
-        // // clawBottom.moveAtPercent(-.6);
-        // // }
-        // // } else {
-        // // // System.out.println("Y is being pressed");
-        // // clawRight.moveAtVoltage(-12);
-        // // clawLeft.moveAtVoltage(12);
-        // // clawBottom.moveAtPercent(-.6);
-        // // }
-        // // } else {
-        // // clawRight.moveAtVoltage(0);
-        // // clawLeft.moveAtVoltage(0);
-        // // clawBottom.moveAtPercent(0);
-        // // }
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        // closeTimer.reset();
-        // }
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        // closeTimer.reset();
-        // }
-        // if (closeTimer.hasElapsed(.5)) {
-        // if (m_colorSensor.getProximity() >= 1024) {
-        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        // closeTimer.reset();
-        // }
-        // }
-        // }
-        // if (!robotSettings.ARM_ELEVATOR_MANUAL) {
-        // switch (robotSettings.DRIVE_STYLE) {
-        // case MIDI: {
-        // if (midiTop.get(ControllerEnums.MidiController.R2C4) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        // }
-        // if (midiTop.get(ControllerEnums.MidiController.R1C3) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        // }
-        // if (midiTop.get(ControllerEnums.MidiController.R1C2) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-        // }
-        // break;
-        // }
-        // case STANDARD_2023: {
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) ==
-        // ButtonStatus.DOWN) {
-        // pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        // }
-        // if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) ==
-        // ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        // }
-        // if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) ==
-        // ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-        // }
-        // if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) ==
-        // ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        // }
-        // if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) ==
-        // ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        // }
-        // if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) ==
-        // ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-        // break;
-        // }
-        // break;
-        // }
-        // }
-        // // }
-        // } else {
-        // switch (robotSettings.DRIVE_STYLE) {
-        // case MIDI: {
-        // if (midiTop.get(ControllerEnums.MidiController.R2C5) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        // }
-        // if (midiTop.get(ControllerEnums.MidiController.R2C6) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-        // }
-        // break;
-        // }
-        // case STANDARD_2023: {
-        // /*
-        // * if (panel2.get(ControllerEnums.MidiController.R2C5) ==
-        // * DefaultControllerEnums.ButtonStatus.DOWN) {
-        // * Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
-        // * }
-        // * if (panel2.get(ControllerEnums.MidiController.R2C6) ==
-        // * DefaultControllerEnums.ButtonStatus.DOWN) {
-        // * Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-        // * break;
-        // * }
-        // */
-        // }
-        // }
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     // System.out.println("Left Claw");
+        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
+        // } else if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     // System.out.println("Right Claw");
+        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
         // }
 
+        // THIS WORKS \/
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     if (clawOpen) {
+        //         Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
+        //         clawOpen = false;
+        //     } else {
+        //         Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
+        //         clawOpen = true;
+        //     }
+        // }
     }
 
     public void moveClaw() {
-        if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            // System.out.println("Left Claw");
-            Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        }
-
-        if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            // System.out.println("Right Claw");
-            Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        }
-
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) ==
-        // DefaultControllerEnums.ButtonStatus.DOWN) {
-        // if (!clawOpen) {
-        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        // } else if (!clawOpen) {
-        // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     // System.out.println("Left Claw");
+        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
         // }
+
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     // System.out.println("Right Claw");
+        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
         // }
-    }
+
+            // if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
+            //     DefaultControllerEnums.ButtonStatus.DOWN) {
+            // if (clawOpen) {
+            //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
+            //     clawOpen = false;
+            // } else {
+            //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
+            //     clawOpen = true;
+            // }
+        // }
+    // }
 
     // public void clawIn() {
     // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
@@ -366,5 +198,5 @@ public class Claw implements ISubsystem {
 
     // public void clawOut() {
     // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-    // }
+    }
 }
