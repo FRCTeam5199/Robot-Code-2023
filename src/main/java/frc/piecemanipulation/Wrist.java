@@ -138,16 +138,16 @@ public class Wrist implements ISubsystem {
         //     wristController.moveAtPercent(-1);
         // }
 
-        if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            wristPIDController.setSetpoint(100);
-            System.out.println("Right Wrist: " + wristController.getRotations());
-            System.out.println("PID TARGET RIGHT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
-        } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
-            DefaultControllerEnums.ButtonStatus.DOWN) {
-            wristPIDController.setSetpoint(0);
-            System.out.println("Left Wrist: " + wristController.getRotations());
-            System.out.println("PID TARGET LEFT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
-        }
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     wristPIDController.setSetpoint(100);
+        //     System.out.println("Right Wrist: " + wristController.getRotations());
+        //     System.out.println("PID TARGET RIGHT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+        // } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
+        //     DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     wristPIDController.setSetpoint(0);
+        //     System.out.println("Left Wrist: " + wristController.getRotations());
+        //     System.out.println("PID TARGET LEFT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+        // }
 
         // System.out.println("Wrist: " + wristController.getRotations());
         // System.out.println("PID TARGET WRIST PERCENT: " + -wristPIDController.calculate(wristController.getRotations()));

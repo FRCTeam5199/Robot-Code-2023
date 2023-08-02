@@ -173,9 +173,10 @@ public class Arm implements ISubsystem {
 
     public void PositionDrive() {
         // Human Player
+        // MAKE ARM LOWER \/
         if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == DefaultControllerEnums.ButtonStatus.DOWN) {
             armRotationController.setInverted(false);
-            armRotationPIDController.setSetpoint(25);
+            armRotationPIDController.setSetpoint(30);
 
         // Stable
         } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
