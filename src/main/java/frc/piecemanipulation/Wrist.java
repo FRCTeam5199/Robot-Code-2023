@@ -15,7 +15,8 @@ import frc.motors.TalonMotorController;
 
 public class Wrist implements ISubsystem {
     public AbstractMotorController wristController;
-    public PIDController wristPIDController = new PIDController(0.01, 0, 0);
+    // USE PID VALUE FOR COMPETITION: 0.01 \/
+    public PIDController wristPIDController = new PIDController(0.003, 0, 0);
     public BaseController panel1, panel2, xbox, xbox2, midiTop, midiBot;
 
     public Wrist() {
@@ -133,25 +134,25 @@ public class Wrist implements ISubsystem {
 
     public void moveWrist() {
         // MAKE IT SO WHEN YOU PRESS BUTTON ONCE IT WILL FLIP WRIST \/
-        // if (wristController.getRotations() > 1000) {
-        //     System.out.println("Readjusting...");
-        //     wristController.moveAtPercent(-1);
-        // }
+        if (wristController.getRotations() > 1000) {
+            System.out.println("Readjusting...");
+            wristController.moveAtPercent(-5);
+        }
 
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     wristPIDController.setSetpoint(100);
-        //     System.out.println("Right Wrist: " + wristController.getRotations());
-        //     System.out.println("PID TARGET RIGHT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
-        // } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
-        //     DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     wristPIDController.setSetpoint(0);
-        //     System.out.println("Left Wrist: " + wristController.getRotations());
-        //     System.out.println("PID TARGET LEFT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
-        // }
+        if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            wristPIDController.setSetpoint(350);
+            System.out.println("Right Wrist: " + wristController.getRotations());
+            System.out.println("PID TARGET RIGHT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+        } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
+            DefaultControllerEnums.ButtonStatus.DOWN) {
+            wristPIDController.setSetpoint(10);
+            System.out.println("Left Wrist: " + wristController.getRotations());
+            System.out.println("PID TARGET LEFT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+        }
 
-        // System.out.println("Wrist: " + wristController.getRotations());
-        // System.out.println("PID TARGET WRIST PERCENT: " + -wristPIDController.calculate(wristController.getRotations()));
-        // wristController.moveAtPercent(-wristPIDController.calculate(wristController.getRotations()));
+        System.out.println("Wrist: " + wristController.getRotations());
+        System.out.println("PID TARGET WRIST PERCENT: " + -wristPIDController.calculate(wristController.getRotations()));
+        wristController.moveAtPercent(-wristPIDController.calculate(wristController.getRotations()));
 
     }
 }

@@ -149,15 +149,15 @@ public class Claw implements ISubsystem {
     }
 
     public void manuelDrive() {
-        if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            // System.out.println("Left Claw");
-            Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        } else if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            // System.out.println("Right Claw");
-            Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        }
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     // System.out.println("Left Claw");
+        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
+        // } else if (xbox.get(DefaultControllerEnums.XBoxButtons.Y_TRIANGLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     // System.out.println("Right Claw");
+        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
+        // }
 
-        // THIS WORKS \/
+        // THIS WORKS (Kind of.......) \/
         // if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
         //     if (clawOpen) {
         //         Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
