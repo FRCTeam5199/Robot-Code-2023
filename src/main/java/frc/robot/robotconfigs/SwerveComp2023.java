@@ -20,6 +20,7 @@ public class SwerveComp2023 extends DefaultConfig {
         ENABLE_PDP = true;
         ENABLE_APRILTAG = false;
         ENABLE_PIECE_MANAGER = false;
+        ENABLE_COMPOSITE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
         ENABLE_LEDS = false;
         ENABLE_SPIKE = false;

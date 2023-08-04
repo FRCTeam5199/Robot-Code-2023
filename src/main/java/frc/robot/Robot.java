@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
     public static Elevator elevator;
     public static Pneumatics pneumatics;
     public static ManipulationManager manipulationManager;
+    public static CompositeManager compositeManager;
     public static Arm arm;
     public static Claw claw;
     public static AbstractAutonManager autonManager;
@@ -87,7 +88,6 @@ public class Robot extends TimedRobot {
             chirp = new Chirp();
         if (robotSettings.ENABLE_WRIST)
             wrist = new Wrist();
-
         if (robotSettings.ENABLE_ARM) {
             arm = new Arm();
         }
@@ -98,13 +98,15 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_PIECE_MANAGER) {
             manipulationManager = new ManipulationManager();
         }
+        if (robotSettings.ENABLE_COMPOSITE_MANAGER) {
+            compositeManager = new CompositeManager();
+        }
         if (robotSettings.ENABLE_PNOOMATICS)
             pneumatics = new Pneumatics();
         if (robotSettings.ENABLE_DRIVE) {
             switch (robotSettings.AUTON_TYPE) {
                 case POINT_TO_POINT:
                     autonManager = new frc.drive.auton.pointtopoint.AutonManager(AutonRoutines.DO_NOTHING_RED, driver);// Trajectories.TEST_PATH,
-                                                                                                                       // driver);
                     System.out.println("autoRoutine waypoint");
                     break;
             }

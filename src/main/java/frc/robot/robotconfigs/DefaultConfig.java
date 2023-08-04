@@ -94,6 +94,7 @@ public abstract class DefaultConfig {
     public boolean INTAKE_MANUAL = true;
     public boolean ENABLE_INTAKE = false;
     public boolean ENABLE_SPIKE = false;
+    public boolean ENABLE_COMPOSITE_MANAGER = false;
     public boolean ENABLE_PIECE_MANAGER = false;
 
     public SupportedMotors WRIST_MOTOR_TYPE = SupportedMotors.CAN_SPARK_MAX;

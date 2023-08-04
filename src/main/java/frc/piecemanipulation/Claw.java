@@ -62,18 +62,6 @@ public class Claw implements ISubsystem {
 
     @Override
     public void updateGeneric() {
-        // if (robotSettings.ENABLE_COLOR_SENSOR) {
-        // UserInterface.smartDashboardPutNumber("proxy cube",
-        // m_colorSensor.getProximity());
-        // // if (m_colorSensor.getProximity() >= 350) {
-        // // if (clawLeft.getVoltage() >= 10 || clawRight.getVoltage() >= 10) {
-        // // clawLeft.moveAtVoltage(0);
-        // // clawRight.moveAtVoltage(0);
-        // // }
-        // // }
-        // }
-
-        // moveClaw();
     }
 
     @Override
@@ -105,41 +93,6 @@ public class Claw implements ISubsystem {
         return null;
     }
 
-    /*
-     * public void createMotors() {
-     * if (robotSettings.CLAW_MOTOR_TYPE ==
-     * AbstractMotorController.SupportedMotors.TALON_FX) {
-     * clawLeft = new TalonMotorController(robotSettings.CLAW_MOTOR_LEFT_ID,
-     * robotSettings.CLAW_MOTOR_CANBUS);
-     * clawRight = new TalonMotorController(robotSettings.CLAW_MOTOR_RIGHT_ID,
-     * robotSettings.CLAW_MOTOR_CANBUS);
-     * }
-     * if (robotSettings.CLAW_MOTOR_TYPE ==
-     * AbstractMotorController.SupportedMotors.CAN_SPARK_MAX) {
-     * clawLeft = new SparkMotorController(robotSettings.CLAW_MOTOR_LEFT_ID);
-     * clawRight = new SparkMotorController(robotSettings.CLAW_MOTOR_RIGHT_ID);
-     * }
-     * if (robotSettings.CLAW_MOTOR_TYPE ==
-     * AbstractMotorController.SupportedMotors.VICTOR) {
-     * clawLeft = new VictorMotorController(robotSettings.CLAW_MOTOR_LEFT_ID);
-     * clawRight = new VictorMotorController(robotSettings.CLAW_MOTOR_RIGHT_ID);
-     * }
-     * if (robotSettings.CLAW_MOTOR_BOTTOM_TYPE ==
-     * AbstractMotorController.SupportedMotors.VICTOR) {
-     * clawBottom = new VictorMotorController(robotSettings.CLAW_MOTOR_BOTTOM_ID);
-     * }
-     * clawLeft.setCurrentLimit(20);
-     * clawRight.setCurrentLimit(20);
-     * clawRight.setBrake(true);
-     * clawLeft.setBrake(true);
-     * clawRight.setInverted(true);
-     * clawLeft.setInverted(true);
-     * clawBottom.setBrake(true);
-     * clawBottom.setInverted(false);
-     * 
-     * }
-     */
-
     public void createControllers() {
         xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
@@ -156,47 +109,5 @@ public class Claw implements ISubsystem {
         //     // System.out.println("Right Claw");
         //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
         // }
-
-        // THIS WORKS (Kind of.......) \/
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     if (clawOpen) {
-        //         Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        //         clawOpen = false;
-        //     } else {
-        //         Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        //         clawOpen = true;
-        //     }
-        // }
-    }
-
-    public void moveClaw() {
-        // CHANGE BUTTONS TO A AND Y \/
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     // System.out.println("Left Claw");
-        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-        // }
-
-        // if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     // System.out.println("Right Claw");
-        //     Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-        // }
-
-            // if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            //     if (clawOpen) {
-            //         Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
-            //         clawOpen = false;
-            //     } else {
-            //         Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-            //         clawOpen = true;
-            //     }
-            // }
-    // }
-
-    // public void clawIn() {
-    // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kReverse);
-    // }
-
-    // public void clawOut() {
-    // Robot.pneumatics.clawPiston.set(DoubleSolenoid.Value.kForward);
     }
 }

@@ -62,8 +62,12 @@ public class Arm implements ISubsystem {
             }
         }
 
-        if (xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
             resetArmEncoder();
+        }
+
+        if (xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            armExtendingController.setBrake(false);
         }
 
         double exposition = armExtendingController.getRotations();
@@ -172,35 +176,33 @@ public class Arm implements ISubsystem {
     }
 
     public void PositionDrive() {
-        // Human Player
-        // MAKE ARM LOWER \/
-        if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            armRotationController.setInverted(false);
-            armRotationPIDController.setSetpoint(27);
+        // // Human Player
+        // if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1)/*panel2.get(ControllerEnums.ButtonPanelButtonsPlacement2023.)*/ == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     armRotationController.setInverted(false);
+        //     armRotationPIDController.setSetpoint(27);
 
-        // Stable
-        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            armRotationController.setInverted(true);
-            armRotationPIDController.setSetpoint(5);
+        // // Stable
+        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     armRotationController.setInverted(true);
+        //     armRotationPIDController.setSetpoint(5);
 
-        // High Cone Goal
-        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            armRotationController.setInverted(true);
-            armRotationPIDController.setSetpoint(63);
+        // // High Cone Goal
+        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     armRotationController.setInverted(true);
+        //     armRotationPIDController.setSetpoint(63);
 
-        // Mid Cone Goal
-        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            armRotationController.setInverted(true);
-            armRotationPIDController.setSetpoint(80);
+        // // Mid Cone Goal
+        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     armRotationController.setInverted(true);
+        //     armRotationPIDController.setSetpoint(80);
 
-        // Low Cone Goal
-        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            armRotationController.setInverted(true);
-            armRotationPIDController.setSetpoint(55);
-        }
+        // // Low Cone Goal
+        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     armRotationController.setInverted(true);
+        //     armRotationPIDController.setSetpoint(55);
+        // }
 
         armRotationController.moveAtPercent(armRotationPIDController.calculate(armRotationController.getRotations()));
-
     }
 
     public void moveArm(double position) {
@@ -226,40 +228,20 @@ public class Arm implements ISubsystem {
             System.out.println("Adjusting...");
         }
 
-        if (xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) ==
-            DefaultControllerEnums.ButtonStatus.DOWN) {
-            // System.out.println("Right Extend: " + armExtendingController.getRotations());
-            // // armExtendingController.setInverted(false);
-            // System.out.println("PID TARGET RIGHT EXTEND PERCENT: "
-            // + armExtendingPIDController.calculate(armExtendingController.getRotations(), 15));
+        if (xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            System.out.println("Right Arm Extend: " + armExtendingController.getRotations());
+            // armExtendingController.setInverted(false);
+            System.out.println("PID TARGET RIGHT EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations(), 15));
             armExtendingPIDController.setSetpoint(15);
-        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) ==
-            DefaultControllerEnums.ButtonStatus.DOWN)) {
-            // System.out.println("Left Extend: " + armExtendingController.getRotations());
-            // System.out.println("PID TARGET LEFT EXTEND PERCENT: "
-            // + armExtendingPIDController.calculate(armExtendingController.getRotations(), 0));
-            armExtendingPIDController.setSetpoint(0);
-            // If arm is at the elevator, extend the arm so it doesn't hit the elevator.
+        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+            System.out.println("Left Arm Extend: " + armExtendingController.getRotations());
+            System.out.println("PID TARGET LEFT EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations(), 0));
+            armExtendingPIDController.setSetpoint(0.5);
         }
-        // /*
-        // * else if ((armRotationController.getRotations() > 13 &&
-        // * armRotationController.getRotations() < 20)
-        // * && (armExtendingController.getRotations() < 10)) {
-        // * armExtendingController.moveAtPosition(armPIDController
-        // * .calculate(((SparkMotorController)
-        // * armExtendingController).getAbsoluteRotations(), 7));
-        // * }
-        // */
-        // else {
-        // armExtendingController.moveAtPercent(0);
-        // }
 
-        // System.out.println("Extend: " + armExtendingController.getRotations());
-        // System.out.println("PID TARGET EXTEND PERCENT: "
-        // + armExtendingPIDController.calculate(armExtendingController.getRotations(),
-        // 15));
+        System.out.println("Extend: " + armExtendingController.getRotations());
+        System.out.println("PID TARGET EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations()));
 
-        // armExtendingController
-        // .moveAtPercent(/*armExtendingPIDController.calculate(armExtendingController.getRotations())*/-0.1);
+        armExtendingController.moveAtPercent(-armExtendingPIDController.calculate(armExtendingController.getRotations()));
     }
 }
