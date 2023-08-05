@@ -35,8 +35,9 @@ public class Arm implements ISubsystem {
         createExtendMotorPid(robotSettings.ARM_EXTEND_PID);
         createRotateMotorPid(robotSettings.ARM_ROTATE_PID);
 
-        armExtendingController.setBrake(false);
         armRotationController.setBrake(true);
+        armExtendingController.setBrake(true);
+
         armRotationPIDController.setTolerance(5, 10);
 
         armExtendingController.resetEncoder();
@@ -62,12 +63,14 @@ public class Arm implements ISubsystem {
             }
         }
 
-        if (xbox2.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (xbox.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
             resetArmEncoder();
         }
 
-        if (xbox2.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (xbox.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            System.out.println("Turning off brake mode");
             armExtendingController.setBrake(false);
+            armRotationController.setBrake(false);
         }
 
         double exposition = armExtendingController.getRotations();
@@ -224,23 +227,23 @@ public class Arm implements ISubsystem {
          * armExtendingController).getAbsoluteRotations(), 20));
          */
         if (armExtendingController.getRotations() > 1000) {
-            armExtendingController.moveAtPercent(1);
             System.out.println("Adjusting...");
+            armExtendingController.moveAtPercent(-5);
         }
 
-        if (xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            System.out.println("Right Arm Extend: " + armExtendingController.getRotations());
-            // armExtendingController.setInverted(false);
-            System.out.println("PID TARGET RIGHT EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations(), 15));
-            armExtendingPIDController.setSetpoint(15);
-        } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN)) {
-            System.out.println("Left Arm Extend: " + armExtendingController.getRotations());
-            System.out.println("PID TARGET LEFT EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations(), 0));
-            armExtendingPIDController.setSetpoint(0.5);
-        }
+        // if (xbox.get(DefaultControllerEnums.XBoxPOVButtons.RIGHT) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     // armExtendingController.setInverted(false);
+        //     // System.out.println("Right Arm Extend: " + armExtendingController.getRotations());
+        //     // System.out.println("PID TARGET RIGHT EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations(), 15));
+        //     armExtendingPIDController.setSetpoint(15);
+        // } else if ((xbox.get(DefaultControllerEnums.XBoxPOVButtons.LEFT) == DefaultControllerEnums.ButtonStatus.DOWN)) {
+        //     // System.out.println("Left Arm Extend: " + armExtendingController.getRotations());
+        //     // System.out.println("PID TARGET LEFT EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations(), 0));
+        //     armExtendingPIDController.setSetpoint(0.5);
+        // }
 
-        System.out.println("Extend: " + armExtendingController.getRotations());
-        System.out.println("PID TARGET EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations()));
+        // System.out.println("Extend: " + armExtendingController.getRotations());
+        // System.out.println("PID TARGET EXTEND PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations()));
 
         armExtendingController.moveAtPercent(-armExtendingPIDController.calculate(armExtendingController.getRotations()));
     }

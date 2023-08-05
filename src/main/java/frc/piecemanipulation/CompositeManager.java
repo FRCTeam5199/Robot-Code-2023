@@ -45,66 +45,106 @@ public class CompositeManager implements ISubsystem  {
 
     @Override
     public void updateTeleop() {
-        // if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     currentState = stateMachine.HUMANPLAYER;
-        // // Stable
-        // } else if (panel2.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     currentState = stateMachine.STABLE;
+        if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            currentState = stateMachine.HUMANPLAYER;
+        // Stable
+        } else if (panel2.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            currentState = stateMachine.STABLE;
 
-        // // High Cone Goal
-        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     currentState = stateMachine.HIGH;
+        // High Cone Goal
+        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            currentState = stateMachine.HIGH;
 
-        // // Mid Cone Goal
-        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     currentState = stateMachine.MID;
+        // Mid Cone Goal
+        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            currentState = stateMachine.MID;
 
-        // // Low Cone Goal
-        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     currentState = stateMachine.LOW;
-        // }
+        // Low Cone Goal
+        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            currentState = stateMachine.LOW;
+        }
 
-        // switch (currentState) {
-        //     case HUMANPLAYER:
-        //         arm.armRotationController.setInverted(false);
-        //         arm.armRotationPIDController.setSetpoint(27);
+        //
+        switch (currentState) {
+            case HUMANPLAYER:
+                arm.armRotationController.setInverted(false);
 
-        //         elevator.elevatorPIDController.setSetpoint(38);
+                arm.armExtendingPIDController.setSetpoint(15);
                 
-        //         break;
-        //     case STABLE:
-        //         arm.armRotationController.setInverted(true);
-        //         arm.armRotationPIDController.setSetpoint(5);
-        //         elevator.elevatorPIDController.setSetpoint(0);
+                arm.armRotationPIDController.setSetpoint(25);
 
-        //         break;
-        //     case HIGH:
-        //         arm.armRotationController.setInverted(true);
-        //         elevator.elevatorPIDController.setSetpoint(0);
-        //         arm.armRotationPIDController.setSetpoint(63);
+                elevator.elevatorPIDController.setSetpoint(38);
+                
+                break;
+            case STABLE:
+                arm.armRotationController.setInverted(true);
+                
+                elevator.elevatorPIDController.setSetpoint(0);
 
-        //         if (arm.armRotationController.getRotations() > 40) {
-        //             elevator.elevatorPIDController.setSetpoint(38);
-        //         }
+                if ((arm.armExtendingController.getRotations() < 13) && (arm.armRotationController.getRotations() > 5)) {
 
-        //         break;
-        //     case MID:
-        //         arm.armRotationController.setInverted(true);
-        //         elevator.elevatorPIDController.setSetpoint(0);
-        //         arm.armRotationPIDController.setSetpoint(88);
+                    arm.armExtendingPIDController.setSetpoint(12);
 
-        //         if (arm.armRotationController.getRotations() > 40) {
-        //             elevator.elevatorPIDController.setSetpoint(38);
-        //         }
+                } else {
+                    arm.armRotationPIDController.setSetpoint(0);
 
-        //         break;
-        //     case LOW:
-        //         arm.armRotationController.setInverted(true);
-        //         elevator.elevatorPIDController.setSetpoint(0);
-        //         arm.armRotationPIDController.setSetpoint(55);
+                    if (arm.armRotationController.getRotations() < 5) {
+                        arm.armExtendingPIDController.setSetpoint(1);
+                    }
+                }
 
-        //         break;
-        // }
+                break;
+            case HIGH:
+                arm.armRotationController.setInverted(true);
+                
+                arm.armExtendingPIDController.setSetpoint(12);
+                
+                elevator.elevatorPIDController.setSetpoint(0);
+
+                if (arm.armExtendingController.getRotations() > 9) {
+                    arm.armRotationPIDController.setSetpoint(63);
+
+                    if (arm.armRotationController.getRotations() > 40) {
+                        arm.armExtendingPIDController.setSetpoint(25);
+                        elevator.elevatorPIDController.setSetpoint(38);
+                    }
+                }
+
+                break;
+            case MID:
+                arm.armRotationController.setInverted(true);
+
+                arm.armExtendingPIDController.setSetpoint(12);
+
+                elevator.elevatorPIDController.setSetpoint(0);
+
+                if (arm.armExtendingController.getRotations() > 9) {
+                    arm.armRotationPIDController.setSetpoint(50);
+
+                    if (arm.armRotationController.getRotations() > 40) {
+                        arm.armExtendingPIDController.setSetpoint(25);
+                        elevator.elevatorPIDController.setSetpoint(0);
+                    }
+                }
+
+                break;
+            case LOW:
+                arm.armRotationController.setInverted(true);
+
+                arm.armExtendingPIDController.setSetpoint(12);
+
+                elevator.elevatorPIDController.setSetpoint(0);
+
+                if (arm.armExtendingController.getRotations() > 9) {
+                    arm.armRotationPIDController.setSetpoint(80);
+
+                    if (arm.armRotationController.getRotations() > 40) {
+                        arm.armExtendingPIDController.setSetpoint(25);
+                        elevator.elevatorPIDController.setSetpoint(0);
+                    }
+                }
+                break;
+        }
     }
 
     @Override
