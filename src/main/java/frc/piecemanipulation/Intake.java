@@ -73,9 +73,10 @@ public class Intake implements ISubsystem {
 
     @Override
     public void updateTeleop() {
-        if (robotSettings.INTAKE_MANUAL)
+        if (robotSettings.INTAKE_MANUAL) 
             manuelDrive();
         updateGeneric();
+        intakeBottom.moveAtPercent(1);
     }
 
     @Override
@@ -177,15 +178,9 @@ public class Intake implements ISubsystem {
                 intakeBottom.moveAtPercent(0);
             }
         }
-        
-        if(!manipulationManager.cubeConeMode) { //cube
+        else { //cube
             if(xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == ButtonStatus.DOWN){ //if x pressed
-                boolean stopped = false;
-                if (intakeBottom.getCurrent() > 0.65 && !stopped) { 
-                    // checks for current spike and if stopped is false, motor is set to zero and all bottom motor movement is disabled until x is released :)
-                    intakeBottom.moveAtPercent(0);
-                    stopped = true;
-                }
+
                 if (robotSettings.ENABLE_COLOR_SENSOR) { // color sensor on 
                     if (m_colorSensor.getProximity() >= 350) {
                         // intakeRight.moveAtVoltage(0);
@@ -195,28 +190,23 @@ public class Intake implements ISubsystem {
                     else{
                         // intakeRight.moveAtVoltage(-12);
                         // intakeLeft.moveAtVoltage(12);
-                        if (!stopped){ // if stopped is false it spins
                             intakeBottom.moveAtPercent(-.6);
-                        }
+                        
                     }
                 }
-
-                if (!robotSettings.ENABLE_COLOR_SENSOR) { //color sensor off
+                else { //color sensor off
                     // intakeRight.moveAtPercent(12);
                     // intakeLeft.moveAtPercent(12);
-                    if (!stopped){ // if stopped is false it spins
                         intakeBottom.moveAtPercent(-.6);
-                    }
                 }
             }
         }
 
-        if (!robotSettings.ARM_ELEVATOR_MANUAL) { // if false
-            switch (robotSettings.DRIVE_STYLE){
-                case STANDARD_2023: {
-                if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == ButtonStatus.DOWN) {
-                    pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-                }
+        if (robotSettings.ARM_ELEVATOR_MANUAL == false){ // if false
+        
+                // if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == ButtonStatus.DOWN) {
+                //     pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+                // }
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == ButtonStatus.DOWN) {
                     Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
                 }
@@ -231,17 +221,11 @@ public class Intake implements ISubsystem {
                 }
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == ButtonStatus.DOWN) {
                     Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-                    break;
+                   
                 }
-                break;
-                }
-                default:
-                    break;
             }
-        }
+        
         else { // if true
-            switch (robotSettings.DRIVE_STYLE){
-                case STANDARD_2023: {
                       if (panel2.get(ControllerEnums.MidiController.R2C5) ==
                       DefaultControllerEnums.ButtonStatus.DOWN) {
                       Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
@@ -249,15 +233,12 @@ public class Intake implements ISubsystem {
                       if (panel2.get(ControllerEnums.MidiController.R2C6) ==
                       DefaultControllerEnums.ButtonStatus.DOWN) {
                       Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-                      break;
-                      } 
-                }
-                default:
-                    break;
-            }      
-        }
-    }
-
+                      
+                  } 
+            }
+            
+        }      
+      
     public void intakeIn(){
         Robot.pneumatics.intakePiston.set(DoubleSolenoid.Value.kReverse);
     }
