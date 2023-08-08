@@ -161,18 +161,18 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(3);
-                    Robot.intake.intakeLeft.moveAtVoltage(-3);
+                    // Robot.intake.intakeRight.moveAtVoltage(3);
+                    // Robot.intake.intakeLeft.moveAtVoltage(-3);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OUT:
-                    Robot.intake.intakeRight.moveAtVoltage(-12);
-                    Robot.intake.intakeLeft.moveAtVoltage(12);
+                    // Robot.intake.intakeRight.moveAtVoltage(-12);
+                    // Robot.intake.intakeLeft.moveAtVoltage(12);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OFF:
-                    Robot.intake.intakeLeft.moveAtVoltage(0);
-                    Robot.intake.intakeRight.moveAtVoltage(-0);
+                    // Robot.intake.intakeLeft.moveAtVoltage(0);
+                    // Robot.intake.intakeRight.moveAtVoltage(-0);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OFF:
@@ -266,18 +266,18 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(3);
-                    Robot.intake.intakeLeft.moveAtVoltage(-3);
+                    // Robot.intake.intakeRight.moveAtVoltage(3);
+                    // Robot.intake.intakeLeft.moveAtVoltage(-3);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_OUT:
-                    Robot.intake.intakeRight.moveAtVoltage(-12);
-                    Robot.intake.intakeLeft.moveAtVoltage(12);
+                    // Robot.intake.intakeRight.moveAtVoltage(-12);
+                    // Robot.intake.intakeLeft.moveAtVoltage(12);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_OFF:
-                    Robot.intake.intakeLeft.moveAtVoltage(0);
-                    Robot.intake.intakeRight.moveAtVoltage(-0);
+                    // Robot.intake.intakeLeft.moveAtVoltage(0);
+                    // Robot.intake.intakeRight.moveAtVoltage(-0);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OFF:
@@ -400,7 +400,7 @@ public class AutonManager extends AbstractAutonManager {
                         }
                     } else {
                         y = 0;
-                    }
+                    } 
                 } else {
                     y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y - drivingChild.guidance.fieldY();
                 }
