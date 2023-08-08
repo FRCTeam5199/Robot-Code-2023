@@ -27,7 +27,7 @@ public class CompositeManager implements ISubsystem  {
         addToMetaList();
         init();
     }
-    
+
     @Override
     public void init() {
         createControllers();
@@ -64,7 +64,7 @@ public class CompositeManager implements ISubsystem  {
             currentState = stateMachine.LOW;
         }
 
-        //
+        // INCREASE EXTEND AT HIGH AND HUMAN PLAYER, DECREASE EXTEND AT LOW, LOWER ARM MORE AT MID, RAISE ARM MORE AT LOW \/ 
         switch (currentState) {
             case HUMANPLAYER:
                 arm.armRotationController.setInverted(false);
@@ -82,14 +82,13 @@ public class CompositeManager implements ISubsystem  {
                 elevator.elevatorPIDController.setSetpoint(0);
 
                 if ((arm.armExtendingController.getRotations() < 13) && (arm.armRotationController.getRotations() > 5)) {
-
                     arm.armExtendingPIDController.setSetpoint(12);
 
                 } else {
                     arm.armRotationPIDController.setSetpoint(0);
 
                     if (arm.armRotationController.getRotations() < 5) {
-                        arm.armExtendingPIDController.setSetpoint(1);
+                        arm.armExtendingPIDController.setSetpoint(5);
                     }
                 }
 
@@ -105,7 +104,7 @@ public class CompositeManager implements ISubsystem  {
                     arm.armRotationPIDController.setSetpoint(63);
 
                     if (arm.armRotationController.getRotations() > 40) {
-                        arm.armExtendingPIDController.setSetpoint(25);
+                        arm.armExtendingPIDController.setSetpoint(40);
                         elevator.elevatorPIDController.setSetpoint(38);
                     }
                 }
@@ -119,11 +118,11 @@ public class CompositeManager implements ISubsystem  {
                 elevator.elevatorPIDController.setSetpoint(0);
 
                 if (arm.armExtendingController.getRotations() > 9) {
-                    arm.armRotationPIDController.setSetpoint(50);
+                    arm.armRotationPIDController.setSetpoint(63);
 
                     if (arm.armRotationController.getRotations() > 40) {
-                        arm.armExtendingPIDController.setSetpoint(25);
-                        elevator.elevatorPIDController.setSetpoint(0);
+                        arm.armExtendingPIDController.setSetpoint(45);
+                        elevator.elevatorPIDController.setSetpoint(16);
                     }
                 }
 
@@ -136,13 +135,13 @@ public class CompositeManager implements ISubsystem  {
                 elevator.elevatorPIDController.setSetpoint(0);
 
                 if (arm.armExtendingController.getRotations() > 9) {
-                    arm.armRotationPIDController.setSetpoint(80);
+                    arm.armRotationPIDController.setSetpoint(75);
 
-                    if (arm.armRotationController.getRotations() > 40) {
-                        arm.armExtendingPIDController.setSetpoint(25);
+                    if (arm.armRotationController.getRotations() > 40) {    
                         elevator.elevatorPIDController.setSetpoint(0);
                     }
                 }
+
                 break;
         }
     }
@@ -188,15 +187,10 @@ public class CompositeManager implements ISubsystem  {
     }
 
     public void createControllers() {
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2,
-                BaseController.DefaultControllers.XBOX_CONTROLLER);
-        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID,
-                BaseController.DefaultControllers.BUTTON_PANEL);
-        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID,
-                BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3, BaseController.DefaultControllers.BUTTON_PANEL);
+        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
     }
 }

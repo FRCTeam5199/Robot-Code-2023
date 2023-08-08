@@ -73,7 +73,7 @@ public class SwervePrac2023 extends DefaultConfig{
           INTAKE_MANUAL = true;
           ENABLE_INTAKE = false;//change l8r
 
-            MANIPULATION_STYLE = ManipulationManager.ManipulationControlStyles.STANDARD_2023;
+          MANIPULATION_STYLE = ManipulationManager.ManipulationControlStyles.STANDARD_2023;
 
           PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
           PCM_ID = 50;

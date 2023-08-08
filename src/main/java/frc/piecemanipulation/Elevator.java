@@ -34,6 +34,8 @@ public class Elevator implements ISubsystem {
         createMotorPid(robotSettings.ELEVATORPID);
         elevatorController.setBrake(true);
         elevatorPIDController.setTolerance(5, 10);
+        
+        elevatorController.resetEncoder();
     }
 
     @Override
@@ -67,9 +69,9 @@ public class Elevator implements ISubsystem {
             resetElevateEncoder();
         }
 
-        if (xbox.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            elevatorController.setBrake(false);
-        }
+        // if (xbox.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     elevatorController.setBrake(false);
+        // }
 
         // elevator();
     }
@@ -80,12 +82,14 @@ public class Elevator implements ISubsystem {
 
     @Override
     public void initTeleop() {
-        elevatorController.resetEncoder();
+        // System.out.println(">>>>>>>>>>>>>>>>>> RESET ELEVATOR ENCODER");
+        // elevatorController.resetEncoder();
     }
 
     @Override
     public void initAuton() {
-        elevatorController.resetEncoder();
+        // System.out.println(">>>>>>>>>>>>>>>>>> RESET ELEVATOR ENCODER");
+        // elevatorController.resetEncoder();
     }
 
     @Override

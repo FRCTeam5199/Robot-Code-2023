@@ -22,7 +22,6 @@ public class Claw implements ISubsystem {
     private I2C.Port i2cPort;
     public ColorSensorV3 m_colorSensor;
     public Timer closeTimer;
-    public boolean clawOpen = false;
 
     public Claw() {
         addToMetaList();

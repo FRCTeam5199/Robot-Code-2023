@@ -35,17 +35,14 @@ public class Pneumatics implements ISubsystem {
         } else {
             compressor = new Compressor(robotSettings.PNEUMATICS_MODULE_TYPE);
         }
+        
         if (robotSettings.ENABLE_INTAKE && robotSettings.ENABLE_PNOOMATICS) {
-            intakePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE,
-                    robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
+            intakePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.INTAKE_OUT_ID, robotSettings.INTAKE_IN_ID);
         }
         if (robotSettings.ENABLE_SPIKE && robotSettings.ENABLE_PNOOMATICS)
-            spikePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE,
-                    robotSettings.SPIKE_OUT_ID, robotSettings.SPIKE_IN_ID);
+            spikePiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.SPIKE_OUT_ID, robotSettings.SPIKE_IN_ID);
         if (robotSettings.ENABLE_CLAW && robotSettings.ENABLE_PNOOMATICS)
-            clawPiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE,
-                    robotSettings.CLAW_OUT_ID, robotSettings.CLAW_IN_ID);
-        
+            clawPiston = new DoubleSolenoid(robotSettings.PCM_ID, robotSettings.PNEUMATICS_MODULE_TYPE, robotSettings.CLAW_OUT_ID, robotSettings.CLAW_IN_ID);
     }
 
     @Override
