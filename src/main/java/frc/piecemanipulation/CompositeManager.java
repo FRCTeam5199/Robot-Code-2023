@@ -1,6 +1,9 @@
 package frc.piecemanipulation;
 
 import static frc.robot.Robot.robotSettings;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import static frc.robot.Robot.arm;
 import static frc.robot.Robot.elevator;
 
@@ -9,6 +12,7 @@ import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
+import frc.robot.Robot;
 
 public class CompositeManager implements ISubsystem  {
     public BaseController panel1, panel2, xbox2, midiTop, midiBot;
@@ -18,7 +22,11 @@ public class CompositeManager implements ISubsystem  {
         STABLE,
         HIGH,
         MID,
-        LOW
+        LOW,
+        GOTOSTATION1,
+        GOTOSHUTE,
+        SPIKEDOWN,
+        SPIKEUP
     }
 
     private stateMachine currentState = stateMachine.STABLE;
@@ -62,7 +70,25 @@ public class CompositeManager implements ISubsystem  {
         // Low Cone Goal
         } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.LOW;
+
+            //Go to Station 1
+        }else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN){
+            currentState = stateMachine.GOTOSTATION1;
+
+            //Go to Shute
+        }else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == DefaultControllerEnums.ButtonStatus.DOWN){
+            currentState = stateMachine.GOTOSHUTE;
+
+            //Spike Down
+        }else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) == DefaultControllerEnums.ButtonStatus.DOWN){
+            currentState = stateMachine.SPIKEDOWN;
+
+            //Spike Up
+        }else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == DefaultControllerEnums.ButtonStatus.DOWN){
+            currentState = stateMachine.SPIKEUP;
         }
+
+
 
         switch (currentState) {
             case HUMANPLAYER:
@@ -139,6 +165,25 @@ public class CompositeManager implements ISubsystem  {
                         elevator.elevatorPIDController.setSetpoint(0);
                     }
                 }
+
+                break;
+            case GOTOSTATION1:
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+
+                break;
+
+            case GOTOSHUTE:
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+
+                break;
+
+            case SPIKEDOWN:
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+                
+                break;
+            
+            case SPIKEUP:
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
 
                 break;
             }
