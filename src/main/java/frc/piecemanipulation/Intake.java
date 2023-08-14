@@ -231,7 +231,6 @@ public class Intake implements ISubsystem {
                 }
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == ButtonStatus.DOWN) {
                     Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
-                    break;
                 }
                 break;
                 }
