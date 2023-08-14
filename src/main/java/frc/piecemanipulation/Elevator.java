@@ -152,36 +152,6 @@ public class Elevator implements ISubsystem {
     }
 
     public void positionDrive() {
-        // // Human Player
-        // if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     // System.out.println("Elevator Up: " + elevatorController.getRotations());
-        //     System.out.println("From Elevator - Cone Button Pressed");
-            
-        //     elevatorPIDController.setSetpoint(38);
-
-        // // Stable
-        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Floor) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     // System.out.println("Elevator Down: " + elevatorController.getRotations());
-        //     elevatorPIDController.setSetpoint(0);
-
-        // // High Cone Goal
-        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     // System.out.println("Elevator Down: " + elevatorController.getRotations());
-        //     if (arm.armRotationController.getRotations() > 40) {
-        //         elevatorPIDController.setSetpoint(38);
-        //     }
-
-        // // Mid Cone Goal
-        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     System.out.println("Elevator Down: " + elevatorController.getRotations());
-        //     elevatorPIDController.setSetpoint(38);
-
-        // // Low Cone Goal
-        // } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     System.out.println("Elevator Down: " + elevatorController.getRotations());
-        //     elevatorPIDController.setSetpoint(0);
-        // }
-
         elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations()));
     }
 

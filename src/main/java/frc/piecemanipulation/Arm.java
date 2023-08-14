@@ -19,7 +19,7 @@ import frc.motors.TalonMotorController;
 
 public class Arm implements ISubsystem {
     public AbstractMotorController armRotationController, armExtendingController;
-    public PIDController armExtendingPIDController = new PIDController(0.03, 0, 0);
+    public PIDController armExtendingPIDController = new PIDController(0.03, 0.001, 0);
     public PIDController armRotationPIDController = new PIDController(0.01, 0, 0);
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
@@ -188,7 +188,7 @@ public class Arm implements ISubsystem {
 
         // System.out.println("PID TARGET UP ARM EXTENDING PERCENT: " + armExtendingPIDController.calculate(armExtendingController.getRotations(), 35));
         // System.out.println("Arm Extending: " + armExtendingController.getRotations());
-        // armExtendingController.moveAtPercent(-armExtendingPIDController.calculate(armExtendingController.getRotations()));
+        armExtendingController.moveAtPercent(-armExtendingPIDController.calculate(armExtendingController.getRotations()));
     }
 
     public void moveArm(double position) {
