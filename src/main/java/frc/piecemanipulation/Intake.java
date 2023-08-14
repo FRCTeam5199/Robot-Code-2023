@@ -202,8 +202,8 @@ public class Intake implements ISubsystem {
             }
         }
 
-        if (robotSettings.ARM_ELEVATOR_MANUAL == false){ // if false
-        
+        if (!robotSettings.ARM_ELEVATOR_MANUAL){ // if false
+                System.out.println("ARM_ELEVATOR_MANUAL = FALSE");
                 // if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == ButtonStatus.DOWN) {
                 //     pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
                 // }
@@ -217,6 +217,7 @@ public class Intake implements ISubsystem {
                     Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
                 }
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) == ButtonStatus.DOWN) {
+                    System.out.println("Button Pressed");
                     Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
                 }
                 if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == ButtonStatus.DOWN) {
