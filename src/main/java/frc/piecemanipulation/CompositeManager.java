@@ -7,11 +7,14 @@ import static frc.robot.Robot.elevator;
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
+import frc.piecemanipulation.ManipulationManager;
+import frc.controllers.basecontrollers.BaseController.DefaultControllers;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 
 public class CompositeManager implements ISubsystem  {
     public BaseController panel1, panel2, xbox2, midiTop, midiBot;
+    public Intake intake;
 
     private enum stateMachine {
         HUMANPLAYER,
@@ -45,6 +48,24 @@ public class CompositeManager implements ISubsystem  {
 
     @Override
     public void updateTeleop() {
+        if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            ManipulationManager.cubeConeMode = true;
+        }
+        if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cube) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            ManipulationManager.cubeConeMode = false;
+        }
+        if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            if (!ManipulationManager.cubeConeMode) {
+                Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+            }
+        }
+        // if (xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        //     intake.intakeBottom.moveAtPercent(-0.6);
+        // }
+        if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
+        }
+
         if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.HUMANPLAYER;
         // Stable

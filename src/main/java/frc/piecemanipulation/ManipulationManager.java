@@ -26,7 +26,8 @@ public class ManipulationManager implements ISubsystem {
     public double armGoal = 0;
     public double slippageOffSet = 0;
     public double elevateGoal = 2.2;
-    public boolean cubeConeMode = true; // true = Cone, false = Cube
+    public static boolean cubeConeMode = true;
+ // true = Cone, false = Cube
     public boolean spikeUp = false;
     int[] rgby = { 255, 255, 0 };
     int[] rgbp = { 138, 43, 226 };

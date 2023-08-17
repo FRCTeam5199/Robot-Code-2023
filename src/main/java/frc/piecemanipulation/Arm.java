@@ -77,7 +77,7 @@ public class Arm implements ISubsystem {
         double exposition = armExtendingController.getRotations();
         
         if (armExtendingController.getRotations() > 1000) {
-            System.out.println("Adjusting...");
+            // System.out.println("Adjusting...");
             armExtendingController.moveAtPercent(-5);
         }
     }

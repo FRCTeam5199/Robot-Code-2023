@@ -125,7 +125,7 @@ public class Elevator implements ISubsystem {
         elevatorController.setRealFactorFromMotorRPM(1, 1);
         elevatorController.setCurrentLimit(40);
 
-        System.out.println("Elevator Motor Type: " + robotSettings.ELEVATOR_MOTOR_TYPE);
+        // System.out.println("Elevator Motor Type: " + robotSettings.ELEVATOR_MOTOR_TYPE);
     }
 
     public void resetElevateEncoder() {
@@ -158,20 +158,20 @@ public class Elevator implements ISubsystem {
     public void moveElevator(double position) {
         elevatorController.moveAtPosition(position);
         UserInterface.smartDashboardPutNumber("Elevator goal position:", position);
-        System.out.println("Moving Elevator: " + elevatorController.getRotations());
+        // System.out.println("Moving Elevator: " + elevatorController.getRotations());
     }
 
     // WORK ON A BETTER NAME \/
     public void elevator() {
         if (xbox.get(DefaultControllerEnums.XBoxButtons.B_CIRCLE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            System.out.println("Elevator Up: " + elevatorController.getRotations());
+            // System.out.println("Elevator Up: " + elevatorController.getRotations());
             // System.out.println("PID TARGET UP ELEVATOR PERCENT: " +
             // elevatorPIDController.calculate(elevatorController.getRotations(), 35));
             // elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(),
             // 35));
             elevatorPIDController.setSetpoint(38);
         } else if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            System.out.println("Elevator Down: " + elevatorController.getRotations());
+            // System.out.println("Elevator Down: " + elevatorController.getRotations());
             // System.out.println("PID TARGET DOWN ELEVATOR PERCENT: " +
             // elevatorPIDController.calculate(elevatorController.getRotations(), 0));
             // elevatorController.moveAtPercent(elevatorPIDController.calculate(elevatorController.getRotations(),
