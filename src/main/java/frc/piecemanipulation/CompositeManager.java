@@ -1,6 +1,9 @@
 package frc.piecemanipulation;
 
 import static frc.robot.Robot.robotSettings;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import static frc.robot.Robot.arm;
 import static frc.robot.Robot.elevator;
 
@@ -8,6 +11,7 @@ import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
 import frc.controllers.basecontrollers.DefaultControllerEnums;
 import frc.piecemanipulation.ManipulationManager;
+import frc.robot.Robot;
 import frc.controllers.basecontrollers.BaseController.DefaultControllers;
 import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
