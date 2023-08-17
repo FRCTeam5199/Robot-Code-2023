@@ -19,7 +19,7 @@ import frc.motors.TalonMotorController;
 
 public class Elevator implements ISubsystem {
     public AbstractMotorController elevatorController;
-    public PIDController elevatorPIDController = new PIDController(0.01, 0, 0);
+    public PIDController elevatorPIDController = new PIDController(0.015, 0, 0);
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Elevator() {
