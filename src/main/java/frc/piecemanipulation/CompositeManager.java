@@ -62,14 +62,15 @@ public class CompositeManager implements ISubsystem  {
             if (!ManipulationManager.cubeConeMode) {
                 Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
             }
-        }
-        // if (xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-        //     intake.intakeBottom.moveAtPercent(-0.6);
-        // }
+        } 
         if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == DefaultControllerEnums.ButtonStatus.DOWN) {
             Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
         }
-
+        if (xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            if (!ManipulationManager.cubeConeMode) {
+                intake.intakeBottom.moveAtPercent(-0.6);
+            }
+        }
         if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.HUMANPLAYER;
         // Stable

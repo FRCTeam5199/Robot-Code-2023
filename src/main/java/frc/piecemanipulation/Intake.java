@@ -46,9 +46,9 @@ public class Intake implements ISubsystem {
 
     @Override
     public void init() {
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        NetworkTable table = inst.getTable("bottomIntake");
-        bottomIntakeVoltagePub = table.getDoubleTopic("bottomIntake").publish();
+        // NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        // NetworkTable table = inst.getTable("bottomIntake");
+        // bottomIntakeVoltagePub = table.getDoubleTopic("bottomIntake").publish();
 
         createControllers();
         createMotors();
@@ -74,7 +74,7 @@ public class Intake implements ISubsystem {
     @Override
     public void updateTeleop() {
         if (robotSettings.INTAKE_MANUAL) {
-            manuelDrive();
+            // manuelDrive();
         }
         updateGeneric();
     }
