@@ -19,11 +19,11 @@ public class SwerveComp2023 extends DefaultConfig {
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
         ENABLE_APRILTAG = false;
-        ENABLE_PIECE_MANAGER = false;
+        ENABLE_PIECE_MANAGER = true;
         ENABLE_COMPOSITE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
-        ENABLE_LEDS = false;
-        ENABLE_SPIKE = false;
+        ENABLE_LEDS = true;
+        ENABLE_SPIKE = true;
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
@@ -78,15 +78,15 @@ public class SwerveComp2023 extends DefaultConfig {
         INTAKE_MOTOR_LEFT_ID = 44;
         INTAKE_MOTOR_RIGHT_ID = 27;
         INTAKE_MOTOR_CANBUS = "rio";
-        INTAKE_MANUAL = false;
-        ENABLE_INTAKE = false;
+        INTAKE_MANUAL = true;
+        ENABLE_INTAKE = true;
 
         PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
         PCM_ID = 50;
         INTAKE_IN_ID = 10;
         INTAKE_OUT_ID = 9;
-        SPIKE_IN_ID = 8;
-        SPIKE_OUT_ID = 11;
+        SPIKE_IN_ID = 13;
+        SPIKE_OUT_ID = 1;
         CLAW_IN_ID = 2;
         CLAW_OUT_ID = 12;
 
