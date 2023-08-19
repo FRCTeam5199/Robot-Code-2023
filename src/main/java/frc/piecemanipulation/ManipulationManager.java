@@ -40,7 +40,6 @@ public class ManipulationManager implements ISubsystem {
     @Override
     public void init() {
         enableControllers();
-        cubeConeMode = true;
         if (robotSettings.ENABLE_LEDS) {
             leds = new LEDs();
             leds.init();

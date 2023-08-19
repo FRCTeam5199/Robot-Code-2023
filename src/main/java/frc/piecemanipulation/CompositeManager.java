@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import static frc.robot.Robot.arm;
 import static frc.robot.Robot.elevator;
+import static frc.robot.Robot.intake;
 
 import frc.controllers.ControllerEnums;
 import frc.controllers.basecontrollers.BaseController;
@@ -17,8 +18,8 @@ import frc.misc.ISubsystem;
 import frc.misc.SubsystemStatus;
 
 public class CompositeManager implements ISubsystem  {
-    public BaseController panel1, panel2, xbox2, midiTop, midiBot;
-    public Intake intake;
+    public BaseController panel1, panel2, xbox, xbox2, midiTop, midiBot;
+    public boolean CubeConeMode;
 
     private enum stateMachine {
         HUMANPLAYER,
@@ -52,30 +53,38 @@ public class CompositeManager implements ISubsystem  {
 
     @Override
     public void updateTeleop() {
+        intake.spinBottomIntake(0);
         if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cone) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            ManipulationManager.cubeConeMode = true;
+            CubeConeMode = true;
         }
         if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Cube) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            ManipulationManager.cubeConeMode = false;
+            CubeConeMode = false;
         }
         if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeD) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            if (!ManipulationManager.cubeConeMode) {
+            if (CubeConeMode == false) {
                 Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
             }
         } 
-        if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == DefaultControllerEnums.ButtonStatus.DOWN) {
             Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
         }
-        if (xbox2.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            if (!ManipulationManager.cubeConeMode) {
-                intake.intakeBottom.moveAtPercent(-0.6);
-            }
+        if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
+        }
+
+        if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            intake.spinBottomIntake(-3);
+        }
+        if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
+            intake.spinBottomIntake(3);
         }
         if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.HUMANPLAYER;
+            Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
         // Stable
         } else if (panel2.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.STABLE;
+
 
         // High Cone Goal
         } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
@@ -213,6 +222,7 @@ public class CompositeManager implements ISubsystem  {
     public void createControllers() {
         panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
         panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3, BaseController.DefaultControllers.BUTTON_PANEL);
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
         xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
         midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
         midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);

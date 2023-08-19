@@ -22,7 +22,7 @@ public class SwerveComp2023 extends DefaultConfig {
         ENABLE_PIECE_MANAGER = true;
         ENABLE_COMPOSITE_MANAGER = true;
         ENABLE_PNOOMATICS = true;
-        ENABLE_LEDS = false;
+        ENABLE_LEDS = true;
         ENABLE_SPIKE = true;
 
         DRIVE_INVERT_LEFT = false;

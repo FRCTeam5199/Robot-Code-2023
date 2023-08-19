@@ -73,6 +73,7 @@ public class Intake implements ISubsystem {
 
     @Override
     public void updateTeleop() {
+        
         if (robotSettings.INTAKE_MANUAL) {
             // manuelDrive();
         }
@@ -256,6 +257,10 @@ public class Intake implements ISubsystem {
     //                 break;
     //         }      
     //     }
+    }
+
+    public void spinBottomIntake(double speed) {
+        intakeBottom.moveAtPercent(speed);
     }
 
     public void intakeIn(){
