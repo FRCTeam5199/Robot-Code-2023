@@ -69,7 +69,7 @@ public class CompositeManager implements ISubsystem  {
                 arm.armExtendingPIDController.setSetpoint(5);
                 
                 if (arm.armExtendingController.getRotations() > 3) {
-                    arm.armRotationPIDController.setSetpoint(22);
+                    arm.armRotationPIDController.setSetpoint(24);
                     elevator.elevatorPIDController.setSetpoint(38);
                 }
 

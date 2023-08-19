@@ -19,7 +19,7 @@ import frc.motors.TalonMotorController;
 
 public class Arm implements ISubsystem {
     public AbstractMotorController armRotationController, armExtendingController;
-    public PIDController armExtendingPIDController = new PIDController(0.045, 0.001, 0);
+    public PIDController armExtendingPIDController = new PIDController(0.048, 0.001, 0);
     public PIDController armRotationPIDController = new PIDController(0.025, 0, 0);
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
