@@ -19,8 +19,8 @@ import frc.motors.TalonMotorController;
 
 public class Arm implements ISubsystem {
     public AbstractMotorController armRotationController, armExtendingController;
-    public PIDController armExtendingPIDController = new PIDController(0.03, 0.001, 0);
-    public PIDController armRotationPIDController = new PIDController(0.01, 0, 0);
+    public PIDController armExtendingPIDController = new PIDController(0.048, 0.001, 0);
+    public PIDController armRotationPIDController = new PIDController(0.025, 0, 0);
     public BaseController xbox, xbox2, panel1, panel2, midiTop, midiBot;
 
     public Arm() {
@@ -77,7 +77,7 @@ public class Arm implements ISubsystem {
         double exposition = armExtendingController.getRotations();
         
         if (armExtendingController.getRotations() > 1000) {
-            System.out.println("Adjusting...");
+            // System.out.println("Adjusting...");
             armExtendingController.moveAtPercent(-5);
         }
     }

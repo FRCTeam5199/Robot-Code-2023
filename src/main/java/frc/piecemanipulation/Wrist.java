@@ -115,7 +115,8 @@ public class Wrist implements ISubsystem {
         if (robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
             wristController = new TalonMotorController(robotSettings.WRIST_MOTOR_ID, robotSettings.WRIST_MOTOR_CANBUS);
         if (robotSettings.WRIST_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-            wristController = new SparkMotorController(robotSettings.WRIST_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushed);
+            wristController = new SparkMotorController(robotSettings.WRIST_MOTOR_ID,
+                    CANSparkMaxLowLevel.MotorType.kBrushed);
         // wrist.setCurrentLimit(2,40);
         wristController.setCurrentLimit(40);
         wristController.setRealFactorFromMotorRPM(1, 1);
@@ -124,12 +125,18 @@ public class Wrist implements ISubsystem {
     }
 
     public void createControllers() {
-        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2, BaseController.DefaultControllers.XBOX_CONTROLLER);
-        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID, BaseController.DefaultControllers.BUTTON_PANEL);
-        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID, BaseController.DefaultControllers.BUTTON_PANEL);
-        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2, BaseController.DefaultControllers.BUTTON_PANEL);
-        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3, BaseController.DefaultControllers.BUTTON_PANEL);
+        xbox = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT,
+                BaseController.DefaultControllers.XBOX_CONTROLLER);
+        xbox2 = BaseController.createOrGet(robotSettings.XBOX_CONTROLLER_USB_SLOT_2,
+                BaseController.DefaultControllers.XBOX_CONTROLLER);
+        midiTop = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_TOP_ID,
+                BaseController.DefaultControllers.BUTTON_PANEL);
+        midiBot = BaseController.createOrGet(robotSettings.MIDI_CONTROLLER_BOT_ID,
+                BaseController.DefaultControllers.BUTTON_PANEL);
+        panel1 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT2,
+                BaseController.DefaultControllers.BUTTON_PANEL);
+        panel2 = BaseController.createOrGet(robotSettings.BUTTON_PANEL_USB_SLOT3,
+                BaseController.DefaultControllers.BUTTON_PANEL);
     }
 
     public void moveWrist() {
@@ -142,16 +149,18 @@ public class Wrist implements ISubsystem {
         if (xbox.get(DefaultControllerEnums.XBoxButtons.GUIDE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             wristPIDController.setSetpoint(330);
             System.out.println("Right Wrist: " + wristController.getRotations());
-            System.out.println("PID TARGET RIGHT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
-        } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) ==
-            DefaultControllerEnums.ButtonStatus.DOWN) {
+            System.out.println(
+                    "PID TARGET RIGHT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+        } else if (xbox.get(DefaultControllerEnums.XBoxButtons.MENU) == DefaultControllerEnums.ButtonStatus.DOWN) {
             wristPIDController.setSetpoint(30);
             System.out.println("Left Wrist: " + wristController.getRotations());
-            System.out.println("PID TARGET LEFT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
+            System.out.println(
+                    "PID TARGET LEFT WRIST PERCENT: " + wristPIDController.calculate(wristController.getRotations()));
         }
 
         System.out.println("Wrist: " + wristController.getRotations());
-        System.out.println("PID TARGET WRIST PERCENT: " + -wristPIDController.calculate(wristController.getRotations()));
+        System.out
+                .println("PID TARGET WRIST PERCENT: " + -wristPIDController.calculate(wristController.getRotations()));
 
         wristController.moveAtPercent(-wristPIDController.calculate(wristController.getRotations()));
     }
