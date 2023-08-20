@@ -91,9 +91,8 @@ public class Robot extends TimedRobot {
         if (robotSettings.ENABLE_ARM) {
             arm = new Arm();
         }
-        if (robotSettings.ENABLE_INTAKE) {
+        if (robotSettings.ENABLE_INTAKE)
             intake = new Intake();
-        }
         if (robotSettings.ENABLE_CLAW)
             claw = new Claw();
         if (robotSettings.ENABLE_PIECE_MANAGER) {
