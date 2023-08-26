@@ -633,10 +633,10 @@ public class DriveManagerSwerve extends AbstractDriveManager {
         FRcoder = new CANCoder(robotSettings.FRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
         BRcoder = new CANCoder(robotSettings.BRcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
         BLcoder = new CANCoder(robotSettings.BLcoderID, robotSettings.DRIVE_MOTOR_CANBUS);
-        FLcoder.configMagnetOffset(245);
-        FRcoder.configMagnetOffset(135);
-        BLcoder.configMagnetOffset(275);
-        BRcoder.configMagnetOffset(195);
+        FLcoder.configMagnetOffset(/*245*/305);
+        FRcoder.configMagnetOffset(/*135*/225);
+        BLcoder.configMagnetOffset(/*275*/275);
+        BRcoder.configMagnetOffset(/*195*/165);
     }
 
     public void createPIDControllers(PID steeringPID) {
