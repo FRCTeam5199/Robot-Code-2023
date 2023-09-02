@@ -958,7 +958,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
             case STANDARD_2023: {
                 // SPIKE
                 if (panel2.get(
-                        ControllerEnums.ButtonPanelButtonsElse2023.GTShute) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        ControllerEnums.ButtonPanelButtonsElse2023.Shute) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     TAPX = pickUpArray[2][0];
                     TAPY = pickUpArray[2][1];
                     TAPRotation = pickUpArray[2][2];
@@ -966,7 +966,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
                 }
                 // gts1
                 if (panel2.get(
-                        ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        ControllerEnums.ButtonPanelButtonsPlacement2023.HP1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     TAPX = pickUpArray[0][0];
                     TAPY = pickUpArray[0][1];
                     TAPRotation = pickUpArray[0][2];
@@ -974,7 +974,7 @@ public class DriveManagerSwerve extends AbstractDriveManager {
                 }
                 // gts2
                 if (panel2.get(
-                        ControllerEnums.ButtonPanelButtonsElse2023.GTStation2) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                        ControllerEnums.ButtonPanelButtonsPlacement2023.HP1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                     TAPX = pickUpArray[1][0];
                     TAPY = pickUpArray[1][1];
                     TAPRotation = pickUpArray[1][2];

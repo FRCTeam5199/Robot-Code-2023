@@ -68,34 +68,37 @@ public class CompositeManager implements ISubsystem  {
         if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == DefaultControllerEnums.ButtonStatus.DOWN) {
             Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
         }
-        if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.HP1) == DefaultControllerEnums.ButtonStatus.DOWN) {
             Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kForward);
         }
 
         if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            intake.spinBottomIntake(-3);
+            // intake.spinBottomIntake(-3);
+            // System.out.println("changeing elevator setpoint yahahahahhahahah");
+            // elevator.elevatorController.moveAtPosition(30);
+            elevator.elevatorPIDController.setSetpoint(100);
         }
         if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
             intake.spinBottomIntake(3);
         }
-        if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.HP1) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.HUMANPLAYER;
             Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
         // Stable
-        } else if (panel2.get(ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        } else if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.STABLE;
 
 
         // High Cone Goal
-        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        } else if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.High) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.HIGH;
 
         // Mid Cone Goal
-        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        } else if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Mid) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.MID;
 
         // Low Cone Goal
-        } else if (panel1.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
+        } else if (panel2.get(ControllerEnums.ButtonPanelButtonsElse2023.Low) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.LOW;
         }
 
@@ -125,6 +128,7 @@ public class CompositeManager implements ISubsystem  {
                 
                 break;
             case HIGH:
+                    
                     // arm.armExtendingPIDController.setSetpoint(0);
                     arm.armExtendingPIDController.setSetpoint(7);
                 
@@ -176,7 +180,7 @@ public class CompositeManager implements ISubsystem  {
             arm.armExtendingPIDController.setSetpoint(7);
         }
         
-        System.out.println(arm.armRotationController.getRotations());
+        // System.out.println(arm.armRotationController.getRotations());
     }
 
     @Override   

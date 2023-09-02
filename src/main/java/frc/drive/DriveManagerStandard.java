@@ -104,7 +104,7 @@ public class DriveManagerStandard extends AbstractDriveManager {
             double dynamic_gear_R = controller.get(DefaultControllerEnums.XBoxButtons.RIGHT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN ? 0.25 : 1;
             double dynamic_gear_L = controller.get(DefaultControllerEnums.XBoxButtons.LEFT_BUMPER) == DefaultControllerEnums.ButtonStatus.DOWN ? 0.25 : 1;
             if (robotSettings.DEBUG && DEBUG) {
-                System.out.println("Forward: " + (invertedDrive * dynamic_gear_L * controller.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) + " Turn: " + (dynamic_gear_R * -controller.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)));
+                // System.out.println("Forward: " + (invertedDrive * dynamic_gear_L * controller.get(DefaultControllerEnums.XboxAxes.LEFT_JOY_Y)) + " Turn: " + (dynamic_gear_R * -controller.get(DefaultControllerEnums.XboxAxes.RIGHT_JOY_X)));
 //                System.out.println("Forward: " + (invertedDrive * dynamic_gear_L * controller.get(XboxAxes.LEFT_JOY_Y)) + " Turn: " + (dynamic_gear_R * -controller.get(XboxAxes.RIGHT_JOY_X)));
             }
             if (rumbleController.getBoolean(false)) {
@@ -206,7 +206,7 @@ public class DriveManagerStandard extends AbstractDriveManager {
                 lastPID = readPid;
                 setPID(lastPID);
                 if (robotSettings.DEBUG && DEBUG) {
-                    System.out.println("Set drive pid to " + lastPID);
+                    // System.out.println("Set drive pid to " + lastPID);
                 }
             }
         }

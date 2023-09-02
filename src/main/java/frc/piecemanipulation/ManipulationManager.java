@@ -95,19 +95,19 @@ public class ManipulationManager implements ISubsystem {
 
                 if (!robotSettings.ARM_ELEVATOR_MANUAL) {
                     // HumanPlayerStation
-                    if (panel2.get(
-                            ControllerEnums.ButtonPanelButtonsElse2023.GTStation1) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel1.get(
+                            ControllerEnums.ButtonPanelButtonsPlacement2023.HP1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -7;
                         armGoal = -54.5 + slippageOffSet;
                     }
-                    if (panel2.get(
-                            ControllerEnums.ButtonPanelButtonsElse2023.GTStation2) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel1.get(
+                            ControllerEnums.ButtonPanelButtonsPlacement2023.HP1) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -4;
                         armGoal = -57 + slippageOffSet;
                     }
                     // stable
-                    if (panel1.get(
-                            ControllerEnums.ButtonPanelButtonsPlacement2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(
+                            ControllerEnums.ButtonPanelButtonsElse2023.Stable) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -45;
                         armGoal = -135 + slippageOffSet;
                     }
@@ -118,8 +118,8 @@ public class ManipulationManager implements ISubsystem {
                         armGoal = -30 + slippageOffSet;
                     }
                     // climb
-                    if (panel2.get(
-                            ControllerEnums.ButtonPanelButtonsElse2023.Climb) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel1.get(
+                            ControllerEnums.ButtonPanelButtonsPlacement2023.Climb) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = -44;
                         armGoal = -55 + slippageOffSet;
                     }
@@ -130,8 +130,8 @@ public class ManipulationManager implements ISubsystem {
                     // armGoal = 0;
                     // }
                     // pick up off of spike
-                    if (panel1.get(
-                            ControllerEnums.ButtonPanelButtonsPlacement2023.SpikePickU) == DefaultControllerEnums.ButtonStatus.DOWN) {
+                    if (panel2.get(
+                            ControllerEnums.ButtonPanelButtonsElse2023.SpikeU) == DefaultControllerEnums.ButtonStatus.DOWN) {
                         elevateGoal = 0.7;
                         armGoal = -15.5 + slippageOffSet;
                         spikeUp = true;

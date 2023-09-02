@@ -36,6 +36,7 @@ public class Elevator implements ISubsystem {
         elevatorPIDController.setTolerance(5, 10);
         
         elevatorController.resetEncoder();
+        
     }
 
     @Override
