@@ -15,14 +15,14 @@ public class SwervePrac2023 extends DefaultConfig{
 
     public SwervePrac2023(){
         ENABLE_SHOOTER = false;
-        ENABLE_DRIVE = false;
+        ENABLE_DRIVE = true;
         ENABLE_MUSIC = false;
         ENABLE_PDP = true;
         ENABLE_APRILTAG = false;
-        ENABLE_PIECE_MANAGER = true;
-        ENABLE_PNOOMATICS = true;
+        ENABLE_PIECE_MANAGER = false;//change l8r
+        ENABLE_PNOOMATICS = false;//change l8r
 
-        ENABLE_SPIKE = true;
+        ENABLE_SPIKE = false;//change l8r
 
         DRIVE_INVERT_LEFT = false;
         DRIVE_INVERT_RIGHT = false;
@@ -33,19 +33,19 @@ public class SwervePrac2023 extends DefaultConfig{
         WRIST_MOTOR_ID = 36;
         WRIST_MOTOR_CANBUS = "rio";
         WRIST_MANUAL = false;
-        ENABLE_WRIST = true;
+        ENABLE_WRIST = false;//change l8r
         WRISTPID = new PID(0.08 , 0.0001, 0.045);
 
         //Misc
-        ENABLE_VISION = true;
-        ENABLE_IMU = true;
+        ENABLE_VISION = false;
+        ENABLE_IMU = false;
         IMU_NAVX_PORT = I2C.Port.kMXP;
         IMU_ID = 22; //pigeon
         limeLightPid = new PID(0.022, 0.0, 0.0);
         leveling = new PID(0.019,0.0,0.01);
 
         //Elevator
-        ENABLE_ELEVATOR = true;
+        ENABLE_ELEVATOR = false;//change l8r
         ELEVATOR_GEARING = 1/9.0;
         ELEVATOR_MOTOR_CANBUS = "rio";
         ELEVATOR_MOTOR_ID = 30;
@@ -55,13 +55,15 @@ public class SwervePrac2023 extends DefaultConfig{
         ARM_ELEVATOR_MANUAL = false;
 
         //ARM
-         ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-          ARM_MOTOR_ID = 31;
+        ARM_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
+        ARM_ROTATE_MOTOR_ID = 31;
+        ARM_EXTEND_MOTOR_ID = 43;
           ARM_GEARING = (1/15D) * (28/52D) * (15/61D);
           ARM_SPROCKET_DIAMETER = 1;
           ARM_MOTOR_CANBUS = "rio";
-          ENABLE_ARM = true;
-        ARM_PID = new PID(.5, 0.0, 0);
+          ENABLE_ARM = true;//
+        ARM_ROTATE_PID = new PID(.5, 0.0, 0);
+        ARM_EXTEND = true; //
 
         //INTAKE
           INTAKE_MOTOR_TYPE =  AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
@@ -69,9 +71,9 @@ public class SwervePrac2023 extends DefaultConfig{
           INTAKE_MOTOR_RIGHT_ID = 37;
           INTAKE_MOTOR_CANBUS = "rio";
           INTAKE_MANUAL = true;
-          ENABLE_INTAKE = true;
+          ENABLE_INTAKE = false;//change l8r
 
-            MANIPULATION_STYLE = ManipulationManager.ManipulationControlStyles.STANDARD_2023;
+          MANIPULATION_STYLE = ManipulationManager.ManipulationControlStyles.STANDARD_2023;
 
           PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
           PCM_ID = 50;
@@ -105,7 +107,7 @@ public class SwervePrac2023 extends DefaultConfig{
         TURN_SCALE = 0.7;
         DRIVE_SCALE = 1;
         DRIVE_GEARING = 1/6.75;
-        ENABLE_COLOR_SENSOR = true;
+        ENABLE_COLOR_SENSOR = false;//change l8r
 
         CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
         CAMERA_HEIGHT = 0; //Inches
@@ -133,14 +135,29 @@ public class SwervePrac2023 extends DefaultConfig{
         SWERVE_TURN_BR = 6;
         SWERVE_DRIVE_BL = 7;
         SWERVE_TURN_BL = 8;
+        FLcoderID = 11;
+        FRcoderID = 12;
+        BRcoderID = 13;
+        BLcoderID = 14;
+        DRIVE_MOTOR_CANBUS = "Canivore1";
+        /*for offsets on 9199 if it is in the same place as b4
+        FLcoder.configMagnetOffset(-16.5234375 - Math.toDegrees(0.07));
+        FRcoder.configMagnetOffset(-25.048828125 - Math.toDegrees(0.17));
+        BLcoder.configMagnetOffset(-169.716796875 - Math.toDegrees(0.02));
+        BRcoder.configMagnetOffset(-56.337890625 - Math.toDegrees(0.2));*/
+        //offsets
+        FROFFSET = 5.287632;
+        FLOFFSET = 0.535359;
+        BROFFSET = 1.185767;
+        BLOFFSET = 1.63829;
 
         // Camera Settings
         ONE_CAMERA = true;
         FOUR_CAMERA = false;
 
         // limelight
-        ENABLE_VISION = true;
-        ENABLE_CAMERA = true;
+        ENABLE_VISION = false;
+        ENABLE_CAMERA = false;
         GOAL_CAM_NAME = "GoalCamera";
         BALL_CAM_NAME = "BallCamera";
         GOAL_CAMERA_TYPE = IVision.SupportedVision.LIMELIGHT;

@@ -6,13 +6,15 @@ import frc.selfdiagnostics.ISimpleIssue;
 import java.io.IOException;
 
 /**
- * The generic layout for any subsystem. Ensures that any subsystem on the robot has the appropriate fields
+ * The generic layout for any subsystem. Ensures that any subsystem on the robot
+ * has the appropriate fields
  *
  * @author jojo2357
  */
 public interface ISubsystem {
     /**
-     * Everyone needs to start somewhere! Use this function to set up all of the stuff in the subsystem (This is
+     * Everyone needs to start somewhere! Use this function to set up all of the
+     * stuff in the subsystem (This is
      * basically {@link Robot#robotInit()})
      *
      * @see Robot#robotInit()
@@ -43,7 +45,8 @@ public interface ISubsystem {
     void updateAuton();
 
     /**
-     * Put subsystem apprpriate code to run every tick in every mode here (There is not corrollary in {@link Robot})
+     * Put subsystem apprpriate code to run every tick in every mode here (There is
+     * not corrollary in {@link Robot})
      */
     void updateGeneric();
 
@@ -76,23 +79,30 @@ public interface ISubsystem {
     void initDisabled();
 
     /**
-     * Put repeated init code here from {@link #initAuton()} {@link #initTest()} {@link #initTest()} {@link
+     * Put repeated init code here from {@link #initAuton()} {@link #initTest()}
+     * {@link #initTest()} {@link
      * #initDisabled()}
      */
     void initGeneric();
 
     /**
-     * Used in {@link ISimpleIssue} to provide a user friendly explanation as to why their jank isnt working. This could
-     * be static but that doesnt make sense since you should be querying an object anyway.
+     * Used in {@link ISimpleIssue} to provide a user friendly explanation as to why
+     * their jank isnt working. This could
+     * be static but that doesnt make sense since you should be querying an object
+     * anyway.
      *
      * @return the hardcoded name of the subsystem
      */
     String getSubsystemName();
 
     /**
-     * In devlopment, adds this object to {@link Robot#subsystems a master registry} for later use
+     * In devlopment, adds this object to {@link Robot#subsystems a master registry}
+     * for later use
      */
     default void addToMetaList() {
         Robot.subsystems.add(this);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ADDED SUBSYSTEM: " + this.getSubsystemName());
+        // System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SUBSYSTEM STATUS: "
+        // + this.getSubsystemStatus());
     }
 }

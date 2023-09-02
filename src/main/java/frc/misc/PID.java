@@ -1,7 +1,8 @@
 package frc.misc;
 
 /**
- * A wrapper to hold PID values. Use this in lieu of 4 different variables for cleanness, the {@link #toString() print}
+ * A wrapper to hold PID values. Use this in lieu of 4 different variables for
+ * cleanness, the {@link #toString() print}
  * method, the {@link #equals(Object) equals method} and general concoeness
  */
 public class PID {

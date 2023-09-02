@@ -37,9 +37,10 @@ public class AutonManager extends AbstractAutonManager {
         addToMetaList();
         drivingChild = driveManager;
         autonPath = routine;
-        ROT_PID = new PIDController(robotSettings.HEADING_PID.P, robotSettings.HEADING_PID.I, robotSettings.HEADING_PID.D);
-        X_PID = new PIDController(robotSettings.AUTO_XPID.P , robotSettings.AUTO_XPID.I, robotSettings.AUTO_XPID.D);
-        Y_PID = new PIDController(robotSettings.AUTO_YPID.P , robotSettings.AUTO_YPID.I, robotSettings.AUTO_YPID.D);
+        ROT_PID = new PIDController(robotSettings.HEADING_PID.P, robotSettings.HEADING_PID.I,
+                robotSettings.HEADING_PID.D);
+        X_PID = new PIDController(robotSettings.AUTO_XPID.P, robotSettings.AUTO_XPID.I, robotSettings.AUTO_XPID.D);
+        Y_PID = new PIDController(robotSettings.AUTO_YPID.P, robotSettings.AUTO_YPID.I, robotSettings.AUTO_YPID.D);
         init();
         visionCamera = IVision.manufactureGoalCamera(robotSettings.GOAL_CAMERA_TYPE);
     }
@@ -83,11 +84,13 @@ public class AutonManager extends AbstractAutonManager {
 
     }
 
-    //getMeters - get wheel meters traveled
+    // getMeters - get wheel meters traveled
 
     @Override
     public SubsystemStatus getSubsystemStatus() {
-        return drivingChild.getSubsystemStatus() == SubsystemStatus.NOMINAL && drivingChild.guidance.getSubsystemStatus() == SubsystemStatus.NOMINAL ? SubsystemStatus.NOMINAL : SubsystemStatus.FAILED;
+        return drivingChild.getSubsystemStatus() == SubsystemStatus.NOMINAL
+                && drivingChild.guidance.getSubsystemStatus() == SubsystemStatus.NOMINAL ? SubsystemStatus.NOMINAL
+                        : SubsystemStatus.FAILED;
     }
 
     @Override
@@ -95,38 +98,44 @@ public class AutonManager extends AbstractAutonManager {
         if (autonPath.currentWaypoint >= autonPath.WAYPOINTS.size())
             return;
         updateGeneric();
-        System.out.println("Home is: " + autonPath.WAYPOINTS.get(0).LOCATION + " and im going to " + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION));
+        System.out.println("Home is: " + autonPath.WAYPOINTS.get(0).LOCATION + " and im going to "
+                + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION
+                        .subtract(autonPath.WAYPOINTS.get(0).LOCATION));
         Point point = (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION);
-        if (attackPoint(point, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPEED, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_TO && autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG != 0) || isInTolerance) {
+        if (attackPoint(point, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPEED,
+                autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_TO
+                        && autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG != 0)
+                || isInTolerance) {
             isInTolerance = true;
             DriverStation.reportWarning("IN TOLERANCE", false);
-            System.out.println("Special Action: " + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION.toString());
+            System.out.println(
+                    "Special Action: " + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION.toString());
             switch (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION) {
                 case WAIT500:
-                    if(!firstTimerRun){
+                    if (!firstTimerRun) {
                         timer.reset();
                         firstTimerRun = true;
                     }
                     specialActionComplete = timer.advanceIfElapsed(.5);
-                    if(specialActionComplete)
+                    if (specialActionComplete)
                         firstTimerRun = false;
                     break;
                 case WAIT1000:
-                    if(!firstTimerRun){
+                    if (!firstTimerRun) {
                         timer.reset();
                         firstTimerRun = true;
                     }
                     specialActionComplete = timer.advanceIfElapsed(1);
-                    if(specialActionComplete)
+                    if (specialActionComplete)
                         firstTimerRun = false;
                     break;
                 case WAIT100:
-                    if(!firstTimerRun){
+                    if (!firstTimerRun) {
                         timer.reset();
                         firstTimerRun = true;
                     }
                     specialActionComplete = timer.advanceIfElapsed(.1);
-                    if(specialActionComplete)
+                    if (specialActionComplete)
                         firstTimerRun = false;
                     break;
                 case AUTO_LEVEL:
@@ -138,7 +147,7 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = false;
                     break;
                 case ARM_ELEVATOR_SHIFT_WEIGHT:
-                    if(Math.abs(drivingChild.guidance.imu.relativeRoll()) >= 10) {
+                    if (Math.abs(drivingChild.guidance.imu.relativeRoll()) >= 10) {
                         specialActionComplete = Robot.manipulationManager.goTo(-44, -165);
                     }
                     specialActionComplete = true;
@@ -152,18 +161,18 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(3);
-                    Robot.intake.intakeLeft.moveAtVoltage(-3);
+                    // Robot.intake.intakeRight.moveAtVoltage(3);
+                    // Robot.intake.intakeLeft.moveAtVoltage(-3);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OUT:
-                    Robot.intake.intakeRight.moveAtVoltage(-12);
-                    Robot.intake.intakeLeft.moveAtVoltage(12);
+                    // Robot.intake.intakeRight.moveAtVoltage(-12);
+                    // Robot.intake.intakeLeft.moveAtVoltage(12);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_OFF:
-                    Robot.intake.intakeLeft.moveAtVoltage(0);
-                    Robot.intake.intakeRight.moveAtVoltage(-0);
+                    // Robot.intake.intakeLeft.moveAtVoltage(0);
+                    // Robot.intake.intakeRight.moveAtVoltage(-0);
                     specialActionComplete = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OFF:
@@ -187,29 +196,32 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete = true;
                     break;
                 case DRIVE_WITH_TIME:
-                if(!firstTimerRun){
-                    timer.reset();
-                    firstTimerRun = true;
-                }
-                if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-                    drivingChild.drivePure(6,0,0);
-                }else {
-                    drivingChild.drivePure(-6, 0, 0);
-                }
-                specialActionComplete = timer.advanceIfElapsed(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
-                if(specialActionComplete)
-                    firstTimerRun = false;
-                break;
+                    if (!firstTimerRun) {
+                        timer.reset();
+                        firstTimerRun = true;
+                    }
+                    if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                        drivingChild.drivePure(6, 0, 0);
+                    } else {
+                        drivingChild.drivePure(-6, 0, 0);
+                    }
+                    specialActionComplete = timer
+                            .advanceIfElapsed(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
+                    if (specialActionComplete)
+                        firstTimerRun = false;
+                    break;
                 case DRIVE_OVER_STATION:
                     specialActionComplete = drivingChild.driveForwardWithAngle();
                     break;
                 case DRIVE_TO:
                 case NONE:
-                    //litterally do nothing
+                    // litterally do nothing
                     specialActionComplete = true;
                     break;
                 default:
-                    throw new UnsupportedOperationException("Cringe. You're unable to use the Special Action " + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION.name() + " in your auton.");
+                    throw new UnsupportedOperationException("Cringe. You're unable to use the Special Action "
+                            + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION.name()
+                            + " in your auton.");
             }
 
             switch (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2) {
@@ -217,7 +229,7 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = timer.advanceIfElapsed(.5);
                     break;
                 case ARM_ELEVATOR_UP:
-                    Robot.elevator.elevate.moveAtPosition(2.315);
+                    Robot.elevator.elevatorController.moveAtPosition(2.315);
                     specialActionComplete2 = timer.advanceIfElapsed(.1);
                     System.out.println("tring to move Elevator");
                     break;
@@ -226,21 +238,23 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = true;
                     break;
                 case ARM_ELEVATOR_SHIFT_WEIGHT:
-                    specialActionComplete2 = Robot.manipulationManager.goTo(-44,-165);
+                    specialActionComplete2 = Robot.manipulationManager.goTo(-44, -165);
                     break;
                 case ARM_ELEVATOR_GO_TO:
-                    specialActionComplete2 = Robot.manipulationManager.goTo(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG2,autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG3);
+                    specialActionComplete2 = Robot.manipulationManager.goTo(
+                            autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG2,
+                            autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG3);
                     break;
                 case ARM_ELEVATOR_DOWN:
-                    specialActionComplete2 = Robot.manipulationManager.goTo(0,-50);
+                    specialActionComplete2 = Robot.manipulationManager.goTo(0, -50);
                     System.out.println("tring to move Elevator");
                     break;
                 case CUBE_TOP:
-                    specialActionComplete2 = Robot.manipulationManager.goTo(-1,-226);
+                    specialActionComplete2 = Robot.manipulationManager.goTo(-1, -226);
                     System.out.println("tring to move Elevator");
                     break;
                 case ARM_ELEVATOR_RESET:
-                    specialActionComplete2 = Robot.manipulationManager.goTo(0,0);
+                    specialActionComplete2 = Robot.manipulationManager.goTo(0, 0);
                     System.out.println("tring to move Elevator");
                     break;
                 case INTAKE_PISTON_IN:
@@ -252,18 +266,18 @@ public class AutonManager extends AbstractAutonManager {
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_IN:
-                    Robot.intake.intakeRight.moveAtVoltage(3);
-                    Robot.intake.intakeLeft.moveAtVoltage(-3);
+                    // Robot.intake.intakeRight.moveAtVoltage(3);
+                    // Robot.intake.intakeLeft.moveAtVoltage(-3);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_OUT:
-                    Robot.intake.intakeRight.moveAtVoltage(-12);
-                    Robot.intake.intakeLeft.moveAtVoltage(12);
+                    // Robot.intake.intakeRight.moveAtVoltage(-12);
+                    // Robot.intake.intakeLeft.moveAtVoltage(12);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_OFF:
-                    Robot.intake.intakeLeft.moveAtVoltage(0);
-                    Robot.intake.intakeRight.moveAtVoltage(-0);
+                    // Robot.intake.intakeLeft.moveAtVoltage(0);
+                    // Robot.intake.intakeRight.moveAtVoltage(-0);
                     specialActionComplete2 = true;
                     break;
                 case INTAKE_WHEEL_BOTTOM_OFF:
@@ -283,21 +297,25 @@ public class AutonManager extends AbstractAutonManager {
                     break;
                 case DRIVE_WITH_TIME:
                 case NONE:
-                    //litterally do nothing
+                    // litterally do nothing
                     specialActionComplete2 = true;
                     System.out.println("No special action2");
                     break;
                 default:
-                    throw new UnsupportedOperationException("Cringe. You're unable to use the Special Action 2" + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2.name() + " in your auton.");
+                    throw new UnsupportedOperationException("Cringe. You're unable to use the Special Action 2"
+                            + autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2.name()
+                            + " in your auton.");
             }
 
             if (specialActionComplete && specialActionComplete2) {
                 if (++autonPath.currentWaypoint < autonPath.WAYPOINTS.size()) {
                     isInTolerance = false;
-                    //throw new IllegalStateException("Holy crap theres no way it worked. This is illegal");
-                    Point b = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION);
+                    // throw new IllegalStateException("Holy crap theres no way it worked. This is
+                    // illegal");
+                    Point b = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION
+                            .subtract(autonPath.WAYPOINTS.get(0).LOCATION);
                     setupNextPosition(b);
-                    //attackPoint(b, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPEED);
+                    // attackPoint(b, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPEED);
                     specialActionComplete = false;
                     specialActionComplete2 = false;
                     ROT_PID.reset();
@@ -319,25 +337,33 @@ public class AutonManager extends AbstractAutonManager {
     public boolean attackPoint(Point point, double speed, boolean permitSwiveling) {
         UserInterface.smartDashboardPutString("Location", point.toString());
         Point here = new Point(drivingChild.guidance.fieldX(), drivingChild.guidance.fieldY());
-        boolean angleTolerance = Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()) <= (robotSettings.AUTON_TOLERANCE *5.0);
+        boolean angleTolerance = Math
+                .abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose
+                        .getEstimatedPosition().getRotation().getDegrees()) <= (robotSettings.AUTON_TOLERANCE * 5.0);
         boolean inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 4.5, point);
         if (Math.abs(drivingChild.guidance.imu.absoluteRoll()) >= 3) {
             inTolerance = here.isWithin(robotSettings.AUTON_TOLERANCE * 8, point);
         }
-        if(autonPath.currentWaypoint == 0){
-            if(timer.advanceIfElapsed(1)){
+        if (autonPath.currentWaypoint == 0) {
+            if (timer.advanceIfElapsed(1)) {
                 angleTolerance = true;
                 inTolerance = true;
-                drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
+                drivingChild.guidance.setSwerveOdometryCurrent(
+                        autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X,
+                        autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y,
+                        autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
                 return true;
             }
         }
 
-        if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 2 || autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 179){
+        if (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 2
+                || autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG == 179) {
             drivingChild.drivePure(0.02, 0, 0);
             return true;
         }
-        UserInterface.smartDashboardPutNumber("how far from correct the angle is", Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()));
+        UserInterface.smartDashboardPutNumber("how far from correct the angle is",
+                Math.abs(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG
+                        - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees()));
         UserInterface.smartDashboardPutBoolean("angle tolerance", angleTolerance);
         UserInterface.smartDashboardPutBoolean("inTolerance", inTolerance);
         if (point.X <= -9000 && point.Y <= -9000) {
@@ -346,7 +372,7 @@ public class AutonManager extends AbstractAutonManager {
         }
         UserInterface.smartDashboardPutNumber("rotOffset", -rotationOffset);
         UserInterface.smartDashboardPutString("Current Position", here.toString());
-        if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
+        if (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME) {
             inTolerance = true;
             angleTolerance = true;
             return inTolerance && angleTolerance;
@@ -354,37 +380,49 @@ public class AutonManager extends AbstractAutonManager {
         if (!(inTolerance && angleTolerance)) {
             if (permitSwiveling) {
                 double y;
-                double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X - drivingChild.guidance.fieldX();
-                if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2 == AutonSpecialActions.DRIVE_TO_CUBE){
-                    if(Robot.intake.m_colorSensor.getProximity() >= 300 && Robot.intake.m_colorSensor.getProximity() <= 900 ){
+                double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X
+                        - drivingChild.guidance.fieldX();
+                if (autonPath.WAYPOINTS
+                        .get(autonPath.currentWaypoint).SPECIAL_ACTION_2 == AutonSpecialActions.DRIVE_TO_CUBE) {
+                    if (Robot.intake.m_colorSensor.getProximity() >= 300
+                            && Robot.intake.m_colorSensor.getProximity() <= 900) {
                         inTolerance = true;
                         angleTolerance = true;
                     }
-                    if(visionCamera.getSize() >= 1) {
+                    if (visionCamera.getSize() >= 1) {
                         bestAreaCube = true;
                     }
-                    if(visionCamera.hasValidTarget() && bestAreaCube == true){
-                        if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-                            y =  (-visionCamera.getAngle() + 2) * 0.1;
-                        }else {
+                    if (visionCamera.hasValidTarget() && bestAreaCube == true) {
+                        if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                            y = (-visionCamera.getAngle() + 2) * 0.1;
+                        } else {
                             y = (visionCamera.getAngle() - 2) * 0.1;
                         }
-                    }else {
+                    } else {
                         y = 0;
-                    }
-                }else {
+                    } 
+                } else {
                     y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y - drivingChild.guidance.fieldY();
                 }
-                double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y) : drivingChild.guidance.realHeadingError(x, y);
+                double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y)
+                        : drivingChild.guidance.realHeadingError(x, y);
                 System.out.println("demanded X " + x + " Demanded Y " + y);
                 System.out.println("Pidgeon Angle: " + drivingChild.guidance.imu.relativeYaw());
                 double calcX = X_PID.calculate(x);
                 double calcY = Y_PID.calculate(y);
-                UserInterface.smartDashboardPutNumber("trying to turn to", autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
-                UserInterface.smartDashboardPutNumber("change in angle", autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees());
-                UserInterface.smartDashboardPutNumber("roation stick input", ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw()));
-                UserInterface.smartDashboardPutNumber("X direction stick input", robotSettings.AUTO_SPEED * speed * calcX);
-                UserInterface.smartDashboardPutNumber("Y direction stick input", robotSettings.AUTO_SPEED * speed * calcY);
+                UserInterface.smartDashboardPutNumber("trying to turn to",
+                        autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
+                UserInterface.smartDashboardPutNumber("change in angle",
+                        autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG
+                                - drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation()
+                                        .getDegrees());
+                UserInterface.smartDashboardPutNumber("roation stick input",
+                        ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG
+                                - drivingChild.guidance.imu.relativeYaw()));
+                UserInterface.smartDashboardPutNumber("X direction stick input",
+                        robotSettings.AUTO_SPEED * speed * calcX);
+                UserInterface.smartDashboardPutNumber("Y direction stick input",
+                        robotSettings.AUTO_SPEED * speed * calcY);
                 double rotation = 0;
                 double signNeeded = 1;
                 double at = drivingChild.guidance.swerveRobotPose.getEstimatedPosition().getRotation().getDegrees();
@@ -392,50 +430,68 @@ public class AutonManager extends AbstractAutonManager {
 
                 rotation = UtilFunctions.mathematicalMod((goal - at) + 180, 360) - 180;
 
-                if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-                    if(Math.abs(rotation) >= 50) {
-                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .015);
-                    }else{
-                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .055);
+                if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+                    if (Math.abs(rotation) >= 50) {
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX,
+                                robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .015);
+                    } else {
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX,
+                                robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .055);
                     }
-                }else {
-                    if(Math.abs(rotation) >= 50){
-                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .015/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
-                    }else {
-                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX, robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded * .055/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
+                } else {
+                    if (Math.abs(rotation) >= 50) {
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX,
+                                robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded
+                                        * .015/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
+                    } else {
+                        drivingChild.drivePure(-robotSettings.AUTO_SPEED * speed * calcX,
+                                robotSettings.AUTO_SPEED * speed * calcY, rotation * signNeeded
+                                        * .055/*-ROT_PID.calculate(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG - drivingChild.guidance.imu.relativeYaw())*/);
                     }
                 }
             } else {
-                double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;
-                double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.subtract(autonPath.WAYPOINTS.get(0).LOCATION).Y;
-                double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y) : drivingChild.guidance.realHeadingError(x, y);
+                double x = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION
+                        .subtract(autonPath.WAYPOINTS.get(0).LOCATION).X;
+                double y = autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION
+                        .subtract(autonPath.WAYPOINTS.get(0).LOCATION).Y;
+                double targetHeading = speed < 0 ? drivingChild.guidance.realRetrogradeHeadingError(x, y)
+                        : drivingChild.guidance.realHeadingError(x, y);
                 System.out.println("demanded X " + x + " Demanded Y " + y);
-                //drivingChild.drivePure(robotSettings.AUTO_SPEED * speed /* (robotSettings.INVERT_DRIVE_DIRECTION ? -1 : 0)*/, ROT_PID.calculate(targetHeading) * -robotSettings.AUTO_ROTATION_SPEED);
+                // drivingChild.drivePure(robotSettings.AUTO_SPEED * speed /*
+                // (robotSettings.INVERT_DRIVE_DIRECTION ? -1 : 0)*/,
+                // ROT_PID.calculate(targetHeading) * -robotSettings.AUTO_ROTATION_SPEED);
             }
         } else {
-            if (!(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.AUTO_LEVEL || autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_OVER_STATION)) {
-                if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.ARM_ELEVATOR_SHIFT_WEIGHT){
+            if (!(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.AUTO_LEVEL
+                    || autonPath.WAYPOINTS
+                            .get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_OVER_STATION)) {
+                if (autonPath.WAYPOINTS.get(
+                        autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.ARM_ELEVATOR_SHIFT_WEIGHT) {
                     drivingChild.lockWheels();
-                } else if(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME){
+                } else if (autonPath.WAYPOINTS
+                        .get(autonPath.currentWaypoint).SPECIAL_ACTION == AutonSpecialActions.DRIVE_WITH_TIME) {
                 } else if (permitSwiveling) {
                     drivingChild.drivePure(0.02, 0, 0);
-                }else {
+                } else {
                     drivingChild.drivePure(0, 0);
                 }
             }
             System.out.println("Robot Shouldnt be moving");
             if (robotSettings.DEBUG)
                 System.out.println("In tolerance.");
-            //System.out.println("Driving FPS " + 0);
+            // System.out.println("Driving FPS " + 0);
         }
-        if (autonPath.WAYPOINTS.get(autonPath.currentWaypoint).SPECIAL_ACTION_2 == AutonSpecialActions.ARM_ELEVATOR_GO_TO){
-            Robot.manipulationManager.goTo(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG2,autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG3);
+        if (autonPath.WAYPOINTS
+                .get(autonPath.currentWaypoint).SPECIAL_ACTION_2 == AutonSpecialActions.ARM_ELEVATOR_GO_TO) {
+            Robot.manipulationManager.goTo(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG2,
+                    autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG3);
         }
         return inTolerance && angleTolerance;
     }
 
     /**
-     * Saves a value with the current position and how far the robot has to turn to reach the next point
+     * Saves a value with the current position and how far the robot has to turn to
+     * reach the next point
      *
      * @param point the {@link Point} (x, y) to go to
      */
@@ -445,7 +501,8 @@ public class AutonManager extends AbstractAutonManager {
     }
 
     /**
-     * When the path finishes, we have flags to set, brakes to prime, and music to jam to
+     * When the path finishes, we have flags to set, brakes to prime, and music to
+     * jam to
      */
     public void onFinish() {
         robotSettings.autonComplete = true;
@@ -470,13 +527,15 @@ public class AutonManager extends AbstractAutonManager {
         autonPath.currentWaypoint = 0;
         try {
             autonPath = AutonRoutines.myChooser.getSelected();
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
         }
 
-        drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y, autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
+        drivingChild.guidance.setSwerveOdometryCurrent(autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.X,
+                autonPath.WAYPOINTS.get(autonPath.currentWaypoint).LOCATION.Y,
+                autonPath.WAYPOINTS.get(autonPath.currentWaypoint).INTARG);
     }
 
-    public void printAutonPositions(){
+    public void printAutonPositions() {
         UserInterface.smartDashboardPutNumber("rotOffset", -rotationOffset);
         UserInterface.smartDashboardPutString("Current Position", autonManager.toString());
     }
