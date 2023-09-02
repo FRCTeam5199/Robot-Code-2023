@@ -73,7 +73,7 @@ public class SwerveComp2023 extends DefaultConfig {
 
         // INTAKE
         INTAKE_MOTOR_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
-        INTAKE_MOTOR_BOTTOM_TYPE = AbstractMotorController.SupportedMotors.VICTOR;
+        INTAKE_MOTOR_BOTTOM_TYPE = AbstractMotorController.SupportedMotors.CAN_SPARK_MAX;
         INTAKE_MOTOR_BOTTOM_ID = 54;
         INTAKE_MOTOR_LEFT_ID = 44;
         INTAKE_MOTOR_RIGHT_ID = 27;
