@@ -76,6 +76,7 @@ public class Arm implements ISubsystem {
 
         double exposition = armExtendingController.getRotations();
         
+        
         if (armExtendingController.getRotations() > 1000) {
             // System.out.println("Adjusting...");
             armExtendingController.moveAtPercent(-5);
@@ -142,7 +143,7 @@ public class Arm implements ISubsystem {
             if (robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.TALON_FX)
                 armExtendingController = new TalonMotorController(robotSettings.ARM_EXTEND_MOTOR_ID, robotSettings.ARM_MOTOR_CANBUS);
             if (robotSettings.ARM_MOTOR_TYPE == AbstractMotorController.SupportedMotors.CAN_SPARK_MAX)
-                armExtendingController = new SparkMotorController(robotSettings.ARM_EXTEND_MOTOR_ID);
+                armExtendingController = new SparkMotorController(robotSettings.ARM_EXTEND_MOTOR_ID, MotorType.kBrushed);
         }
 
         armExtendingController.setRealFactorFromMotorRPM(1, 1);

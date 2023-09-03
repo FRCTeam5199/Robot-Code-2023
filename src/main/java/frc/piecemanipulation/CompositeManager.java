@@ -75,12 +75,13 @@ public class CompositeManager implements ISubsystem  {
         if (xbox.get(DefaultControllerEnums.XBoxButtons.X_SQUARE) == DefaultControllerEnums.ButtonStatus.DOWN) {
             // intake.spinBottomIntake(-3);
             // System.out.println("changeing elevator setpoint yahahahahhahahah");
-            // elevator.elevatorController.moveAtPosition(30);
-            elevator.elevatorPIDController.setSetpoint(100);
+            arm.armExtendingController.moveAtPercent(4);
         }
         if (xbox.get(DefaultControllerEnums.XBoxButtons.A_CROSS) == DefaultControllerEnums.ButtonStatus.DOWN) {
-            intake.spinBottomIntake(3);
+            // intake.spinBottomIntake(3);
+            arm.armExtendingController.moveAtPercent(-4);
         }
+        // arm.armExtendingController.moveAtPercent(0);
         if (panel1.get(ControllerEnums.ButtonPanelButtonsPlacement2023.HP1) == DefaultControllerEnums.ButtonStatus.DOWN) {
             currentState = stateMachine.HUMANPLAYER;
             Robot.pneumatics.spikePiston.set(DoubleSolenoid.Value.kReverse);
@@ -104,64 +105,67 @@ public class CompositeManager implements ISubsystem  {
 
         switch (currentState) {
             case HUMANPLAYER:
+            
                 arm.armExtendingPIDController.setSetpoint(5);
-                
                 if (arm.armExtendingController.getRotations() > 3) {
                     arm.armRotationPIDController.setSetpoint(24);
                     elevator.elevatorPIDController.setSetpoint(38);
+                    
                 }
 
                 break;
             case STABLE:
+            
                 // arm.armExtendingPIDController.setSetpoint(0);
                 arm.armExtendingPIDController.setSetpoint(7);
-
                 elevator.elevatorPIDController.setSetpoint(0);
-                if (arm.armExtendingController.getRotations() > 3) {
-                    arm.armRotationPIDController.setSetpoint(0);
-                }
+                arm.armRotationPIDController.setSetpoint(0);
+                // arm.armExtendingPIDController.setSetpoint(4);
 
-                if ((arm.armRotationController.getRotations() < 9) && (arm.armRotationController.getRotations() > -9)) {
-                    // System.out.println("STABLE Condition: armRotationController.getRotations() < 9");
-                    arm.armExtendingPIDController.setSetpoint(2);
-                }
+                // if ((arm.armRotationController.getRotations() < 9) && (arm.armRotationController.getRotations() > -9)) {
+                //     // System.out.println("STABLE Condition: armRotationController.getRotations() < 9");
+                //     arm.armExtendingPIDController.setSetpoint(2);
+                // }
                 
                 break;
             case HIGH:
-                    
                     // arm.armExtendingPIDController.setSetpoint(0);
+                    elevator.elevatorPIDController.setSetpoint(38);
                     arm.armExtendingPIDController.setSetpoint(7);
+                    arm.armRotationPIDController.setSetpoint(-64);
+                    
                 
-                    if (arm.armExtendingController.getRotations() > 3) {
-                        arm.armRotationPIDController.setSetpoint(-64);
-                    }
+                    // if (arm.armExtendingController.getRotations() > 3) {
+                    //     arm.armRotationPIDController.setSetpoint(-64);
+                    // }
 
                     if (arm.armRotationController.getRotations() < -40) {
                         // System.out.println("HIGH Condition: armRotationController.getRotations() > 40");
-                        arm.armExtendingPIDController.setSetpoint(21
-                        );
-                        elevator.elevatorPIDController.setSetpoint(38);
+                        arm.armExtendingPIDController.setSetpoint(21);
+                        
                     }
 
                 break;
             case MID:
                 // arm.armExtendingPIDController.setSetpoint(0);
                 arm.armExtendingPIDController.setSetpoint(7);
-                
+                elevator.elevatorController.moveAtPosition(16);
+
                 if (arm.armExtendingController.getRotations() > 3) {
                     arm.armRotationPIDController.setSetpoint(-60);
                 }
 
                 if (arm.armRotationController.getRotations() < -40) {
                     arm.armExtendingPIDController.setSetpoint(0);
-                    elevator.elevatorPIDController.setSetpoint(16);
+                    // elevator.elevatorPIDController.setSetpoint(16);
+                    
                 }
 
                 break;
             case LOW:
                 // arm.armExtendingPIDController.setSetpoint(0);
                 arm.armExtendingPIDController.setSetpoint(7);
-                
+                elevator.elevatorController.moveAtPosition(0);
                 // if (arm.armExtendingController.getRotations() > 3) {
                     arm.armRotationPIDController.setSetpoint(-75);
                 // }
@@ -169,7 +173,8 @@ public class CompositeManager implements ISubsystem  {
                 if (arm.armRotationController.getRotations() < -40) {
                     // System.out.println("LOW Condition: armRotationController.getRotations() > 40");
                     arm.armExtendingPIDController.setSetpoint(0);
-                    elevator.elevatorPIDController.setSetpoint(0);
+                    // elevator.elevatorPIDController.setSetpoint(0);
+                    elevator.elevatorController.moveAtPosition(0);
                 }
 
                 break;
