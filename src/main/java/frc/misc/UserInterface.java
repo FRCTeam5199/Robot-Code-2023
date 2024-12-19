@@ -2,16 +2,25 @@ package frc.misc;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.drive.AbstractDriveManager;
 import frc.drive.auton.pointtopoint.AutonRoutines;
 import frc.motors.AbstractMotorController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static frc.robot.Robot.robotSettings;
@@ -89,6 +98,19 @@ public class UserInterface {
 
     //MISC
     public static void initRobot() {
+
+        Object m_trajectory = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
+            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+            new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
+            new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
+
+        // Create and push Field2d to SmartDashboard.
+        Field2d m_field = new Field2d();
+        SmartDashboard.putData(m_field);
+
+        // Push the trajectory to Field2d.
+        m_field.getObject("traj").setTrajectory((Trajectory) m_trajectory);
         if (robotSettings.ENABLE_MUSIC) {
             MUSIC_SELECTOR = MUSICK_TAB.add("SongSelector", Chirp.MUSIC_SELECTION).withWidget(BuiltInWidgets.kComboBoxChooser);
         }

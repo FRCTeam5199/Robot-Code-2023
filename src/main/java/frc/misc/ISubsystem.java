@@ -85,7 +85,7 @@ public interface ISubsystem {
      *
      * @return the hardcoded name of the subsystem
      */
-    String getSubsystemName();
+    public String getSubsystemName();
 
     /**
      * In devlopment, adds this object to {@link Robot#subsystems a master registry} for later use

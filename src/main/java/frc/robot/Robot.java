@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.drive.AbstractDriveManager;
 import frc.drive.DriveManagerStandard;
@@ -52,12 +53,15 @@ public class Robot extends TimedRobot {
     public static boolean SECOND_TRY;
     public static String lastFoundSong = "";
     private static long lastDisable = 0;
+    private Timer timer = new Timer();
 
     /**
      * Init everything
      */
     @Override
     public void robotInit() throws IllegalStateException {
+        timer.stop();
+        timer.reset();
         getRestartProximity();
         getSettings();
         robotSettings.printMappings();
@@ -94,6 +98,7 @@ public class Robot extends TimedRobot {
                 UserInterface.motorTemperatureMonitors.put(motor, UserInterface.WARNINGS_TAB.add(motor.getName(), motor.getMotorTemperature()).withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", 30, "Max", 80)));
             }
         }
+        timer.start();
     }
 
     /**
@@ -218,7 +223,11 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         for (ISubsystem system : subsystems) {
+            double t0 = timer.get();
             system.updateTeleop();
+            double t1 = timer.get();
+            //System.out.println("SS: " + system.getSubsystemName() + " Took:" + Double.toString(t1-t0));
+
         }
     }
 
